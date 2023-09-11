@@ -1,0 +1,17 @@
+import com.mchange.fossilphant.*
+
+(tup : (String,String))[]~()>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <title><( tup(0) )></title>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="left-sidebar"></div>
+    <div id="main-content"><( tup(1) )></div>
+    <div id="right-sidebar"></div>
+    <div id="footer"></div>
+  </body>
+</html>

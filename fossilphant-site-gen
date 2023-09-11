@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./mill fossilphant.run gen
+

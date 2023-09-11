@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./mill -w fossilphant.runBackground serve --verbose
+
+
+

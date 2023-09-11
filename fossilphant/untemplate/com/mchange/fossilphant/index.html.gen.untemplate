@@ -1,0 +1,7 @@
+import com.mchange.fossilphant.*
+
+val text = context.reverseChronologicalPosts.map(post_html).mkString("\n")
+
+(context : FossilphantContext)[]~()>
+
+<( layout_main_html( "Mastodon", text ) )>

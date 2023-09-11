@@ -1,0 +1,59 @@
+import com.mchange.fossilphant.*
+
+(context : FossilphantContext)[]~()>
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('font/Montserrat/Montserrat-VariableFont_wght.ttf');
+}
+@font-face {
+    font-family: 'Montserrat-Italic';
+    src: url('font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf');
+}
+
+:root {
+    --main-background: #C0C2C1;
+    --post-background:  #FFFFFF
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+body {
+    display:               grid;
+    grid-template-columns: 1fr 500px 1fr;
+    grid-template-rows:    300px 1fr 300px;
+    width: 100%;
+    background-color: var( --main-background );
+    font-family: 'Montserrat', sans-serif;
+    font-variation-settings: "wght" 400;
+}
+em, i {
+    font-family: 'Montserrat-Italic', sans-serif;
+}
+div {
+  border: 2px solid black;
+}
+#header {
+  grid-column: 1 / span 3;
+  grid-row: 1;
+}
+#left-sidebar {
+  grid-column: 1;
+  grid-row: 2;
+}
+#main-content {
+  grid-column: 2;
+  grid-row: 2;
+}
+#right-sidebar {
+  grid-column: 3;
+  grid-row: 2;
+}
+#footer {
+  grid-column: 1 / span 3;
+  grid-row: 3;
+}
+.post {
+  padding: 0.5em;
+  background-color: white;
+}
