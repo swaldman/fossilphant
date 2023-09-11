@@ -9,7 +9,10 @@ import com.mchange.fossilphant.*
   </head>
   <body>
     <div id="header"></div>
-    <div id="left-sidebar"></div>
+    <div id="left-sidebar">
+      <div><a href="index.html">Posts</a></div>
+      <div><a href="withReplies.html">Posts and replies</a></div>
+    </div>
     <div id="main-content"><( tup(1) )></div>
     <div id="right-sidebar"></div>
     <div id="footer"></div>

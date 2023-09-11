@@ -1,6 +1,6 @@
 import com.mchange.fossilphant.*
 
-(context : FossilphantContext)[]~()>
+(locatedContext : LocatedContext)[]~()>
 
 @font-face {
     font-family: 'Montserrat';
@@ -13,15 +13,18 @@ import com.mchange.fossilphant.*
 
 :root {
     --main-background: #C0C2C1;
-    --post-background:  #FFFFFF
+    --post-background: #FFFFFF;
+    --avatar-slot: 60px;
+    --avatar-padding: 5px;
+    font-size: 11pt;
 }
 *, *::before, *::after {
   box-sizing: border-box;
 }
 body {
     display:               grid;
-    grid-template-columns: 1fr 500px 1fr;
-    grid-template-rows:    300px 1fr 300px;
+    grid-template-columns: 1fr 600px 1fr;
+    grid-template-rows:    auto auto auto;
     width: 100%;
     background-color: var( --main-background );
     font-family: 'Montserrat', sans-serif;
@@ -31,7 +34,7 @@ em, i {
     font-family: 'Montserrat-Italic', sans-serif;
 }
 div {
-  border: 2px solid black;
+  /* border: 1px solid black; */
 }
 #header {
   grid-column: 1 / span 3;
@@ -56,4 +59,88 @@ div {
 .post {
   padding: 0.5em;
   background-color: white;
+  border: 1px solid gray;
+  margin-bottom: 0.25rem;
+  position: relative; /* so we can use absolute positioning within it */
 }
+.avatar-names {
+  display:               grid;
+  grid-template-columns: var( --avatar-slot ) 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: var( --avatar-slot );
+}
+.avatar-names .avatar img {
+    width: var( --avatar-slot );
+    height: var( --avatar-slot );
+    padding: var( --avatar-padding );
+    border-radius: 10px;
+}
+.avatar-names .avatar {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: center;
+}
+.avatar-names .post-display-name {
+  grid-column: 2;
+  grid-row: 1;
+  font-variation-settings: "wght" 700;
+  align-self: end;
+  justify-self: start;
+  margin-left: 0.5rem;
+  margin-bottom: 0.1rem;
+}
+.avatar-names .post-user {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  justify-self: start;
+  margin-left: 0.5rem;
+  margin-top: 0.1rem;
+}
+.post-timestamp {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  text-align: right;
+  font-variation-settings: "wght" 600;
+  font-size: 80%;
+  /* color: #bbbbbb; */
+  line-height: 120%;
+}
+.post-timestamp a {
+  text-decoration: none;
+  opacity: 0.5;
+}
+.post-timestamp a:hover {
+  opacity: 1;
+}
+
+.post-image {
+  text-align: center;
+  position: relative; /* so tooltips can be positioned absolute */
+}
+.post-image img {
+  max-width: 100%;
+  max-height: 800px;
+}
+
+/* modified from https://blog.hubspot.com/website/html-tooltip */
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  color: white;
+  font-size: 12px;
+  background-color: #192733;
+  border-radius: 10px;
+  padding: 10px 15px 10px 15px;
+  left: 15px;
+  top: 15px;
+}
+.post-image:hover .tooltip-text {
+  visibility: visible;
+}
+

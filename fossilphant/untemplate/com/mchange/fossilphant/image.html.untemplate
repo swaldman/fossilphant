@@ -1,0 +1,18 @@
+import com.mchange.fossilphant.*
+import unstatic.PageBase
+import unstatic.UrlPath.*
+
+val loc = tup(0)
+val image = tup(1)
+val pageBase = PageBase.fromPage(loc)
+val relImagePath = pageBase.relativize(image.siteRootedPath)
+
+def altPart = image.alt.fold("")(text => s""" alt="${text}"""")
+def tooltipTextSpan = image.alt.fold("")(text => s"""<span class="tooltip-text">${text}</span>""")
+
+(tup : ( Rooted, Post.Image ) )[]~()>
+
+<div class="post-image">
+  <a href="<( relImagePath )>"><img src="<( relImagePath )>"<( altPart )>></a>
+  <( tooltipTextSpan )>
+</div>
