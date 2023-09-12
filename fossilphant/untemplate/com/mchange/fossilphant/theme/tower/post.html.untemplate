@@ -1,5 +1,3 @@
-import com.mchange.fossilphant.*
-
 val lpwc = tup(0)
 val showInReplyTo = tup(1)
 

@@ -1,5 +1,3 @@
-import com.mchange.fossilphant.*
-
 (locatedContext : LocatedContext)[]~()>
 
 @font-face {

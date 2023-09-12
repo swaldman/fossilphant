@@ -1,4 +1,3 @@
-import com.mchange.fossilphant.*
 import unstatic.UrlPath.Rooted
 
 val location = tup(0)
