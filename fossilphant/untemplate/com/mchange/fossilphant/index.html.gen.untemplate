@@ -4,7 +4,7 @@ val context = locatedContext.context
 
 val text =
   context.reverseChronologicalPublicPosts
-    .filterNot(_.inReplyTo.isInstanceOf[InReplyTo.Self])
+    .filter(_.inReplyTo == InReplyTo.NoOne)
     .map(post => threadOrPost(LocatedPostWithContext(post, locatedContext), true))
     .mkString("\n")
 
