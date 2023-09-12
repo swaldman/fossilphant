@@ -20,6 +20,6 @@ val currentTabs = currents.map { (tabLabel, tabLoc) =>
 (tup : (Rooted, List[Tuple2[String,Rooted]]))[]~()>
 
 <div class="tabs">
-  <div class="tab-left"><( currentTabs.mkString(" ") )></div>
+  <div class="tab-left">Current Page: <( currentTabs.mkString(" aka ") )></div>
   <div class="tab-right">Go to <( gotoTabs.mkString(", ") )></div>
 </div>
