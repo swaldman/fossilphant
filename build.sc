@@ -44,6 +44,10 @@ object fossilphant extends UntemplateModule {
         Dependency.Upickle,
       ) // Agg
   }
+
+  def scalacOptions = T {
+    super.scalacOptions() ++ Seq("-explain")
+  }
 }
 
 

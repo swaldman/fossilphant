@@ -107,7 +107,7 @@ object FossilphantSiteGenerator:
       archivePath = Some( "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669" ),
       mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
-      newSelfUrl = None,
+      newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
       toFollowersAsPublic = true,
       sensitiveAsPublic = true,
       timestampTimezone = ZoneId.of("America/New_York")

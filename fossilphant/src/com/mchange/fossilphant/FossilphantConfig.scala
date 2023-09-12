@@ -9,6 +9,7 @@ case class FossilphantConfig(
   overrideDisplayName : Option[String] = None,
   newSelfUrl          : Option[String] = None,
   themeName           : String = "tower",
+  themeConfig         : Map[String,String] = Map.empty,
   contentTransformer  : String => String = identity,
   toFollowersAsPublic : Boolean = false,
   sensitiveAsPublic   : Boolean = false,

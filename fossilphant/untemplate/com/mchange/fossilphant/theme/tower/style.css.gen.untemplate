@@ -1,3 +1,6 @@
+val config = locatedContext.context.config
+val tc = config.themeConfig
+
 (locatedContext : LocatedContext)[]~()>
 
 @font-face {
@@ -10,11 +13,21 @@
 }
 
 :root {
-    --main-background: #D0D2D1;
-    --post-background: #FFFFFF;
+    --page-background-color:     <( tc.getOrElse( "page.background.color", "#D0D2D1" ) )>;
+    --post-background-color:     <( tc.getOrElse( "post.background.color", "#FFFFFF" ) )>;
+    --post-text-color:           <( tc.getOrElse( "post.text.color", "black" ) )>;
+    --outer-text-color:          <( tc.getOrElse( "outer.text.color", "black" ) )>;
+    --outer-link-color:          <( tc.getOrElse( "outer.link.color", "#0000EE" ) )>;
+    --outer-link-color-visited:  <( tc.getOrElse( "outer.link.color.visited", "#551A8B" ) )>;
+    --post-link-color:           <( tc.getOrElse( "post.link.color", "#0000EE" ) )>;
+    --post-link-color-visited:   <( tc.getOrElse( "post.link.color.visited", "#551A8B" ) )>;
+    --post-border-color:         <( tc.getOrElse( "post.border.color", "gray" ) )>;
+    --thread-border-color:       <( tc.getOrElse( "thread.border.color", "black" ) )>;
+
     --avatar-slot: 60px;
     --avatar-padding: 5px;
-    --thread-border: 3px solid black;
+    --thread-border: 3px solid var( --thread-border-color );
+    --outer-text-right-margin: 2rem;
     font-size: 11pt;
 }
 *, *::before, *::after {
@@ -25,14 +38,21 @@ body {
     grid-template-columns: 1fr 600px 1fr;
     grid-template-rows:    auto auto auto;
     width: 100svw;
-    background-color: var( --main-background );
+    background-color: var( --page-background-color );
     font-family: 'Montserrat', sans-serif;
     font-variation-settings: "wght" 400;
+    color: var( --outer-text-color );
     border: 0;
     margin: 0;
     padding: 0;
     gap: 0 0;
     overflow-x: clip;
+}
+a:link {
+  color: var( --outer-link-color );
+}
+a:link:visited {
+  color: var( --outer-link-color-visited );
 }
 em, i {
     font-family: 'Montserrat-Italic', sans-serif;
@@ -66,6 +86,7 @@ div {
   font-variation-settings: "wght" 600;
   font-size: 10;
   text-align: right;
+  margin-right: var( --outer-text-right-margin );
 }
 #main-title {
   font-size: 150%;
@@ -88,11 +109,18 @@ div {
 }
 .post {
   padding: 0.5em;
-  background-color: white;
-  border: 1px solid gray;
+  color: var( --post-text-color );
+  background-color: var( --post-background-color );
+  border: 1px solid var( --post-border-color );
   margin-bottom: 0.25rem;
   position: relative; /* so we can use absolute positioning within it */
   overflow-x: clip;
+}
+.post a:link {
+  color: var( --post-link-color );
+}
+.post a:link:visited {
+  color: var( --post-link-color-visited );
 }
 .avatar-names {
   display:               grid;
@@ -136,7 +164,6 @@ div {
   right: 0.5rem;
   text-align: right;
   font-size: 80%;
-  /* color: #bbbbbb; */
   line-height: 120%;
 }
 .post-timestamp a {
@@ -150,6 +177,7 @@ div {
 .post-content {
   margin-left: 0.5em;
   margin-right: 0.5em;
+  line-height: 130%;
 }
 .post-in-reply-to {
   font-family: 'Montserrat-Italic', sans-serif;
@@ -168,6 +196,19 @@ div {
 }
 .post-in-reply-to + .post-image {
   margin-top: 0.5em;
+}
+
+a.new-self-url:link {
+  color: var( --post-text-color );
+  text-decoration: none;
+}
+a.new-self-url:visited {
+  color: var( --post-text-color );
+  text-decoration: none;
+}
+a.new-self-url:hover {
+  color: var( --post-text-color );
+  text-decoration: underline;
 }
 
 /* modified from https://blog.hubspot.com/website/html-tooltip */
@@ -220,7 +261,7 @@ div {
   grid-row: 1;
   align-self: end;
   justify-self: end;
-  margin-right: 2rem;
+  margin-right: var( --outer-text-right-margin );
 }
 .tab.current {
   font-variation-settings: "wght" 600;
