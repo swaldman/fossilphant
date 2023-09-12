@@ -7,8 +7,8 @@ val text =
     .map(post => post_html(LocatedPostWithContext(post, locatedContext), true))
     .mkString("\n")
 
-val title = context.config.mainTitle
-val tagline = context.config.mainTagline
+val title = context.mainTitle
+val tagline = context.config.mainTagline.getOrElse("")
 
 (locatedContext : LocatedContext)[]~()>
 

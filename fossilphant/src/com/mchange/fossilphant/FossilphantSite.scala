@@ -9,6 +9,7 @@ import unstatic.ztapir.simple.*
 import unstatic.*, UrlPath.*
 
 import java.nio.file.Path as JPath
+import java.lang.System // otherwise shadowed by zio.*
 
 import untemplate.Untemplate.AnyUntemplate
 
@@ -16,12 +17,15 @@ import zio.*
 
 class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRootComposite( JPath.of("fossilphant/static") ):
 
-  // edit this to where your site will actually be served!
-  override val serverUrl : Abs    = Abs("https://www.example.com/")
+  // these are... not so good. But this site should produce only
+  // relative paths, so it should not matter
+  override val serverUrl : Abs    = Abs("https://www.unknown.com/")
   override val basePath  : Rooted = Rooted.root
 
   // make this a command line arg soon!
-  val archiveLoc : String = config.archivePath
+  val archiveLoc : String =
+    (config.archivePath orElse sys.env.get("MASTODON_ARCHIVE"))
+      .getOrElse( throw new BadArchivePath("Location of Mastodon archive is defined neither in config nor in MASTODON_ARCHIVE environment variable.") )
 
   lazy val archiveDir : os.Path =
     import org.rauschig.jarchivelib.ArchiverFactory
@@ -33,38 +37,13 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
     else if archiveLoc.endsWith(".tgz") || archiveLoc.endsWith(".tar.gz") then
       val tmpDir = os.temp.dir()
       val archiver = ArchiverFactory.createArchiver("tar", "gz")
+      System.err.println(s"Extracting archive '${rawPath}' into '${tmpDir}'.")
       archiver.extract(rawPath.toIO, tmpDir.toIO)
       tmpDir
     else
       throw new BadArchivePath( s"Archive location '${archiveLoc}' is neither a directory nor a file ending in '.tgz' or '.tar.gz' as expected." )
 
-  lazy val outboxJsonPath = archiveDir / "outbox.json"
-
-  // FIXME: we are very brittle-ly assuming everything goes right...
-  val outbox = ujson.read(os.read.stream(outboxJsonPath) )
-  val items = outbox.obj("orderedItems").arr.map( _.obj )
-  val grouped = items.groupBy( _("type").str ) // expect "Announce", "Create"
-  val unsortedPostJsons = grouped("Create")
-
-  val publicPosts =
-    unsortedPostJsons
-      .map( postJson => new Post(postJson) )
-      .filter( effectivelyPublic(config) )
-
-  val publicPostsByLocalId = publicPosts.map( post => (post.localId, post)).toMap
-
-  val threadNexts =
-    publicPosts.view
-      .map( post => (post.localId, post.inReplyTo)  )
-      .collect { case (lid, InReplyTo.Self(prev)) => (prev,lid)}
-      .toMap
-
-  val reverseChronologicalPublicPosts =
-    immutable.SortedSet.from( publicPosts ).toSeq
-
-  val context = FossilphantContext( config, reverseChronologicalPublicPosts, publicPostsByLocalId, threadNexts, outbox.obj )
-  // customize this to what the layout you want requires!
-  case class MainLayoutInput( renderLocation : SiteLocation, mbTitle : Option[String], mainContentHtml : String )
+  lazy val context = FossilphantContext( archiveDir, config )
 
   val HtmlRegex = """^(?:.*?)([^\.]*)_html_gen$""".r
   val CssRegex  = """^(?:.*?)([^\.]*)_css_gen""".r
@@ -125,11 +104,10 @@ object FossilphantSiteGenerator:
   val config =
     import java.time.ZoneId
     FossilphantConfig (
-      archivePath = "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669",
-      mainTagline = "I guess it's a Mastodon archive",
-      userDisplayName = Some("Steve Randy Waldman"),
-      newTagHost = None,
-      newSelfHost = None,
+      archivePath = Some( "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669" ),
+      mainTagline = Some( "I guess it's a Mastodon archive" ),
+      overrideDisplayName = None,
+      newSelfUrl = None,
       toFollowersAsPublic = true,
       sensitiveAsPublic = true,
       timestampTimezone = ZoneId.of("America/New_York")

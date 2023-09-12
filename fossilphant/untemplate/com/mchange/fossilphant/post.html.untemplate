@@ -21,7 +21,7 @@ val postId = makePostId(post.localId)
   </div>
   <div class="avatar-names">
       <div class="avatar"><a name="<( postId )>"><img src="##avatar" /></a></div>
-      <div class="post-display-name"><( lpwc.userDisplayName )></div>
+      <div class="post-display-name"><( context.userDisplayName )></div>
       <div class="post-user">@<( post.user )></div>
   </div>
   <div class="post-content"><( post.content )></div>
@@ -29,7 +29,7 @@ val postId = makePostId(post.localId)
   if showInReplyTo then {
     val mbLink =post.inReplyTo match
       case InReplyTo.NoOne           => None
-      case InReplyTo.Self( irtLocalId ) => Some( s"""<a href="#${makePostId(irtLocalId)}">myself</a>""" )
+      case InReplyTo.Self( irtLocalId ) => Some( s"""<a href="#${makePostId(irtLocalId)}">self</a>""" )
       case InReplyTo.Other( url ) =>
         url match
           case StatusUrlRegex(irtHost, irtUser, irtLocalId) => Some( s"""<a href="${url}">@${irtUser}</a>""" )

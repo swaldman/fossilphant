@@ -21,9 +21,6 @@ def formatShortTime( zdt : ZonedDateTime) : String =
   //DateTimeFormatter.ISO_LOCAL_TIME.format(zdt)
   TimestampTimeFormatter.format( zdt )
 
-val ActivityUrlRegex = """^https\:\/\/([^\/]+)\/users\/([^\/]+)\/statuses\/([^\/]+)\/activity$""".r
-val StatusUrlRegex = """^https\:\/\/([^\/]+)\/users\/([^\/]+)\/statuses\/([^\/]+)$""".r
-
 val PublicId = "https://www.w3.org/ns/activitystreams#Public"
 
 def effectivelyPublic( config : FossilphantConfig )( post : Post ) : Boolean =
@@ -44,21 +41,11 @@ object InReplyTo:
   case class Other( url : String ) extends InReplyTo
 sealed trait InReplyTo
 
-case class FossilphantContext(
-  config : FossilphantConfig,
-  reverseChronologicalPublicPosts : Seq[Post],
-  publicPostsByLocalId : Map[String,Post],
-  threadNexts : Map[String,String],
-  rawOutbox : UjsonObjValue
-)
-
 case class LocatedContext( siteRootedLocation : Rooted, context : FossilphantContext )
 
 object LocatedPostWithContext:
   def apply(post : Post, locatedContext : LocatedContext) : LocatedPostWithContext =
     LocatedPostWithContext(locatedContext.siteRootedLocation, post, locatedContext.context)
-case class LocatedPostWithContext( siteRootedLocation : Rooted, post : Post, context : FossilphantContext ):
-  def userDisplayName = this.post.nameForDisplay( this.context.config.userDisplayName )
-
+case class LocatedPostWithContext( siteRootedLocation : Rooted, post : Post, context : FossilphantContext )
 
 

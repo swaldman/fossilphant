@@ -3,12 +3,12 @@ package com.mchange.fossilphant
 import java.time.ZoneId
 
 case class FossilphantConfig(
-  archivePath         : String,
-  mainTitle           : String = "Mastodon Archive",
-  mainTagline         : String = "",
-  userDisplayName     : Option[String] = None,
-  newTagHost          : Option[String] = None,
-  newSelfHost         : Option[String] = None,
+  archivePath         : Option[String] = None,
+  mainTitle           : Option[String] = None,
+  mainTagline         : Option[String] = None,
+  overrideDisplayName : Option[String] = None,
+  newSelfUrl          : Option[String] = None,
+  contentTransformer  : String => String = identity,
   toFollowersAsPublic : Boolean = false,
   sensitiveAsPublic   : Boolean = false,
   timestampTimezone   : ZoneId = ZoneId.systemDefault()
