@@ -32,7 +32,18 @@ class Post( createActivity : UjsonObjValue):
     def isImage( jso : UjsonObjValue) =
       jso("type").str == "Document" && Post.Image.SupportedTypes(jso("mediaType").str)
     attachments.filter(isImage).map { jso =>
-      val path = Rooted(jso("url").str)
+      // grrr... some instances prepend an instancename before /media_attachments,
+      // but in the archive, the media is in a root-level /media_attachments
+      // this feels very hackish -- wrong even! what if an archive legit chose a path
+      // that contains /media_attachments in the actual archive?
+      //
+      // for now it seems to work. but i may have to get in the business of checking the
+      // archive and then configuring the parse
+      val path =
+        val raw = jso("url").str
+        val realStart = raw.indexOf("/media_attachments")
+        val fixed = if realStart > 0 then raw.substring( realStart ) else raw
+        Rooted( fixed )
       val alt =
         val raw = jso("name")
         if raw.isNull then None else Some(raw.str)

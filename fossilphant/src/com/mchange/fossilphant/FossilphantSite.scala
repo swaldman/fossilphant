@@ -104,7 +104,8 @@ object FossilphantSiteGenerator:
   val config =
     import java.time.ZoneId
     FossilphantConfig (
-      archivePath = Some( "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669" ),
+      //archivePath = Some( "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669" ),
+      archivePath = Some( "/Users/swaldman/Downloads/econtwitter-archive-20230912231126-67d7e2930f445c063d951ab95e185da8.tar.gz" ),
       mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
       newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
