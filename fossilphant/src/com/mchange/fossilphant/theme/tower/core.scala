@@ -1,4 +1,6 @@
-package com.mchange.fossilphant
+package com.mchange.fossilphant.theme.tower
+
+import com.mchange.fossilphant.*
 
 def threadOrPost(lpwc : LocatedPostWithContext, showInReplyTo : Boolean = false) : String =
   val post = lpwc.post
@@ -25,4 +27,6 @@ def threadOrPost(lpwc : LocatedPostWithContext, showInReplyTo : Boolean = false)
       post_html(lpwc, showInReplyTo).text
   else
     post_html(lpwc, showInReplyTo).text
+
+
 

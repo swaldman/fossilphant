@@ -51,7 +51,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
   // no subdirectories! we generate theme resources into a single directory
   object GenUntemplates extends ZTEndpointBinding.Source:
     val themeIndex = IndexedUntemplates
-    val genUntemplates = themeIndex.filter( (k,_) => k.endsWith("_gen") )
+    val genUntemplates = themeIndex.filter( (k,_) => k.startsWith("com.mchange.fossilphant.theme." + config.themeName) && k.endsWith("_gen") )
 
     val typedGenUntemplates = genUntemplates.collect {
       case tup : (String, untemplate.Untemplate[LocatedContext,Nothing]) => tup
@@ -105,7 +105,7 @@ object FossilphantSiteGenerator:
     import java.time.ZoneId
     FossilphantConfig (
       archivePath = Some( "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669" ),
-      mainTagline = Some( "I guess it's a Mastodon archive" ),
+      mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
       newSelfUrl = None,
       toFollowersAsPublic = true,

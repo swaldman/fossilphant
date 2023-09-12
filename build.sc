@@ -28,7 +28,8 @@ object fossilphant extends UntemplateModule {
     // to customize, examine key and modify the customer
     // with out = out.copy=...
     //
-    // e.g. out = out.copy(extraImports=Seq("commchangefossilphant.*"))
+    // e.g. out = out.copy(extraImports=Seq("com.mchange.fossilphant.*"))
+    out = out.copy(extraImports=Seq("com.mchange.fossilphant.*"))
 
     out
   }

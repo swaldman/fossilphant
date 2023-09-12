@@ -12,7 +12,7 @@ import com.mchange.fossilphant.*
 }
 
 :root {
-    --main-background: #C0C2C1;
+    --main-background: #D0D2D1;
     --post-background: #FFFFFF;
     --avatar-slot: 60px;
     --avatar-padding: 5px;
@@ -85,7 +85,7 @@ div {
   padding-bottom: 0.75rem;
   margin-bottom: 0.75rem;
   text-align: center;
-  color: #D58004;
+  color: #0bb;
   border-bottom: 2px solid black;
 }
 .post {

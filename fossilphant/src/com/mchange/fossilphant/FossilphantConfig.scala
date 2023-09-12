@@ -8,6 +8,7 @@ case class FossilphantConfig(
   mainTagline         : Option[String] = None,
   overrideDisplayName : Option[String] = None,
   newSelfUrl          : Option[String] = None,
+  themeName           : String = "tower",
   contentTransformer  : String => String = identity,
   toFollowersAsPublic : Boolean = false,
   sensitiveAsPublic   : Boolean = false,
