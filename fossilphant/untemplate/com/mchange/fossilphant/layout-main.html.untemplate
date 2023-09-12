@@ -1,20 +1,31 @@
 import com.mchange.fossilphant.*
+import unstatic.UrlPath.Rooted
 
-(tup : (String,String))[]~()>
+val location = tup(0)
+val title = tup(1)
+val content = tup(2)
+
+val tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/rawPostsWithReplies.html")) :: Nil
+
+(tup : (Rooted, String, String))[]~()>
 <!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="style.css" />
-    <title><( tup(0) )></title>
+    <title><( title )></title>
   </head>
   <body>
-    <div id="header"></div>
-    <div id="left-sidebar">
-      <div><a href="index.html">Posts</a></div>
-      <div><a href="withReplies.html">Posts and replies</a></div>
+    <div id="header">
+      <div id="main-title"></div>
+      <div id="tagline"></div>
+      <( tabs_html(location, tabs) )>
     </div>
-    <div id="main-content"><( tup(1) )></div>
+    <div id="left-sidebar">
+    </div>
+    <div id="main-content"><( content )></div>
     <div id="right-sidebar"></div>
-    <div id="footer"></div>
+    <div id="footer">
+      Produced with <a href="https://github.com/swaldman/fossilphant">fossilphant</a>.
+    </div>
   </body>
 </html>

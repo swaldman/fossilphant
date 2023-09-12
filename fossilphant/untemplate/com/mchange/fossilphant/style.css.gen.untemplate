@@ -16,6 +16,7 @@ import com.mchange.fossilphant.*
     --post-background: #FFFFFF;
     --avatar-slot: 60px;
     --avatar-padding: 5px;
+    --thread-border: 3px solid black;
     font-size: 11pt;
 }
 *, *::before, *::after {
@@ -25,15 +26,22 @@ body {
     display:               grid;
     grid-template-columns: 1fr 600px 1fr;
     grid-template-rows:    auto auto auto;
-    width: 100%;
+    width: 100svw;
     background-color: var( --main-background );
     font-family: 'Montserrat', sans-serif;
     font-variation-settings: "wght" 400;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    gap: 0 0;
+    overflow-x: clip;
 }
 em, i {
     font-family: 'Montserrat-Italic', sans-serif;
 }
 div {
+  margin: 0;
+  padding: 0;
   /* border: 1px solid black; */
 }
 #header {
@@ -55,6 +63,11 @@ div {
 #footer {
   grid-column: 1 / span 3;
   grid-row: 3;
+  margin-top: 1.5rem;
+  margin-right: 0.5rem;
+  font-variation-settings: "wght" 600;
+  font-size: 10;
+  text-align: right;
 }
 .post {
   padding: 0.5em;
@@ -62,6 +75,7 @@ div {
   border: 1px solid gray;
   margin-bottom: 0.25rem;
   position: relative; /* so we can use absolute positioning within it */
+  overflow-x: clip;
 }
 .avatar-names {
   display:               grid;
@@ -144,3 +158,41 @@ div {
   visibility: visible;
 }
 
+.thread {
+  border-left:  var( --thread-border );
+  border-right: var( --thread-border );
+  border-top: var( --thread-border );
+}
+.thread .post:not(:last-child) {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.thread .post:last-child {
+  border-bottom: var( --thread-border );
+}
+
+.tabs {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  width: 100svw;
+  padding-bottom: 0.5rem;
+}
+.tabs .tab-left {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  justify-self: start;
+  margin-left: 1rem;
+}
+.tabs .tab-right {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  justify-self: end;
+  margin-right: 2rem;
+}
+.tab.current {
+  font-variation-settings: "wght" 600;
+  text-decoration: underline;
+}

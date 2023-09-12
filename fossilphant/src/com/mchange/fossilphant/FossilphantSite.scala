@@ -56,7 +56,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
   val threadNexts =
     publicPosts.view
       .map( post => (post.localId, post.inReplyTo)  )
-      .collect { case (lid, InReplyTo.Self(next)) => (lid,next)}
+      .collect { case (lid, InReplyTo.Self(prev)) => (prev,lid)}
       .toMap
 
   val reverseChronologicalPublicPosts =

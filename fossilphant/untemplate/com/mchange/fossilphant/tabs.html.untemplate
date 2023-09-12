@@ -1,0 +1,32 @@
+import com.mchange.fossilphant.*
+import unstatic.PageBase
+import unstatic.UrlPath.Rooted
+
+val location = tup(0)
+val tabs = tup(1)
+
+val (currents, available) = tabs.partition( _(1) == location )
+
+val warning =
+  if currents.size > 1 then Some(currents.mkString(", ") + " can't all be current!")
+  else if currents.size < 1 then Some("We are on a page for which there is no tab defined.")
+  else None
+
+warning.foreach( w => System.err.println(s"Warning: $w") )
+
+val pageBase = PageBase.fromPage(location)
+
+val gotoTabs = available.map { (tabLabel, tabLoc) =>
+  s"""<span class="tab"><a href="${pageBase.relativize(tabLoc)}">${tabLabel}</a></span>"""
+}
+val currentTabs = currents.map { (tabLabel, tabLoc) =>
+  s"""<span class="tab current">${tabLabel}</span>"""
+}
+
+
+(tup : (Rooted, List[Tuple2[String,Rooted]]))[]~()>
+
+<div class="tabs">
+  <div class="tab-left"><( currentTabs.mkString(" ") )></div>
+  <div class="tab-right">Go to <( gotoTabs.mkString(", ") )></div>
+</div>

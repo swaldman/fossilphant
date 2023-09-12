@@ -115,7 +115,7 @@ class Post( createActivity : UjsonObjValue):
 
   def tags : Seq[String] = createActivity("object").obj("tag").arr.map( _.str ).toSeq
 
-  def nameForDisplay( userDisplayName : Option[String]) = userDisplayName.getOrElse(user)
+  def nameForDisplay( userDisplayName : Option[String] ) = userDisplayName.getOrElse(user)
 end Post
 
 case class FossilphantContext(
@@ -133,15 +133,6 @@ object LocatedPostWithContext:
     LocatedPostWithContext(locatedContext.siteRootedLocation, post, locatedContext.context)
 case class LocatedPostWithContext( siteRootedLocation : Rooted, post : Post, context : FossilphantContext ):
   def userDisplayName = this.post.nameForDisplay( this.context.config.userDisplayName )
-
-case class FossilphantConfig(
-  userDisplayName     : Option[String],
-  newTagHost          : Option[String],
-  newSelfHost         : Option[String],
-  toFollowersAsPublic : Boolean = false,
-  sensitiveAsPublic   : Boolean = false,
-  timestampTimezone   : ZoneId = ZoneId.systemDefault()
-)
 
 
 

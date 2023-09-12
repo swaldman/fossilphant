@@ -1,0 +1,13 @@
+import com.mchange.fossilphant.*
+
+val text =
+  locatedContext.context.reverseChronologicalPublicPosts
+    .filterNot(_.inReplyTo.isInstanceOf[InReplyTo.Self])
+    .map(post => threadOrPost(LocatedPostWithContext(post, locatedContext)))
+    .mkString("\n")
+
+val title = "Mastodon"
+
+(locatedContext : LocatedContext)[]~()>
+
+<( layout_main_html( locatedContext.siteRootedLocation, title, text ) )>
