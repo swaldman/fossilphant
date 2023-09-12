@@ -7,13 +7,6 @@ val tabs = tup(1)
 
 val (currents, available) = tabs.partition( _(1) == location )
 
-val warning =
-  if currents.size > 1 then Some(currents.mkString(", ") + " can't all be current!")
-  else if currents.size < 1 then Some("We are on a page for which there is no tab defined.")
-  else None
-
-warning.foreach( w => System.err.println(s"Warning: $w") )
-
 val pageBase = PageBase.fromPage(location)
 
 val gotoTabs = available.map { (tabLabel, tabLoc) =>
