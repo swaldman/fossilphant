@@ -1,6 +1,6 @@
 package com.mchange.fossilphant
 
-def threadOrPost(lpwc : LocatedPostWithContext) : String =
+def threadOrPost(lpwc : LocatedPostWithContext, showInReplyTo : Boolean = false) : String =
   val post = lpwc.post
   val context = lpwc.context
 
@@ -19,10 +19,10 @@ def threadOrPost(lpwc : LocatedPostWithContext) : String =
       post.localId :: tail
     if (thread.length > 1) then
       val posts = thread.map( context.publicPostsByLocalId )
-      val raw = """<div class="thread">""" :: posts.map( p => post_html(lpwc.copy( post = p )).text ) ::: "</div>" :: Nil
+      val raw = """<div class="thread">""" :: posts.map( p => post_html(lpwc.copy( post = p ), showInReplyTo).text ) ::: "</div>" :: Nil
       raw.mkString("\n")
     else
-      post_html(lpwc).text
+      post_html(lpwc, showInReplyTo).text
   else
-    post_html(lpwc).text
+    post_html(lpwc, showInReplyTo).text
 

@@ -137,7 +137,6 @@ div {
   top: 0.5rem;
   right: 0.5rem;
   text-align: right;
-  font-variation-settings: "wght" 600;
   font-size: 80%;
   /* color: #bbbbbb; */
   line-height: 120%;
@@ -150,6 +149,17 @@ div {
   opacity: 1;
 }
 
+.post-content {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+.post-in-reply-to {
+  font-family: 'Montserrat-Italic', sans-serif;
+  font-variation-settings: "wght" 300;
+  font-size: 80%;
+  width: 100%;
+  text-align: right;
+}
 .post-image {
   text-align: center;
   position: relative; /* so tooltips can be positioned absolute */
@@ -158,9 +168,8 @@ div {
   max-width: 100%;
   max-height: 800px;
 }
-.post-content {
-  margin-left: 0.5em;
-  margin-right: 0.5em;
+.post-in-reply-to + .post-image {
+  margin-top: 0.5em;
 }
 
 /* modified from https://blog.hubspot.com/website/html-tooltip */

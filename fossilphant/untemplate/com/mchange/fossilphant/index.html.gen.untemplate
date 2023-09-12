@@ -5,7 +5,7 @@ val context = locatedContext.context
 val text =
   context.reverseChronologicalPublicPosts
     .filterNot(_.inReplyTo.isInstanceOf[InReplyTo.Self])
-    .map(post => threadOrPost(LocatedPostWithContext(post, locatedContext)))
+    .map(post => threadOrPost(LocatedPostWithContext(post, locatedContext), true))
     .mkString("\n")
 
 val title = context.config.mainTitle

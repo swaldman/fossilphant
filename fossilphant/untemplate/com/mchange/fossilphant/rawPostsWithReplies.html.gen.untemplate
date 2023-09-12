@@ -4,7 +4,7 @@ val context = locatedContext.context
 
 val text =
   context.reverseChronologicalPublicPosts
-    .map(post => post_html(LocatedPostWithContext(post, locatedContext)))
+    .map(post => post_html(LocatedPostWithContext(post, locatedContext), true))
     .mkString("\n")
 
 val title = context.config.mainTitle
