@@ -1,12 +1,15 @@
 import com.mchange.fossilphant.*
 
+val context = locatedContext.context
+
 val text =
-  locatedContext.context.reverseChronologicalPublicPosts
+  context.reverseChronologicalPublicPosts
     .map(post => post_html(LocatedPostWithContext(post, locatedContext)))
     .mkString("\n")
 
-val title = "Mastodon"
+val title = context.config.mainTitle
+val tagline = context.config.mainTagline
 
 (locatedContext : LocatedContext)[]~()>
 
-<( layout_main_html( locatedContext.siteRootedLocation, title, text ) )>
+<( layout_main_html( locatedContext.siteRootedLocation, title, tagline, text ) )>

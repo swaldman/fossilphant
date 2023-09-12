@@ -3,11 +3,12 @@ import unstatic.UrlPath.Rooted
 
 val location = tup(0)
 val title = tup(1)
-val content = tup(2)
+val tagline = tup(2)
+val content = tup(3)
 
 val tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/rawPostsWithReplies.html")) :: Nil
 
-(tup : (Rooted, String, String))[]~()>
+(tup : (Rooted, String, String, String))[]~()>
 <!DOCTYPE html>
 <html>
   <head>
@@ -16,8 +17,8 @@ val tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/raw
   </head>
   <body>
     <div id="header">
-      <div id="main-title"></div>
-      <div id="tagline"></div>
+      <div id="main-title"><( title )></div>
+      <div id="tagline"><( tagline )></div>
       <( tabs_html(location, tabs) )>
     </div>
     <div id="left-sidebar">

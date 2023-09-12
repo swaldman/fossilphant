@@ -21,30 +21,6 @@ def formatShortTime( zdt : ZonedDateTime) : String =
   //DateTimeFormatter.ISO_LOCAL_TIME.format(zdt)
   TimestampTimeFormatter.format( zdt )
 
-val ReverseChronologicalPublished : Ordering[UjsonObjValue] =
-  val forward =
-    Ordering.by[UjsonObjValue,Instant] { jso =>
-      val attempt = Try {
-        val timestamp = jso("published").str
-        val ta = MastodonDateTimeFormatter.parse(timestamp)
-        Instant.from(ta)
-      }
-      attempt match
-        case Success(i) => i
-        case Failure(t) =>
-          System.err.println("Assigning random early time, error reading publication date from " + jso)
-          t.printStackTrace()
-          Instant.ofEpochMilli(math.round(math.random * 1_000_000).toLong)
-    }
-  forward.reverse
-
-def afterLastSlash( s : String ) : String =
-  val lastSlash = s.lastIndexOf('/')
-  if lastSlash >= 0 then
-    s.substring(lastSlash + 1)
-  else
-    throw new UnexpectedValueFormat(s"Expected at least one slash ('/') in '${s}', none found.")
-
 val ActivityUrlRegex = """^https\:\/\/([^\/]+)\/users\/([^\/]+)\/statuses\/([^\/]+)\/activity$""".r
 val StatusUrlRegex = """^https\:\/\/([^\/]+)\/users\/([^\/]+)\/statuses\/([^\/]+)$""".r
 

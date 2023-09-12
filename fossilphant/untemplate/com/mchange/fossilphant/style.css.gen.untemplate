@@ -69,6 +69,25 @@ div {
   font-size: 10;
   text-align: right;
 }
+#main-title {
+  font-size: 150%;
+  font-variation-settings: "wght" 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
+}
+#tagline {
+  font-family: 'Montserrat-Italic', sans-serif;
+  font-variation-settings: "wght" 500;
+  font-size: 110%;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  color: #D58004;
+  border-bottom: 2px solid black;
+}
 .post {
   padding: 0.5em;
   background-color: white;
@@ -139,6 +158,10 @@ div {
   max-width: 100%;
   max-height: 800px;
 }
+.post-content {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
 
 /* modified from https://blog.hubspot.com/website/html-tooltip */
 .tooltip-text {
@@ -176,7 +199,7 @@ div {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   width: 100svw;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
 }
 .tabs .tab-left {
   grid-column: 1;
@@ -195,4 +218,9 @@ div {
 .tab.current {
   font-variation-settings: "wght" 600;
   text-decoration: underline;
+}
+@media screen and (max-width: 700px) {
+  body {
+    grid-template-columns: 1fr 400px 1fr;
+  }
 }

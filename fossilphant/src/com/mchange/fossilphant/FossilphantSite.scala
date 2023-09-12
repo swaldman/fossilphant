@@ -21,7 +21,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
   override val basePath  : Rooted = Rooted.root
 
   // make this a command line arg soon!
-  lazy val archiveLoc : String = sys.env("FOSSILPHANT_ARCHIVE")
+  val archiveLoc : String = config.archivePath
 
   lazy val archiveDir : os.Path =
     import org.rauschig.jarchivelib.ArchiverFactory
@@ -125,6 +125,8 @@ object FossilphantSiteGenerator:
   val config =
     import java.time.ZoneId
     FossilphantConfig (
+      archivePath = "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669",
+      mainTagline = "I guess it's a Mastodon archive",
       userDisplayName = Some("Steve Randy Waldman"),
       newTagHost = None,
       newSelfHost = None,
