@@ -24,8 +24,8 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
 
   // make this a command line arg soon!
   val archiveLoc : String =
-    (config.archivePath orElse sys.env.get("MASTODON_ARCHIVE"))
-      .getOrElse( throw new BadArchivePath("Location of Mastodon archive is defined neither in config nor in MASTODON_ARCHIVE environment variable.") )
+    (sys.env.get("FOSSILPHANT_ARCHIVE") orElse config.archivePath)
+      .getOrElse( throw new BadArchivePath("Location of Mastodon archive is defined neither in MASTODON_ARCHIVE environment variable nor in config.") )
 
   lazy val archiveDir : os.Path =
     import org.rauschig.jarchivelib.ArchiverFactory
@@ -104,8 +104,6 @@ object FossilphantSiteGenerator:
   val config =
     import java.time.ZoneId
     FossilphantConfig (
-      //archivePath = Some( "/Users/swaldman/Sync/BaseFolders/archival/interfluidity-fosstodon/fosstodon-archive-20230614143134-c5be76e303ab852c04dc32392e3a8669" ),
-      archivePath = Some( "/Users/swaldman/Downloads/econtwitter-archive-20230912231126-67d7e2930f445c063d951ab95e185da8.tar.gz" ),
       mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
       newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
