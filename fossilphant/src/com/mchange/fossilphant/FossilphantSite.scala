@@ -98,21 +98,3 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
   // avoid conflicts, but early items in the lists take precedence over later items
   override val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates )
 
-object FossilphantSiteGenerator:
-  class Runner( cfg : FossilphantConfig ) extends ZTMain(new FossilphantSite(cfg), "fossilphant-site")
-
-  val config =
-    import java.time.ZoneId
-    FossilphantConfig (
-      mainTagline = Some( "I guess it's a Mastodon archive!" ),
-      overrideDisplayName = None,
-      newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
-      toFollowersAsPublic = true,
-      sensitiveAsPublic = true,
-      timestampTimezone = ZoneId.of("America/New_York")
-    )
-
-  def main(args : Array[String]) : Unit =
-    val runner = new Runner(config)
-    runner.main(args)
-
