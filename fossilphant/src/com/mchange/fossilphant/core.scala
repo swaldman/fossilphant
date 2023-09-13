@@ -46,9 +46,6 @@ case class UserHost( user : String, host : String ):
 
 case class LocatedContext( siteRootedLocation : Rooted, context : FossilphantContext )
 
-object LocatedPostWithContext:
-  def apply(post : Post, locatedContext : LocatedContext) : LocatedPostWithContext =
-    LocatedPostWithContext(locatedContext.siteRootedLocation, post, locatedContext.context)
 case class LocatedPostWithContext( siteRootedLocation : Rooted, post : Post, context : FossilphantContext )
 
 case class LocatedPageWithContext( siteRootedLocation : Rooted, index : Int, pages : Seq[Iterable[Post]], context : FossilphantContext ):

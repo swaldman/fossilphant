@@ -4,7 +4,7 @@ val location = locatedContext.siteRootedLocation
 
 val content =
   context.reverseChronologicalPublicPosts
-    .map(post => post_html(LocatedPostWithContext(post, locatedContext), None))
+    .map(post => post_html(LocatedPostWithContext(location, post, context), None))
     .mkString("\n")
 
 val tagline = context.config.mainTagline.getOrElse("")
