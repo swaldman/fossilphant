@@ -25,7 +25,7 @@ class Post( createActivity : UjsonObjValue, contentTransformer : String => Strin
     Instant.from(ta)
   def to : Seq[String] = createActivity("to").arr.map( _.str ).toSeq
   def cc : Seq[String] = createActivity("cc").arr.map( _.str ).toSeq
-  def sensitive : Boolean = createActivity("object").obj("sensitive").str.toBoolean
+  def sensitive : Boolean = createActivity("object").obj("sensitive").bool
   def followersUrl = s"https://${originalHost}/users/${user}/followers"
   def allRecipients : Seq[String] = to ++ cc
   def public : Boolean = allRecipients.contains(PublicId)
