@@ -1,31 +1,27 @@
 import unstatic.UrlPath.Rooted
 
-val location = tup(0)
-val title = tup(1)
-val tagline = tup(2)
-val content = tup(3)
-
-val tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/rawPostsWithReplies.html")) :: Nil
-
-(tup : (Rooted, String, String, String))[]~()>
+(input : MainLayoutInput)[]~()>
 <!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="style.css" />
-    <title><( title )></title>
+    <title><( input.title )></title>
   </head>
   <body>
     <div id="header">
-      <div id="main-title"><( title )></div>
-      <div id="tagline"><( tagline )></div>
-      <( tabs_html(location, tabs) )>
+      <div id="main-title"><( input.title )></div>
+      <div id="tagline"><( input.tagline )></div>
+      <( input.topnav )>
     </div>
     <div id="left-sidebar">
     </div>
-    <div id="main-content"><( content )></div>
+    <div id="main-content"><( input.content )></div>
     <div id="right-sidebar"></div>
     <div id="footer">
-      Produced with <a href="https://github.com/swaldman/fossilphant">fossilphant</a>.
+      <( input.bottomnav )>
+      <div class="produced-with">
+        Produced with <a href="https://github.com/swaldman/fossilphant">fossilphant</a>.
+      </div>
     </div>
   </body>
 </html>

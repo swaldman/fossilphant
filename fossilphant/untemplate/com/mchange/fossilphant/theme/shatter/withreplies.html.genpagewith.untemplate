@@ -1,0 +1,3 @@
+(lpwc : LocatedPageWithContext)[]~()>
+
+<( paged_html( lpwc ) )>

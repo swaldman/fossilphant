@@ -48,8 +48,10 @@ object LocatedPostWithContext:
     LocatedPostWithContext(locatedContext.siteRootedLocation, post, locatedContext.context)
 case class LocatedPostWithContext( siteRootedLocation : Rooted, post : Post, context : FossilphantContext )
 
-case class LocatedPageWithContext( siteRootedLocation : Rooted, index : Int, context : FossilphantContext ):
-  def page : Int = index + 1
+case class LocatedPageWithContext( siteRootedLocation : Rooted, index : Int, pages : Seq[Iterable[Post]], context : FossilphantContext ):
+  def page        : Int     = index + 1
   def isFirstPage : Boolean = index == 0
-  def isLastPage : Boolean = index == context.pages.size - 1
+  def isLastPage  : Boolean = index == pages.size - 1
+  def posts = pages(index)
+  def numPages = pages.length
 

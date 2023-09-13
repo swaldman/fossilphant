@@ -1,0 +1,17 @@
+import unstatic.UrlPath.Rooted
+
+val context = locatedContext.context
+
+// we are very tricky.
+//
+// we tell the main_html_genpagewithout it is at /main_1.html, so it generates
+// into this page precisely the content of that one.
+//
+// /index.html is just a duplicate of main_1.html, that exists so that default
+// directory indexes will find what we mean to be the cover page without a redirect
+
+val mainInput = LocatedPageWithContext(Rooted("/main_1.html"), 0, context.pagesNoReplies, context )
+
+(locatedContext : LocatedContext)[]~()>
+
+<( main_html_genpagewithout( mainInput ) )>

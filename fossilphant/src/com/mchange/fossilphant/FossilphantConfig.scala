@@ -10,7 +10,7 @@ case class FossilphantConfig(
   newSelfUrl          : Option[String]     = None,
   themeName           : String             = "tower",
   themeConfig         : Map[String,String] = Map.empty,
-  pageLength          : Int                = 100, // for themes that support paging
+  pageLength          : Int                = 20, // for themes that support paging
   contentTransformer  : String => String   = identity,
   toFollowersAsPublic : Boolean            = false,
   sensitiveAsPublic   : Boolean            = false,

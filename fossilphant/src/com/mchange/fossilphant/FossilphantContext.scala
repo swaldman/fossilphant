@@ -29,6 +29,9 @@ object FossilphantContext:
     val reverseChronologicalPublicPosts =
       immutable.SortedSet.from( publicPosts ).toSeq
 
+    val reverseChronologicalPublicPostsNoReplies =
+      reverseChronologicalPublicPosts.filter( _.inReplyTo == InReplyTo.NoOne )
+
     val actor = ujson.read(os.read.stream(actorJsonPath) )
 
     val userDisplayName = config.overrideDisplayName.getOrElse( actor.obj("name").str )
@@ -41,7 +44,7 @@ object FossilphantContext:
       mbUserFromId.fold("Mastodon archive")(user => s"Mastodon archive for ${user}")
     }
 
-    FossilphantContext( config, mainTitle, userDisplayName, reverseChronologicalPublicPosts, publicPostsByLocalId, threadNexts, outbox.obj )
+    FossilphantContext( config, mainTitle, userDisplayName, reverseChronologicalPublicPosts, reverseChronologicalPublicPostsNoReplies, publicPostsByLocalId, threadNexts, outbox.obj )
   end apply
 
 case class FossilphantContext(
@@ -49,8 +52,10 @@ case class FossilphantContext(
   mainTitle : String,
   userDisplayName : String,
   reverseChronologicalPublicPosts : Seq[Post],
+  reverseChronologicalPublicPostsNoReplies : Seq[Post],
   publicPostsByLocalId : Map[String,Post],
   threadNexts : Map[String,String],
   rawOutbox : UjsonObjValue
 ):
-  lazy val pages = reverseChronologicalPublicPosts.grouped( config.pageLength )
+  lazy val pagesIncludingReplies = reverseChronologicalPublicPosts.grouped( config.pageLength ).toSeq
+  lazy val pagesNoReplies = reverseChronologicalPublicPostsNoReplies.grouped( config.pageLength ).toSeq

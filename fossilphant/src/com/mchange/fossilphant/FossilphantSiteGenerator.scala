@@ -8,6 +8,8 @@ object FossilphantSiteGenerator:
   val config =
     import java.time.ZoneId
     FossilphantConfig (
+      //themeName = "tower",
+      themeName = "shatter",
       mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
       newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
@@ -19,5 +21,4 @@ object FossilphantSiteGenerator:
   def main(args : Array[String]) : Unit =
     val runner = new Runner(config)
     runner.main(args)
-
 

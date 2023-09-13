@@ -47,7 +47,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
 
   // no subdirectories! we generate theme resources into a single directory
   object GenUntemplates extends ZTEndpointBinding.Source:
-    val BaseNameForHtmlRegex = """^(?:.*?)([^\.]*)_html_gen(?:|post|page)$""".r
+    val BaseNameForHtmlRegex = """^(?:.*?)([^\.]*)_html_gen(?:|post|pagewith|pagewithout)$""".r
     val BaseNameForCssRegex  = """^(?:.*?)([^\.]*)_css_gen""".r
 
     val themeIndex = IndexedUntemplates
@@ -100,26 +100,31 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
 
-    val typedGenPageUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpage" )
+    val typedGenPageWithUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpagewith" )
+    val typedGenPageWithoutUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpagewithout" )
 
-    def endpointBindingForGenPageUntemplate( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedPageWithContext,Nothing] ) : Seq[ZTEndpointBinding] =
+    def endpointBindingForGenPageUntemplate(withReplies : Boolean)( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedPageWithContext,Nothing] ) : Seq[ZTEndpointBinding] =
       untemplateFqn match
         case BaseNameForHtmlRegex(baseName) =>
-          (0 until context.pages.length).map { index =>
+          val pages = if withReplies then context.pagesIncludingReplies else context.pagesNoReplies
+          (0 until pages.size).map { index =>
             val locationBase = s"${baseName}_${index+1}" // index pages from one, not zero
             val location = Rooted(s"/${locationBase}.html")
             val task = ZIO.attempt {
-              untemplateFcn(LocatedPageWithContext(location, index, context)).text
+              untemplateFcn(LocatedPageWithContext(location, index, pages, context)).text
             }
             FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true, false)
           }
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
 
-    val endpointBindings =
+    lazy val endpointBindings =
       typedGenUntemplates.map( endpointBindingForGenUntemplate ).toSeq ++
       typedGenPostUntemplates.flatMap( endpointBindingForGenPostUntemplate ) ++
-      typedGenPageUntemplates.flatMap( endpointBindingForGenPageUntemplate )
+      typedGenPageWithUntemplates.flatMap( endpointBindingForGenPageUntemplate(true) ) ++
+      typedGenPageWithoutUntemplates.flatMap( endpointBindingForGenPageUntemplate(false) )
+
+    require( !endpointBindings.isEmpty, s"No resources were found for configured theme '${config.themeName}'!")
 
   end GenUntemplates
 
@@ -134,8 +139,8 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
       ZTEndpointBinding.staticDirectoryServing( FossilphantSite.this.location(mediaAttachmentsDirName), mediaAttachmentsPath.toNIO, immutable.Set(mediaAttachmentsDirName) )
     val avatarStaticBinding =
       ZTEndpointBinding.staticFileServing( FossilphantSite.this.location(avatarFileName), avatarPath.toNIO, immutable.Set("avatar", avatarFileName) )
-    val endpointBindings = mediaAttachmentsEndpointBinding :: avatarStaticBinding :: Nil
+    lazy val endpointBindings = mediaAttachmentsEndpointBinding :: avatarStaticBinding :: Nil
   end StaticArchiveResources
 
   // avoid conflicts, but early items in the lists take precedence over later items
-  override val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates )
+  override lazy val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates )

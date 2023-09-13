@@ -1,0 +1,18 @@
+val context = lpwc.context
+
+val location = lpwc.siteRootedLocation
+
+val content =
+  lpwc.posts
+    .map(post => threadOrPost(LocatedPostWithContext(location, post, context), true))
+    .mkString("\n")
+
+val tagline = context.config.mainTagline.getOrElse("")
+
+val topnav = topnav_paged_html( lpwc ).text
+
+val input = MainLayoutInput( location, context.mainTitle, tagline, topnav, content, "" )
+
+(lpwc : LocatedPageWithContext)[]~()>
+
+<( layout_main_html( input ) )>

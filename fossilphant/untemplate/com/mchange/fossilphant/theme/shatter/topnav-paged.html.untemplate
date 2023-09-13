@@ -1,0 +1,18 @@
+val context  = lpwc.context
+val location = lpwc.siteRootedLocation
+
+(lpwc : LocatedPageWithContext)[]~()>
+
+<div class="shatter-topnav">
+  <div class="shatter-topnav-left">
+    Current page: <( lpwc.page )> of <( lpwc.numPages )>
+  </div>
+  <div class="shatter-topnav-center">
+    <div class="pager">
+      <( firstLink("&larrb;", lpwc) )> <( prevLink("<", lpwc) )> + <( nextLink(">", lpwc) )> <( lastLink("&rarrb;", lpwc) )>
+    </div>
+  </div>
+  <div class="shatter-topnav-right">
+    <( tab("Main", FirstMainLoc, location, OnMain ) )> &#x2022; <( tab( "Posts and replies", FirstWithrepliesLoc, location, OnWithreplies ) )>
+  </div>
+</div>

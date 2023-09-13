@@ -1,0 +1,54 @@
+import com.mchange.fossilphant.theme.tower
+
+(locatedContext : LocatedContext)[]~()>
+
+<( tower.style_css_gen( locatedContext ) )>
+
+.shatter-topnav {
+  display:               grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  width: 100svw;
+  padding-bottom: 1rem;
+}
+.shatter-topnav .shatter-topnav-left {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  justify-self: start;
+  margin-left: 1rem;
+}
+.shatter-topnav .shatter-topnav-center {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  justify-self: center;
+}
+
+.shatter-topnav .shatter-topnav-right {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: end;
+  justify-self: end;
+  margin-right: var( --outer-text-right-margin );
+}
+
+.shatter-topnav .pager {
+    font-size: 150%;
+}
+.shatter-topnav .pager a {
+  color: var( --outer-text-color );
+  text-decoration: none;
+}
+.shatter-topnav .pager a:visited {
+  color: var( --outer-text-color );
+  text-decoration: none;
+}
+
+.shatter-topnav .pager .disabled {
+  opacity: 0.25;
+}
+.shatter-topnav .pager .disabled {
+  opacity: 0.25;
+}
+

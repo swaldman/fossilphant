@@ -1,6 +1,11 @@
 package com.mchange.fossilphant.theme.tower
 
+import unstatic.UrlPath.*
 import com.mchange.fossilphant.*
+
+val Tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/rawPostsWithReplies.html")) :: Nil
+
+case class MainLayoutInput( siteRootedLocation : Rooted, title : String, tagline : String, topnav : String, content : String, bottomnav : String )
 
 def threadOrPost(lpwc : LocatedPostWithContext, showInReplyTo : Boolean = false) : String =
   val post = lpwc.post

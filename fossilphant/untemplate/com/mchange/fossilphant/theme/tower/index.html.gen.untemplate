@@ -1,16 +1,16 @@
-import com.mchange.fossilphant.*
-
 val context = locatedContext.context
 
-val text =
-  context.reverseChronologicalPublicPosts
-    .filter(_.inReplyTo == InReplyTo.NoOne)
+val location = locatedContext.siteRootedLocation
+
+val content =
+  context.reverseChronologicalPublicPostsNoReplies
     .map(post => threadOrPost(LocatedPostWithContext(post, locatedContext), true))
     .mkString("\n")
 
-val title = context.mainTitle
 val tagline = context.config.mainTagline.getOrElse("")
+
+val input = MainLayoutInput( location, context.mainTitle, tagline, tabs_html( location, Tabs ).text, content, "" )
 
 (locatedContext : LocatedContext)[]~()>
 
-<( layout_main_html( locatedContext.siteRootedLocation, title, tagline, text ) )>
+<( layout_main_html( input ) )>

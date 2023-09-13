@@ -1,0 +1,15 @@
+val context = lpwc.context
+
+val location = lpwc.siteRootedLocation
+
+val content = threadOrPost( lpwc, true )
+
+val tagline = context.config.mainTagline.getOrElse("")
+
+val input = MainLayoutInput( location, context.mainTitle, tagline, "", content, "" )
+
+(lpwc : LocatedPostWithContext)[]~()>
+
+<( layout_main_html( input ) )>
+
+

@@ -81,12 +81,6 @@ div {
 #footer {
   grid-column: 1 / span 3;
   grid-row: 3;
-  margin-top: 1.5rem;
-  margin-right: 0.5rem;
-  font-variation-settings: "wght" 600;
-  font-size: 10;
-  text-align: right;
-  margin-right: var( --outer-text-right-margin );
 }
 #main-title {
   font-size: 150%;
@@ -105,7 +99,7 @@ div {
   margin-bottom: 0.75rem;
   text-align: center;
   color: #0bb;
-  border-bottom: 2px solid black;
+  /* border-bottom: 2px solid black; */
 }
 .post {
   padding: 0.5em;
@@ -249,14 +243,14 @@ a.new-self-url:hover {
   width: 100svw;
   padding-bottom: 1rem;
 }
-.tabs .tab-left {
+.tabs .tabs-left {
   grid-column: 1;
   grid-row: 1;
   align-self: end;
   justify-self: start;
   margin-left: 1rem;
 }
-.tabs .tab-right {
+.tabs .tabs-right {
   grid-column: 2;
   grid-row: 1;
   align-self: end;
@@ -265,7 +259,14 @@ a.new-self-url:hover {
 }
 .tab.current {
   font-variation-settings: "wght" 600;
-  text-decoration: underline;
+}
+.produced-with {
+  margin-top: 1.5rem;
+  margin-right: 0.5rem;
+  font-variation-settings: "wght" 600;
+  font-size: 10;
+  text-align: right;
+  margin-right: var( --outer-text-right-margin );
 }
 @media screen and (max-width: 700px) {
   body {
