@@ -13,6 +13,7 @@ object FossilphantSiteGenerator:
       mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
       newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
+      contentTransformer = ContentTransformer.rehostTags("mastodon.social"),
       toFollowersAsPublic = true,
       sensitiveAsPublic = true,
       timestampTimezone = ZoneId.of("America/New_York")

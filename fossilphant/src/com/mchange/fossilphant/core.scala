@@ -41,6 +41,9 @@ object InReplyTo:
   case class Other( url : String ) extends InReplyTo
 sealed trait InReplyTo
 
+case class UserHost( user : String, host : String ):
+  override def toString() : String = s"${user}@${host}"
+
 case class LocatedContext( siteRootedLocation : Rooted, context : FossilphantContext )
 
 object LocatedPostWithContext:
@@ -55,3 +58,8 @@ case class LocatedPageWithContext( siteRootedLocation : Rooted, index : Int, pag
   def posts = pages(index)
   def numPages = pages.length
 
+object ContentTransformer:
+  def rehostTags( newHost : String ) : ContentTransformer = { content =>
+    UnanchoredTagUrlRegex.replaceAllIn(content, m => s"""https://${newHost}/tags/${m.group(2)}""")
+  }
+type ContentTransformer = String => String

@@ -15,7 +15,7 @@ object FossilphantContext:
 
     val publicPosts =
       unsortedPostJsons
-        .map( postJson => new Post(postJson) )
+        .map( postJson => new Post(postJson, config.contentTransformer) )
         .filter( effectivelyPublic(config) )
 
     val publicPostsByLocalId = publicPosts.map( post => (post.localId, post)).toMap
@@ -36,19 +36,21 @@ object FossilphantContext:
 
     val userDisplayName = config.overrideDisplayName.getOrElse( actor.obj("name").str )
 
+    val mbUserHost =
+      actor.obj("id").str match
+        case UserIdUrlRegex(host, user) => Some(UserHost(user,host))
+        case _ => None
+
     val mainTitle = config.mainTitle.getOrElse {
-      val mbUserFromId =
-        actor.obj("id").str match
-          case UserIdUrlRegex(host, user) => Some(s"${user}@${host}")
-          case _ => None
-      mbUserFromId.fold("Mastodon archive")(user => s"Mastodon archive for ${user}")
+      mbUserHost.fold("Mastodon archive")(uh => s"Mastodon archive: ${uh}")
     }
 
-    FossilphantContext( config, mainTitle, userDisplayName, reverseChronologicalPublicPosts, reverseChronologicalPublicPostsNoReplies, publicPostsByLocalId, threadNexts, outbox.obj )
+    FossilphantContext( config, mbUserHost, mainTitle, userDisplayName, reverseChronologicalPublicPosts, reverseChronologicalPublicPostsNoReplies, publicPostsByLocalId, threadNexts, outbox.obj )
   end apply
 
 case class FossilphantContext(
   config : FossilphantConfig,
+  mbUserHost : Option[UserHost],
   mainTitle : String,
   userDisplayName : String,
   reverseChronologicalPublicPosts : Seq[Post],

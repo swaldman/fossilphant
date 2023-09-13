@@ -11,7 +11,7 @@ case class FossilphantConfig(
   themeName               : String             = "tower",
   themeConfig             : Map[String,String] = Map.empty,
   pageLength              : Int                = 20, // for themes that support paging
-  contentTransformer      : String => String   = identity,
+  contentTransformer      : ContentTransformer = identity,
   toFollowersAsPublic     : Boolean            = false,
   sensitiveAsPublic       : Boolean            = false,
   suppressLinksToOriginal : Boolean            = false,
