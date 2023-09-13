@@ -106,7 +106,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
       untemplateFqn match
         case BaseNameForHtmlRegex(baseName) =>
           (0 until context.pages.length).map { index =>
-            val locationBase = s"${baseName}_${index}"
+            val locationBase = s"${baseName}_${index+1}" // index pages from one, not zero
             val location = Rooted(s"/${locationBase}.html")
             val task = ZIO.attempt {
               untemplateFcn(LocatedPageWithContext(location, index, context)).text
@@ -115,7 +115,6 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
           }
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
-
 
     val endpointBindings =
       typedGenUntemplates.map( endpointBindingForGenUntemplate ).toSeq ++
