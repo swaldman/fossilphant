@@ -1,0 +1,3 @@
+# Testing memory use, using ./mill fossilphant.runLocal gen
+# Hint: ./veryclean.sh to ensure cached options aren't kept and used
+-Xmx100M
