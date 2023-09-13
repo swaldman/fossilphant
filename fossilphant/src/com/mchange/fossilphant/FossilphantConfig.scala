@@ -8,7 +8,7 @@ case class FossilphantConfig(
   mainTagline             : Option[String]     = None,
   overrideDisplayName     : Option[String]     = None,
   newSelfUrl              : Option[String]     = None,
-  themeName               : String             = "tower",
+  themeName               : String             = "shatter",
   themeConfig             : Map[String,String] = Map.empty,
   pageLength              : Int                = 20, // for themes that support paging
   contentTransformer      : ContentTransformer = identity,
