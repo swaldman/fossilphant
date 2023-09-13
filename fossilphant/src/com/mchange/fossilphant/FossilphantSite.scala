@@ -45,40 +45,83 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
 
   lazy val context = FossilphantContext( archiveDir, config )
 
-  val HtmlRegex = """^(?:.*?)([^\.]*)_html_gen$""".r
-  val CssRegex  = """^(?:.*?)([^\.]*)_css_gen""".r
-
   // no subdirectories! we generate theme resources into a single directory
   object GenUntemplates extends ZTEndpointBinding.Source:
+    val BaseNameForHtmlRegex = """^(?:.*?)([^\.]*)_html_gen(?:|post|page)$""".r
+    val BaseNameForCssRegex  = """^(?:.*?)([^\.]*)_css_gen""".r
+
     val themeIndex = IndexedUntemplates
-    val genUntemplates = themeIndex.filter( (k,_) => k.startsWith("com.mchange.fossilphant.theme." + config.themeName) && k.endsWith("_gen") )
 
-    val typedGenUntemplates = genUntemplates.collect {
-      case tup : (String, untemplate.Untemplate[LocatedContext,Nothing]) => tup
-    }
+    def typedThemeUntemplatesForSuffix[INPUT]( suffix : String ) : Map[String,untemplate.Untemplate[INPUT,Nothing]] =
+      val suffixUntemplates = themeIndex.filter( (k,_) => k.startsWith("com.mchange.fossilphant.theme." + config.themeName) && k.endsWith(suffix) )
 
-    if genUntemplates.size != typedGenUntemplates.size then
-      val badlyTypedGenUntemplates = genUntemplates.keySet.removedAll(typedGenUntemplates.keySet)
-      scribe.warn(s"""The following theme untemplates were badly types and will be ignored: ${badlyTypedGenUntemplates.mkString(", ")}""")
+      // the compiler isn't reall able to check these properly because of type erasure, alas
+      val typedSuffixUntemplates = suffixUntemplates.collect { case tup : (String, untemplate.Untemplate[INPUT,Nothing]) => tup  }
 
-    def endpointBindingForGenUntemplate( tup : (String, untemplate.Untemplate[LocatedContext,Nothing]) ) : ZTEndpointBinding =
-      tup(0) match
-        case HtmlRegex(baseName) =>
+      if suffixUntemplates.size != typedSuffixUntemplates.size then
+        val badlyTypedSuffixUntemplates = suffixUntemplates.keySet.removedAll(typedSuffixUntemplates.keySet)
+        scribe.warn(s"""The following theme untemplates were badly typed and will be ignored: ${badlyTypedSuffixUntemplates.mkString(", ")}""")
+
+      typedSuffixUntemplates
+    end typedThemeUntemplatesForSuffix
+
+    val typedGenUntemplates = typedThemeUntemplatesForSuffix[LocatedContext]( "_gen" )
+
+    def endpointBindingForGenUntemplate( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedContext,Nothing] ) : ZTEndpointBinding =
+      untemplateFqn match
+        case BaseNameForHtmlRegex(baseName) =>
           val location = Rooted(s"/${baseName}.html")
           val task = ZIO.attempt {
-            tup(1)(LocatedContext(location,context)).text
+            untemplateFcn(LocatedContext(location,context)).text
           }
           FossilphantSite.this.publicReadOnlyHtml( location, task, None, immutable.Set(baseName,s"${baseName}.html"), true, false )
-        case CssRegex(baseName) =>
+        case BaseNameForCssRegex(baseName) =>
           val location = Rooted(s"/${baseName}.css")
           val task = ZIO.attempt {
-            tup(1)(LocatedContext(location,context)).text
+            untemplateFcn(LocatedContext(location,context)).text
           }
           ZTEndpointBinding.publicReadOnlyCss( location, FossilphantSite.this, task, None, immutable.Set(baseName,s"${baseName}.css") )
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
 
-    val endpointBindings = typedGenUntemplates.map( endpointBindingForGenUntemplate ).toSeq
+    val typedGenPostUntemplates = typedThemeUntemplatesForSuffix[LocatedPostWithContext]( "_genpost" )
+
+    def endpointBindingForGenPostUntemplate( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedPostWithContext,Nothing] ) : Seq[ZTEndpointBinding] =
+      untemplateFqn match
+        case BaseNameForHtmlRegex(baseName) =>
+          context.reverseChronologicalPublicPosts.map { post =>
+            val locationBase = s"${baseName}_${post.localId}"
+            val location = Rooted(s"/${locationBase}.html")
+            val task = ZIO.attempt {
+              untemplateFcn(LocatedPostWithContext(location, post, context)).text
+            }
+            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true, false)
+          }
+        case other =>
+          throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
+
+    val typedGenPageUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpage" )
+
+    def endpointBindingForGenPageUntemplate( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedPageWithContext,Nothing] ) : Seq[ZTEndpointBinding] =
+      untemplateFqn match
+        case BaseNameForHtmlRegex(baseName) =>
+          (0 until context.pages.length).map { index =>
+            val locationBase = s"${baseName}_${index}"
+            val location = Rooted(s"/${locationBase}.html")
+            val task = ZIO.attempt {
+              untemplateFcn(LocatedPageWithContext(location, index, context)).text
+            }
+            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true, false)
+          }
+        case other =>
+          throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
+
+
+    val endpointBindings =
+      typedGenUntemplates.map( endpointBindingForGenUntemplate ).toSeq ++
+      typedGenPostUntemplates.flatMap( endpointBindingForGenPostUntemplate ) ++
+      typedGenPageUntemplates.flatMap( endpointBindingForGenPageUntemplate )
+
   end GenUntemplates
 
   object StaticArchiveResources extends ZTEndpointBinding.Source:
@@ -97,4 +140,3 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
 
   // avoid conflicts, but early items in the lists take precedence over later items
   override val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates )
-

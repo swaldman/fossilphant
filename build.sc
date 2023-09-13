@@ -45,9 +45,9 @@ object fossilphant extends UntemplateModule {
       ) // Agg
   }
 
-  def scalacOptions = T {
-    super.scalacOptions() ++ Seq("-explain")
-  }
+//  def scalacOptions = T {
+//    super.scalacOptions() ++ Seq("-explain")
+//  }
 }
 
 

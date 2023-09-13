@@ -48,4 +48,4 @@ object LocatedPostWithContext:
     LocatedPostWithContext(locatedContext.siteRootedLocation, post, locatedContext.context)
 case class LocatedPostWithContext( siteRootedLocation : Rooted, post : Post, context : FossilphantContext )
 
-
+case class LocatedPageWithContext( siteRootedLocation : Rooted, page : Int, context : FossilphantContext )

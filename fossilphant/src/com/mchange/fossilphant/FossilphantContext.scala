@@ -52,4 +52,5 @@ case class FossilphantContext(
   publicPostsByLocalId : Map[String,Post],
   threadNexts : Map[String,String],
   rawOutbox : UjsonObjValue
-)
+):
+  lazy val pages = reverseChronologicalPublicPosts.grouped( config.pageLength )
