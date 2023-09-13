@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ $# == 1 ]; then
+  export FOSSILPHANT_ARCHIVE=$1
+  echo Set fossilphant archive location to $1
+fi
+
 ./mill -w fossilphant.runBackground serve --verbose
 
 
