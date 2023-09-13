@@ -9,7 +9,7 @@ val location = lpwc.siteRootedLocation
   </div>
   <div class="shatter-topnav-center">
     <div class="pager">
-      <( firstLink("&larrb;", lpwc) )> <( prevLink("<", lpwc) )> + <( nextLink(">", lpwc) )> <( lastLink("&rarrb;", lpwc) )>
+      <( pager_html(lpwc) )>
     </div>
   </div>
   <div class="shatter-topnav-right">

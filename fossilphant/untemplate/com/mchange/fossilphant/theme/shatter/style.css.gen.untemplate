@@ -33,27 +33,34 @@ import com.mchange.fossilphant.theme.tower
   margin-right: var( --outer-text-right-margin );
 }
 
-.shatter-topnav .pager {
-    font-size: 150%;
-}
-.shatter-topnav .pager a {
-  color: var( --outer-text-color );
-  text-decoration: none;
-}
-.shatter-topnav .pager a:visited {
-  color: var( --outer-text-color );
-  text-decoration: none;
-}
-
-.shatter-topnav .pager .disabled {
-  opacity: 0.25;
-}
-.shatter-topnav .pager .disabled {
-  opacity: 0.25;
-}
-
 .shatter-topnav .status-title {
   /* font-size: 90%; */
   font-variation-settings: "wght" 600;
+}
+.shatter-bottomnav {
+  width: 100svh;
+  text-align: center;
+}
+.pager {
+  font-size: 120%;
+}
+.pager a {
+  color: var( --outer-text-color );
+  text-decoration: none;
+}
+.pager a:visited {
+  color: var( --outer-text-color );
+  text-decoration: none;
+}
+.pager a:hover {
+  color: var( --outer-text-color );
+  text-decoration: none;
+}
+
+.pager .disabled {
+  opacity: 0.25;
+}
+.pager .disabled {
+  opacity: 0.25;
 }
 

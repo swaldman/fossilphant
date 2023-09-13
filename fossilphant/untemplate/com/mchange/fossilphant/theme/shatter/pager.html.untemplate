@@ -1,0 +1,4 @@
+(lpwc : LocatedPageWithContext)[]~()>
+    <div class="pager">
+      <( firstLink("&larrb;", lpwc) )> <( prevLink("<", lpwc) )> + <( nextLink(">", lpwc) )> <( lastLink("&rarrb;", lpwc) )>
+    </div>

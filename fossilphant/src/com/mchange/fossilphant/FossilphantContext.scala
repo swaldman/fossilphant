@@ -61,3 +61,10 @@ case class FossilphantContext(
 ):
   lazy val pagesIncludingReplies = reverseChronologicalPublicPosts.grouped( config.pageLength ).toSeq
   lazy val pagesNoReplies = reverseChronologicalPublicPostsNoReplies.grouped( config.pageLength ).toSeq
+  lazy val defaultTagLine : String =
+    val earliest = reverseChronologicalPublicPosts.last.published
+    val latest = reverseChronologicalPublicPosts.head.published
+    val formatter = TimestampDateFormatter
+    def fdate( i : java.time.Instant ) : String = formatter.format(i.atZone(config.timestampTimezone))
+    s"from ${fdate(earliest)} to ${fdate(latest)}"
+  def tagline : String = config.mainTagline.getOrElse( defaultTagLine )

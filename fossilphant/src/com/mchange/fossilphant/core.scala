@@ -13,11 +13,11 @@ val MastodonDateTimeFormatter = DateTimeFormatter.ISO_INSTANT
 val TimestampDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 val TimestampTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
 
-def formatShortDate( zdt : ZonedDateTime) : String =
+def formatShortDate( zdt : ZonedDateTime ) : String =
   //DateTimeFormatter.ISO_LOCAL_DATE.format(zdt)
   TimestampDateFormatter.format(zdt)
 
-def formatShortTime( zdt : ZonedDateTime) : String =
+def formatShortTime( zdt : ZonedDateTime ) : String =
   //DateTimeFormatter.ISO_LOCAL_TIME.format(zdt)
   TimestampTimeFormatter.format( zdt )
 

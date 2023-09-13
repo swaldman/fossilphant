@@ -7,11 +7,12 @@ val content =
     .map(post => threadOrPost(LocatedPostWithContext(location, post, context), Some(postOutLinkGen)))
     .mkString("\n")
 
-val tagline = context.config.mainTagline.getOrElse("")
+val tagline = context.tagline
 
 val topnav = topnav_paged_html( lpwc ).text
+val bottomnav = bottomnav_paged_html( lpwc ).text
 
-val input = MainLayoutInput( location, context.mainTitle, tagline, topnav, content, "" )
+val input = MainLayoutInput( location, context.mainTitle, tagline, topnav, content, bottomnav )
 
 (lpwc : LocatedPageWithContext)[]~()>
 

@@ -10,7 +10,7 @@ object FossilphantSiteGenerator:
     FossilphantConfig (
       //themeName = "tower",
       themeName = "shatter",
-      mainTagline = Some( "I guess it's a Mastodon archive!" ),
+      //mainTagline = Some( "I guess it's a Mastodon archive!" ),
       overrideDisplayName = None,
       newSelfUrl = Some( "https://econtwitter.net/@interfluidity" ),
       contentTransformer = ContentTransformer.rehostTags("mastodon.social"),

@@ -4,7 +4,7 @@ val location = lpwc.siteRootedLocation
 
 val content = threadOrPost( lpwc, None )
 
-val tagline = context.config.mainTagline.getOrElse("")
+val tagline = context.tagline
 
 val input = MainLayoutInput( location, context.mainTitle, tagline, topnav_single_html(lpwc).text, content, "" )
 
