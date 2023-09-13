@@ -1,0 +1,4 @@
+import unstatic.UrlPath.Rooted
+
+(location : Rooted)[]~()>
+    <( tab("Main", FirstMainLoc, location, OnMain ) )> &#x2022; <( tab( "Posts and replies", FirstWithrepliesLoc, location, OnWithreplies ) )>

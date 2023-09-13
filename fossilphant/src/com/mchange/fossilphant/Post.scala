@@ -11,10 +11,12 @@ object Post:
   case class Image(siteRootedPath : Rooted, alt : Option[String] )
   given ReverseChronologicalPublished : Ordering[Post] = Ordering.by[Post,Instant]( _.published ).reverse
 class Post( createActivity : UjsonObjValue):
+  val id = createActivity("id").str
   val (originalHost, user, localId ) =
-    createActivity("id").str match
+    id match
       case ActivityUrlRegex(oh, u, lid) => (oh, u, lid)
       case other => throw new UnexpectedValueFormat(s"Activity id '${other}' not in expected format.")
+  def url = createActivity("object").obj("url").str
   def content : String = createActivity("object").obj("content").str
   def published : Instant =
     val timestamp = createActivity("published").str

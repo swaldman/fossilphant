@@ -13,6 +13,6 @@ val location = lpwc.siteRootedLocation
     </div>
   </div>
   <div class="shatter-topnav-right">
-    <( tab("Main", FirstMainLoc, location, OnMain ) )> &#x2022; <( tab( "Posts and replies", FirstWithrepliesLoc, location, OnWithreplies ) )>
+    <( topnav_only_tabs_html( location ) )>
   </div>
 </div>

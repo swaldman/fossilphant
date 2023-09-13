@@ -13,6 +13,8 @@ val threadOrPost = theme.tower.threadOrPost
 val MainLayoutInput  = theme.tower.MainLayoutInput
 type MainLayoutInput = theme.tower.MainLayoutInput
 
+def postOutLinkGen( localId : String ) : String = s"single_${localId}.html"
+
 def repage( pathStr : String, newPageNum : Int ) : String =
   pathStr.substring(0,pathStr.lastIndexOf('_')+1) + newPageNum + ".html"
 

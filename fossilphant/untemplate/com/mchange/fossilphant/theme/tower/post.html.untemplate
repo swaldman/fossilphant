@@ -1,5 +1,5 @@
 val lpwc = tup(0)
-val showInReplyTo = tup(1)
+val outLinkGen = tup(1)
 
 val post = lpwc.post
 val context = lpwc.context
@@ -10,6 +10,9 @@ def makePostId(localId : String) = s"post-${localId}"
 
 val postId = makePostId(post.localId)
 
+val mbOutLink = outLinkGen.map( _(post.localId) )
+val selfLink = mbOutLink.getOrElse( "#" + postId )
+
 val newSelfUrl = context.config.newSelfUrl
 
 def mbSelfUrled( contents : String ) : String =
@@ -18,11 +21,11 @@ def mbSelfUrled( contents : String ) : String =
   }
 end mbSelfUrled
 
-(tup : Tuple2[LocatedPostWithContext,Boolean])[]~()>
+(tup : Tuple2[LocatedPostWithContext,Option[Function1[String,String]]])[]~()>
 
 <div class="post" id="<( postId )>">
   <div class="post-timestamp">
-    <div><a href="#<( postId )>"><( formatShortDate( zdt ) )><br>
+    <div><a href="<( selfLink )>"><( formatShortDate( zdt ) )><br>
                                  <( formatShortTime( zdt ) )></a></div>
   </div>
   <div class="avatar-names">
@@ -32,19 +35,17 @@ end mbSelfUrled
   </div>
   <div class="post-content"><( post.content )></div>
 <()
-  if showInReplyTo then {
-    val mbLink =post.inReplyTo match
-      case InReplyTo.NoOne           => None
-      case InReplyTo.Self( irtLocalId ) => Some( s"""<a href="#${makePostId(irtLocalId)}">self</a>""" )
-      case InReplyTo.Other( url ) =>
-        url match
-          case StatusUrlRegex(irtHost, irtUser, irtLocalId) => Some( s"""<a href="${url}">@${irtUser}</a>""" )
-          case other => Some( s"""<a href="${url}">this</a>""" )
-    mbLink.foreach { link =>
+  val mbReplyLink = post.inReplyTo match
+    case InReplyTo.NoOne           => None
+    case InReplyTo.Self( irtLocalId ) => Some( s"""<a href="#${makePostId(irtLocalId)}">self</a>""" )
+    case InReplyTo.Other( url ) =>
+      url match
+        case StatusUrlRegex(irtHost, irtUser, irtLocalId) => Some( s"""<a href="${url}">@${irtUser}</a>""" )
+        case other => Some( s"""<a href="${url}">this</a>""" )
+  mbReplyLink.foreach { link =>
 ()>
   <div class="post-in-reply-to">in reply to <( link )></div>
 <()
-    }
   }
   post.images.foreach { image =>
     writer.write( image_html( lpwc.siteRootedLocation, image ).text )

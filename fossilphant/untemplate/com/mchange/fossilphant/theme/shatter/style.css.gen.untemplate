@@ -52,3 +52,8 @@ import com.mchange.fossilphant.theme.tower
   opacity: 0.25;
 }
 
+.shatter-topnav .status-title {
+  /* font-size: 90%; */
+  font-variation-settings: "wght" 600;
+}
+

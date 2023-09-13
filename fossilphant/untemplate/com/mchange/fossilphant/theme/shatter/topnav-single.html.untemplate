@@ -1,0 +1,23 @@
+val context  = lpwc.context
+val location = lpwc.siteRootedLocation
+
+val localIdHtml : String =
+  if context.config.suppressLinksToOriginal then
+    lpwc.post.localId
+  else
+    s"""<a href="${lpwc.post.url}">${lpwc.post.localId}</a>"""
+end localIdHtml
+
+(lpwc : LocatedPostWithContext)[]~()>
+
+<div class="shatter-topnav">
+  <div class="shatter-topnav-left">
+    <span class="status-title">Status #<( localIdHtml )></span>
+  </div>
+  <div class="shatter-topnav-center">
+    &nbsp
+  </div>
+  <div class="shatter-topnav-right">
+    <( topnav_only_tabs_html( location ) )>
+  </div>
+</div>

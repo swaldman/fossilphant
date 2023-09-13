@@ -50,9 +50,15 @@ body {
 }
 a:link {
   color: var( --outer-link-color );
+  text-decoration: none;
 }
 a:link:visited {
   color: var( --outer-link-color-visited );
+  text-decoration: none;
+}
+a:link:hover {
+  color: var( --outer-link-color );
+  text-decoration: underline;
 }
 em, i {
     font-family: 'Montserrat-Italic', sans-serif;
@@ -112,9 +118,15 @@ div {
 }
 .post a:link {
   color: var( --post-link-color );
+  text-decoration: none;
 }
 .post a:link:visited {
   color: var( --post-link-color-visited );
+  text-decoration: none;
+}
+.post a:link:hover {
+  color: var( --post-link-color );
+  text-decoration: underline;
 }
 .avatar-names {
   display:               grid;
@@ -165,13 +177,14 @@ div {
   opacity: 0.5;
 }
 .post-timestamp a:hover {
+  text-decoration: none;
   opacity: 1;
 }
 
 .post-content {
   margin-left: 0.5em;
   margin-right: 0.5em;
-  line-height: 130%;
+  line-height: 140%;
 }
 .post-in-reply-to {
   font-family: 'Montserrat-Italic', sans-serif;
