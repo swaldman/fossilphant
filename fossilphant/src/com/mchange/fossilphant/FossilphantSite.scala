@@ -29,7 +29,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
 
   lazy val archiveDir : os.Path =
     import org.rauschig.jarchivelib.ArchiverFactory
-    val rawPath = os.Path(archiveLoc)
+    val rawPath = os.Path(archiveLoc, os.pwd)
     if !os.exists(rawPath) then
       throw new BadArchivePath( s"No file or directory exists at specified path '${rawPath}'." )
     else if os.isDir(rawPath) then
