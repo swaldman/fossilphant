@@ -60,3 +60,7 @@ object ContentTransformer:
     UnanchoredTagUrlRegex.replaceAllIn(content, m => s"""https://${newHost}/tags/${m.group(2)}""")
   }
 type ContentTransformer = String => String
+
+enum PostSeqType:
+  case WithAll, WithOthers, Without
+end PostSeqType

@@ -47,7 +47,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
 
   // no subdirectories! we generate theme resources into a single directory
   object GenUntemplates extends ZTEndpointBinding.Source:
-    val BaseNameForHtmlRegex = """^(?:.*?)([^\.]*)_html_gen(?:|post|pagewith|pagewithout)$""".r
+    val BaseNameForHtmlRegex = """^(?:.*?)([^\.]*)_html_gen(?:|post|pagewithall|pagewithothers|pagewithout)$""".r
     val BaseNameForCssRegex  = """^(?:.*?)([^\.]*)_css_gen""".r
 
     val themeIndex = IndexedUntemplates
@@ -100,13 +100,17 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
 
-    val typedGenPageWithUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpagewith" )
+    val typedGenPageWithAllUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpagewithall" )
+    val typedGenPageWithOthersUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpagewithothers" )
     val typedGenPageWithoutUntemplates = typedThemeUntemplatesForSuffix[LocatedPageWithContext]( "_genpagewithout" )
 
-    def endpointBindingForGenPageUntemplate(withReplies : Boolean)( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedPageWithContext,Nothing] ) : Seq[ZTEndpointBinding] =
+    def endpointBindingForGenPageUntemplate(pst : PostSeqType)( untemplateFqn : String, untemplateFcn : untemplate.Untemplate[LocatedPageWithContext,Nothing] ) : Seq[ZTEndpointBinding] =
       untemplateFqn match
         case BaseNameForHtmlRegex(baseName) =>
-          val pages = if withReplies then context.pagesIncludingReplies else context.pagesNoReplies
+          val pages = pst match
+            case PostSeqType.WithAll    => context.pagesIncludingReplies
+            case PostSeqType.WithOthers => context.pagesIncludingRepliesToOthersOnly
+            case PostSeqType.Without    => context.pagesNoReplies
           (0 until pages.size).map { index =>
             val locationBase = s"${baseName}_${index+1}" // index pages from one, not zero
             val location = Rooted(s"/${locationBase}.html")
@@ -121,8 +125,9 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
     lazy val endpointBindings =
       typedGenUntemplates.map( endpointBindingForGenUntemplate ).toSeq ++
       typedGenPostUntemplates.flatMap( endpointBindingForGenPostUntemplate ) ++
-      typedGenPageWithUntemplates.flatMap( endpointBindingForGenPageUntemplate(true) ) ++
-      typedGenPageWithoutUntemplates.flatMap( endpointBindingForGenPageUntemplate(false) )
+      typedGenPageWithAllUntemplates.flatMap( endpointBindingForGenPageUntemplate( PostSeqType.WithAll ) ) ++
+      typedGenPageWithOthersUntemplates.flatMap( endpointBindingForGenPageUntemplate( PostSeqType.WithOthers ) ) ++
+      typedGenPageWithoutUntemplates.flatMap( endpointBindingForGenPageUntemplate( PostSeqType.Without ) )
 
     require( !endpointBindings.isEmpty, s"No resources were found for configured theme '${config.themeName}'!")
 

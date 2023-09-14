@@ -32,6 +32,9 @@ object FossilphantContext:
     val reverseChronologicalPublicPostsNoReplies =
       reverseChronologicalPublicPosts.filter( _.inReplyTo == InReplyTo.NoOne )
 
+    val reverseChronologicalPublicPostsRepliesToOthersOnly =
+        reverseChronologicalPublicPosts.filter( post => post.inReplyTo.isInstanceOf[InReplyTo.Other] )
+
     val actor = ujson.read(os.read.stream(actorJsonPath) )
 
     val userDisplayName = config.overrideDisplayName.getOrElse( actor.obj("name").str )
@@ -45,7 +48,17 @@ object FossilphantContext:
       mbUserHost.fold("Mastodon archive")(uh => s"Mastodon archive: ${uh}")
     }
 
-    FossilphantContext( config, mbUserHost, mainTitle, userDisplayName, reverseChronologicalPublicPosts, reverseChronologicalPublicPostsNoReplies, publicPostsByLocalId, threadNexts, outbox.obj )
+    FossilphantContext(
+      config,
+      mbUserHost,
+      mainTitle,
+      userDisplayName,
+      reverseChronologicalPublicPosts,
+      reverseChronologicalPublicPostsNoReplies,
+      reverseChronologicalPublicPostsRepliesToOthersOnly,
+      publicPostsByLocalId,
+      threadNexts,
+      outbox.obj )
   end apply
 
 case class FossilphantContext(
@@ -55,11 +68,13 @@ case class FossilphantContext(
   userDisplayName : String,
   reverseChronologicalPublicPosts : Seq[Post],
   reverseChronologicalPublicPostsNoReplies : Seq[Post],
+  reverseChronologicalPublicPostsRepliesToOthersOnly : Seq[Post], // when threads will be followed and catch self-replies
   publicPostsByLocalId : Map[String,Post],
   threadNexts : Map[String,String],
   rawOutbox : UjsonObjValue
 ):
   lazy val pagesIncludingReplies = reverseChronologicalPublicPosts.grouped( config.pageLength ).toSeq
+  lazy val pagesIncludingRepliesToOthersOnly = reverseChronologicalPublicPostsRepliesToOthersOnly.grouped( config.pageLength ).toSeq
   lazy val pagesNoReplies = reverseChronologicalPublicPostsNoReplies.grouped( config.pageLength ).toSeq
   lazy val defaultTagLine : String =
     val earliest = reverseChronologicalPublicPosts.last.published

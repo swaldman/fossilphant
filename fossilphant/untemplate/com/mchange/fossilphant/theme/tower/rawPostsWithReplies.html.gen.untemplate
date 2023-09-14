@@ -3,7 +3,7 @@ val context = locatedContext.context
 val location = locatedContext.siteRootedLocation
 
 val content =
-  context.reverseChronologicalPublicPosts
+  context.reverseChronologicalPublicPostsRepliesToOthersOnly
     .map(post => post_html(LocatedPostWithContext(location, post, context), None))
     .mkString("\n")
 
