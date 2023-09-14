@@ -62,7 +62,7 @@ that contains your new website.
 `fossilphant` is configurable, and for the truly ambitious,
 themable.
 
-Check out the file [`src/config.scala`](src/config.scala) to customize.
+Check out the file [`fossilphant/src/config.scala`](fossilphant/src/config.scala) to customize.
 Configuration is documented in the comments of that file. Just edit it in place.
 
 > [!NOTE]  
