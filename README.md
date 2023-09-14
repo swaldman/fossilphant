@@ -23,6 +23,12 @@ You can see examples in the two themes currently defined,
 [`shatter`](https://www.mchange.com/projects/fossilphant/example/shatter)
 and [`tower`](https://www.mchange.com/projects/fossilphant/example/tower).
 
+`shatter` paginates your posts. `tower` places them all on one giant webpage.
+They are visually very similar.
+
+Both themes collect your threads together, and display them in forward-chronological
+order (against the general reverse-chronological grain.)
+
 ## Prerequisites
 
 You will need a [Java virtual machine](https://www.oracle.com/java/technologies/java-se-glance.html),
