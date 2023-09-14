@@ -65,6 +65,10 @@ import com.mchange.fossilphant.theme.tower
     .pager {
       font-size: 180%;
     }
+    .pager a, pager span {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
     .shatter-topnav {
       display:               grid;
       grid-template-rows: 1fr 1fr 1fr;
