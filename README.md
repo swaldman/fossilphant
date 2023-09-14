@@ -15,7 +15,7 @@ To keep your posts alive...
 1. download an archive of your posts
 2. use `fossilphant` to generate simple, static website
    from the archive
-3. rehost the site via any platform or service that hosts simple websites
+3. rehost the site via any platform or service that supports simple websites
 
 ## Examples
 
@@ -36,8 +36,8 @@ version 17 or higher, installed on your machine, and a UNIXy command line.
    ```plaintext
    $ ./fossilphant-site-gen /path/to/my-maston-archive
    ```
-   The archive can be an already extracted directory, or the orignal
-    `.tar.gz` file. (The application will extract it into a
+   The archive can be an already extracted directory, or the original
+    `.tar.gz` file. (The application will extract the compressed archive into a
    temporary directory if necessary.)
 
 That's it!
@@ -50,8 +50,8 @@ that contains your new website.
 `fossilphant` is configurable, and for the truly ambitious,
 themable.
 
-Edit the file [`src/config.scala`](src/config.scala) to customize.
-Configuration is documented in the comments of that file.
+Check out the file [`src/config.scala`](src/config.scala) to customize.
+Configuration is documented in the comments of that file. Just edit it in place.
 
 > [!NOTE]  
 > _Posts that were sent followers-only or that are marked sensitive
