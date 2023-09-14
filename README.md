@@ -19,7 +19,7 @@ To keep your posts alive...
 
 ## Examples
 
-You can see examples in the two themes currently defined,
+You can see [examples](https://www.mchange.com/projects/fossilphant/example/shatter) in the two themes currently defined,
 [`shatter`](https://www.mchange.com/projects/fossilphant/example/shatter)
 and [`tower`](https://www.mchange.com/projects/fossilphant/example/tower).
 
