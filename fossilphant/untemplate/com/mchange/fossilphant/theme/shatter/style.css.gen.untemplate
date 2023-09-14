@@ -8,7 +8,6 @@ import com.mchange.fossilphant.theme.tower
   display:               grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
-  width: 100svw;
   padding-bottom: 1rem;
 }
 .shatter-topnav .shatter-topnav-left {
@@ -38,7 +37,6 @@ import com.mchange.fossilphant.theme.tower
   font-variation-settings: "wght" 600;
 }
 .shatter-bottomnav {
-  width: 100svh;
   text-align: center;
 }
 .pager {
@@ -63,4 +61,42 @@ import com.mchange.fossilphant.theme.tower
 .pager .disabled {
   opacity: 0.25;
 }
+@media only screen and (max-width: 650px) {
+    .pager {
+      font-size: 180%;
+    }
+    .shatter-topnav {
+      display:               grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-columns: auto;
+      padding-bottom: 1rem;
+    }
+    .shatter-topnav .shatter-topnav-left {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: center;
+      justify-self: center;
+      margin-left: 1rem;
+    }
+    .shatter-topnav .shatter-topnav-center {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      justify-self: center;
+    }
+    .shatter-topnav .shatter-topnav-right {
+      grid-column: 1;
+      grid-row: 3;
+      align-self: center;
+      justify-self: center;
+      margin-right: 0;
+    }
+    .shatter-topnav .shatter-topnav-right .disc, .shatter-topnav .shatter-topnav-right .current {
+      display: none;
+    }
+    .shatter-topnav .shatter-topnav-right .tab::before {
+      content: "Switch to: "
+    }
+}
+
 

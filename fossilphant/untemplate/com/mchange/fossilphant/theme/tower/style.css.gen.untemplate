@@ -27,7 +27,7 @@ val tc = config.themeConfig
     --avatar-slot: 60px;
     --avatar-padding: 5px;
     --thread-border: 3px solid var( --thread-border-color );
-    --outer-text-right-margin: 2rem;
+    --outer-text-right-margin: 1rem;
     font-size: 11pt;
 }
 *, *::before, *::after {
@@ -37,7 +37,6 @@ body {
     display:               grid;
     grid-template-columns: 1fr 600px 1fr;
     grid-template-rows:    auto auto auto;
-    width: 100svw;
     background-color: var( --page-background-color );
     font-family: 'Montserrat', sans-serif;
     font-variation-settings: "wght" 400;
@@ -253,7 +252,6 @@ a.new-self-url:hover {
   display:               grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  width: 100svw;
   padding-bottom: 1rem;
 }
 .tabs .tabs-left {
@@ -281,8 +279,38 @@ a.new-self-url:hover {
   text-align: right;
   margin-right: var( --outer-text-right-margin );
 }
-@media screen and (max-width: 700px) {
+@media only screen and (max-width: 650px) {
   body {
-    grid-template-columns: 1fr 400px 1fr;
+    grid-template-columns: 1fr 95% 1fr;
+    font-size: 110%;
+  }
+  .produced-with {
+    text-align: center;
+  }
+  .post-timestamp {
+    font-size: 70%;
+    line-height: 120%;
+  }
+  .tabs {
+    display:               grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: auto;
+    padding-bottom: 0.5rem;
+  }
+  .tabs .tabs-left {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: start;
+    margin-left: 1rem;
+    margin-bottom: 0.125rem;
+  }
+  .tabs .tabs-right {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
+    justify-self: start;
+    margin-left: 1rem;
   }
 }
+

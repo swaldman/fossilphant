@@ -8,9 +8,7 @@ val location = lpwc.siteRootedLocation
     Current page: <( lpwc.page )> of <( lpwc.numPages )>
   </div>
   <div class="shatter-topnav-center">
-    <div class="pager">
-      <( pager_html(lpwc) )>
-    </div>
+    <( pager_html(lpwc) )>
   </div>
   <div class="shatter-topnav-right">
     <( topnav_only_tabs_html( location ) )>

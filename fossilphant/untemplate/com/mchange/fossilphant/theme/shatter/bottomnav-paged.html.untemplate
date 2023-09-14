@@ -4,7 +4,5 @@ val location = lpwc.siteRootedLocation
 (lpwc : LocatedPageWithContext)[]~()>
 
 <div class="shatter-bottomnav">
-  <div class="pager">
-    <( pager_html(lpwc) )>
-  </div>
+  <( pager_html(lpwc) )>
 </div>
