@@ -123,13 +123,13 @@ If you are interested in learning more about these libraries and tools, hit me u
 
 ## Privacy
 
-The full `/media_attachments` directory, containing all of the images and other media
-you might have posted, is copied into the website. This might include images associated
+At least for now, the full `/media_attachments` directory, containing all of the images and other media
+you might have posted, is copied into the website. This directory might include images associated
 with nonpublic posts.
 
 Though it might be hard to guess the image file paths, they'll be there on a public
-webserver for anyone who might have them, including recipients of the original private
-posts and administrators of their servers. And be sure that to set [`autoindex`](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
+webserver for anyone who might have those paths, including recipients of the original private
+posts, administrators of their servers, and whomever they talk to. And be sure that to set [`autoindex`](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
 or its equivalent to `off` so that snoopers can't just browse your media library.
 
 ## Credits
