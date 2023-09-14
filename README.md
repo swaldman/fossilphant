@@ -102,8 +102,9 @@ The root untemplates accept
 | `.genpagewithout.untemplate` | `LocatedPageWithContext` |
 
 The template-generated functions live in Scala packages, beneath `com.mchange.fossilphant.theme`.
-Each theme also includes helper functions, as well as constructs written in normal Scala,
-you'll find those under the [parallel Scala source packages](fossilphant/src/com/mchange/fossilphant/theme).
+
+Each theme also includes helper functions, as well as constructs written in normal Scala.
+You'll find those under the [parallel Scala source packages](fossilphant/src/com/mchange/fossilphant/theme).
 
 If you are interested in learning more about these libraries and tools, hit me up.
 
