@@ -54,13 +54,13 @@ Edit the file [`src/config.scala`](src/config.scala) to customize.
 Configuration is documented in the comments of that file.
 
 > [!NOTE]  
-> Posts that were sent followers-only or that are marked sensitive
+> _Posts that were sent followers-only or that are marked sensitive
 > will not be published by default. Edit `config.scala` if you want
-> those posts published.
+> those posts published._
 > 
-> (Posts directed neither to the general public
+> _(Posts directed neither to the general public
 > nor to followers will not be published. No setting overrides that.
-> Although of course a bug might.)
+> Although of course a bug might.)_
 
 You can mess around with colors, direct self links to your new identity,
 redirect tag links to a new host so they don't hit a defunct instance,
