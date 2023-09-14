@@ -3,10 +3,10 @@ import $meta._
 import mill._
 import mill.scalalib._
 
-import $ivy.`com.mchange::untemplate-mill:0.1.1-SNAPSHOT`
+import $ivy.`com.mchange::untemplate-mill:0.1.1`
 import untemplate.mill._
 
-val UnstaticVersion = "0.1.0-SNAPSHOT"
+val UnstaticVersion = "0.1.0"
 
 object Dependency {
   val Unstatic       = ivy"com.mchange::unstatic:${UnstaticVersion}"
