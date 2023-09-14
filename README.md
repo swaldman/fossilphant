@@ -121,7 +121,7 @@ You'll find those under the [parallel Scala source packages](fossilphant/src/com
 
 If you are interested in learning more about these libraries and tools, hit me up.
 
-# Privacy
+## Privacy
 
 The full `/media_attachments` directory, containing all of the images and other media
 you might have posted, is copied into the website. This might include images associated
@@ -132,7 +132,7 @@ webserver for anyone who might have them, including recipients of the original p
 posts and administrators of their servers. And be sure that to set [`autoindex`](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
 or its equivalent to `off` so that snoopers can't just browse your media library.
 
-# Credits
+## Credits
 
 Site generation is built atop the very excellent [mill](https://github.com/com-lihaoyi/mill).
 
