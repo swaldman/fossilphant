@@ -2,15 +2,15 @@
 
 ### a static-site generator for mastodon archives
 
-fossilphant generates static websites from the
-[archive you can export](https://allthings.how/how-to-export-and-import-your-data-on-mastodon/)
+fossilphant generates static websites from
+archives of your posts [you can export](https://allthings.how/how-to-export-and-import-your-data-on-mastodon/)
 from a Mastodon instance.
 
-If an instance is shutting down, you can move to a new server,
+If your instance is shutting down, you can move to a new server,
 but your posts as a member of the departing instance will be effectively
 deleted from the internet.
 
-To keep your posts alive, you can
+To keep your posts alive...
 
 1. download an archive of your posts
 2. use `fossilphant` to generate simple, static website
@@ -28,17 +28,17 @@ and [`tower`](https://www.mchange.com/projects/fossilphant/example/tower).
 You will need a [Java virtual machine](https://www.oracle.com/java/technologies/java-se-glance.html),
 version 17 or higher, installed on your machine, and a UNIXy command line.
 
-## Getting Started
+## Quick Start
 
 1. Download your archive file from your Mastodon instance
 2. Clone or download this distribution
 3. From the root directory of this distribution, run
    ```plaintext
-   % ./fossilphant-site-gen /path/to/my-maston-archive
+   $ ./fossilphant-site-gen /path/to/my-maston-archive
    ```
    The archive can be an already extracted directory, or the orignal
-    `.tar.gz` file. The application will extract it into a
-   temporary directory if necessary.
+    `.tar.gz` file. (The application will extract it into a
+   temporary directory if necessary.)
 
 That's it!
 
@@ -47,7 +47,7 @@ that contains your new website.
 
 ## Customization
 
-`fossilphant` is very configurable, and for the truly ambitious
+`fossilphant` is configurable, and for the truly ambitious,
 themable.
 
 Edit the file [`src/config.scala`](src/config.scala) to customize.
@@ -63,18 +63,18 @@ Configuration is documented in the comments of that file.
 > Although of course a bug might.)_
 
 You can mess around with colors, direct self links to your new identity,
-redirect tag links to a new host so they don't hit a defunct instance,
+redirect tag links to a new host so they don't break against a defunct instance,
 change the title, the tagline, or the whole theme.
 
 ## Development
 
 `fossilphant` is built in Scala, on top of my own template (well,
-[untemplate](https://github.com/swaldman/untemplate-doc#readme)) library,
+[`untemplate`](https://github.com/swaldman/untemplate-doc#readme)) library,
 and my static-site-generator generator [`unstatic`](https://github.com/swaldman/unstatic).
 
 If you are a front-end developer, the
-[templates that define themes](untemplate/com/mchange/fossilphant/theme)
-should be mostly familiar, below a header of Scala code. It's mostly
+[templates that define themes](fossilphant/untemplate/com/mchange/fossilphant/theme)
+should be somewhat familiar, below headers of Scala code. (Theme `tower` is more accessible.) It's mostly
 HTML and CSS, should be pretty tweakble.
 
 For the ambitious, themes are defined by untemplates ending in
@@ -102,8 +102,8 @@ The root untemplates accept
 | `.genpagewithout.untemplate` | `LocatedPageWithContext` |
 
 The template-generated functions live in Scala packages, beneath `com.mchange.fossilphant.theme`.
-Each theme also includes helper functions and constructs written in normal Scala,
-you'll find those under the [parallel Scala source packages](src/com/mchange/fossilphant/theme).
+Each theme also includes helper functions, as well as constructs written in normal Scala,
+you'll find those under the [parallel Scala source packages](fossilphant/src/com/mchange/fossilphant/theme).
 
 If you are interested in learning more about these libraries and tools, hit me up.
 
