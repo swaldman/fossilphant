@@ -97,6 +97,9 @@ val MainFossilphantConfig = FossilphantConfig(
   //      if true, posts marked as sensitive will be
   //      included as public posts on the generated site
   //      OTHERWISE THEY WILL BE EXCLUDED
+  //
+  //      barriers and content warnings are not yet supported
+  //      if made public, sensitive posts will be openly published
   sensitiveAsPublic = false,
 
   // e.g. true
