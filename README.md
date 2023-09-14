@@ -87,7 +87,8 @@ and my static-site-generator generator [`unstatic`](https://github.com/swaldman/
 If you are a front-end developer, the
 [templates that define themes](fossilphant/untemplate/com/mchange/fossilphant/theme)
 should be somewhat familiar, below headers of Scala code. (Theme `tower` is more accessible.) It's mostly
-HTML and CSS, should be pretty tweakble.
+[HTML](fossilphant/untemplate/com/mchange/fossilphant/theme/tower/layout-main.html.untemplate) and
+[CSS](fossilphant/untemplate/com/mchange/fossilphant/theme/tower/style.css.gen.untemplate), should be pretty tweakble.
 
 For the ambitious, themes are defined by untemplates ending in
 * `.gen.untemplate` (one template generated per site)
