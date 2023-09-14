@@ -56,7 +56,7 @@ val MainFossilphantConfig = FossilphantConfig(
   //      theme-dependent, but keys and defaults of the current theme
   //      are shown, commented out, below
   themeConfig = Map(
-    //"page.background.color" -> "#D0D2D1",
+    //"page.background.color" -> "rgb(225,225,225)",
     //"post.background.color" -> "#FFFFFF",
     //"post.text.color" -> "black",
     //"outer.text.color" -> "black",

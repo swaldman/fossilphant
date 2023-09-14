@@ -1,6 +1,3 @@
-Sooner
-* organize config into its location
-
-Later
-* paged output
-* experiment with post-per-page output
+* Add media-posts page to themes and tabs
+* Let config accept an optional host and path, 
+  to support themes that want to use more absolute links
