@@ -13,7 +13,7 @@ val tc = config.themeConfig
 }
 
 :root {
-    --page-background-color:     <( tc.getOrElse( "page.background.color", "#D0D2D1" ) )>;
+    --page-background-color:     <( tc.getOrElse( "page.background.color", "rgb(225,225,225)" ) )>;
     --post-background-color:     <( tc.getOrElse( "post.background.color", "#FFFFFF" ) )>;
     --post-text-color:           <( tc.getOrElse( "post.text.color", "black" ) )>;
     --outer-text-color:          <( tc.getOrElse( "outer.text.color", "black" ) )>;
