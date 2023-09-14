@@ -134,7 +134,7 @@ or its equivalent to `off` so that snoopers can't just browse your media library
 
 # Credits
 
-Site generation is built atop the very excellent [`mill`](https://github.com/com-lihaoyi/mill).
+Site generation is built atop the very excellent [mill](https://github.com/com-lihaoyi/mill).
 
 Libraries of note beneath this include [zio](https://zio.dev/), [tapir](https://tapir.softwaremill.com/en/latest/),
 [os-lib](https://github.com/com-lihaoyi/os-lib), [upickle](https://com-lihaoyi.github.io/upickle/),
