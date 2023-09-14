@@ -27,7 +27,13 @@ and [`tower`](https://www.mchange.com/projects/fossilphant/example/tower).
 They are visually very similar.
 
 Both themes collect your threads together, and display them in forward-chronological
-order (against the general reverse-chronological grain.)
+order (against the general reverse-chronological grain).
+
+Both offer a "main" view that
+excludes your replies to other people's posts, and a posts-with-replies view that
+includes those.
+
+"Boosts" are not republished.
 
 ## Prerequisites
 
