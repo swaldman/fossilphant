@@ -66,6 +66,6 @@ enum PostSeqType:
 end PostSeqType
 
 object Env:
-  val Archive   = "FOSSILPHANT_ARCHIVE"
-  val ThemeName = "FOSSILPHANT_THEME_NAME"
+  val Archive = "FOSSILPHANT_ARCHIVE"
+  val Theme   = "FOSSILPHANT_THEME"
 end Env

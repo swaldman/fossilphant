@@ -10,13 +10,13 @@ object FossilphantSiteGenerator:
       var raw = _root_.config.MainFossilphantConfig
       sys.env.get(Env.Archive).foreach { envArchivePath =>
         raw.archivePath.foreach { _ =>
-          System.err.println(s"""Overriding configured archive path with environment variable ${Env.Archive}="${envArchivePath}""")
+          System.err.println(s"""Overriding configured archive path with environment variable ${Env.Archive}="${envArchivePath}"""")
         }
         raw = raw.copy( archivePath = Some(envArchivePath) )
       }
-      sys.env.get(Env.Archive).foreach { envThemeName =>
-        System.err.println(s"""Overriding configured theme name with environment variable ${Env.ThemeName}="${envThemeName}""")
-        raw = raw.copy( archivePath = Some(envThemeName) )
+      sys.env.get(Env.Theme).foreach { envThemeName =>
+        System.err.println(s"""Overriding configured theme name with environment variable ${Env.Theme}="${envThemeName}"""")
+        raw = raw.copy( themeName = envThemeName )
       }
       raw
     val runner = new Runner(config)
