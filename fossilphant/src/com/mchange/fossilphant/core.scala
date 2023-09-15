@@ -64,3 +64,8 @@ type ContentTransformer = String => String
 enum PostSeqType:
   case WithAll, WithOthers, Without
 end PostSeqType
+
+object Env:
+  val Archive   = "FOSSILPHANT_ARCHIVE"
+  val ThemeName = "FOSSILPHANT_THEME_NAME"
+end Env

@@ -57,13 +57,16 @@ That's it!
 You should see a directory called `public`
 that contains your new website.
 
-## Customization
+## Privacy
 
-`fossilphant` is configurable, and for the truly ambitious,
-themable.
+At least for now, the full `/media_attachments` directory, containing all of the images and other media
+you might have posted, is copied into the website. This directory might include images associated
+with nonpublic posts.
 
-Check out the file [`fossilphant/src/config.scala`](fossilphant/src/config.scala) to customize.
-Configuration is documented in the comments of that file. Just edit it in place.
+Though it might be hard to guess the image file paths, they'll be there on a public
+webserver for anyone who might have those paths, including recipients of the original private
+posts, administrators of their servers, and whomever they talk to. And be sure that to set [`autoindex`](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
+or its equivalent to `off` so that snoopers can't just browse your media library.
 
 > [!NOTE]  
 > _Posts that were sent followers-only or that are marked sensitive
@@ -73,6 +76,15 @@ Configuration is documented in the comments of that file. Just edit it in place.
 > _(Posts directed neither to the general public
 > nor to followers will not be published. No setting overrides that.
 > Although of course a bug might.)_
+
+
+## Customization
+
+`fossilphant` is configurable, and for the truly ambitious,
+themable.
+
+Check out the file [`fossilphant/src/config.scala`](fossilphant/src/config.scala) to customize.
+Configuration is documented in the comments of that file. Just edit it in place.
 
 You can mess around with colors, direct self links to your new identity,
 redirect tag links to a new host so they don't break against a defunct instance,
@@ -123,16 +135,10 @@ You'll find those under the [parallel Scala source packages](fossilphant/src/com
 
 If you are interested in learning more about these libraries and tools, hit me up.
 
-## Privacy
+## Contributing
 
-At least for now, the full `/media_attachments` directory, containing all of the images and other media
-you might have posted, is copied into the website. This directory might include images associated
-with nonpublic posts.
-
-Though it might be hard to guess the image file paths, they'll be there on a public
-webserver for anyone who might have those paths, including recipients of the original private
-posts, administrators of their servers, and whomever they talk to. And be sure that to set [`autoindex`](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/)
-or its equivalent to `off` so that snoopers can't just browse your media library.
+Since users clone or download the main branch directly, please develop and make pull
+requests against the branch `development`.
 
 ## Credits
 
