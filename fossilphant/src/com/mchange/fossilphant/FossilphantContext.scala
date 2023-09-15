@@ -33,7 +33,7 @@ object FossilphantContext:
       reverseChronologicalPublicPosts.filter( _.inReplyTo == InReplyTo.NoOne )
 
     val reverseChronologicalPublicPostsWithRepliesToOthersOnly =
-        reverseChronologicalPublicPosts.filter( post => !post.inReplyTo.isInstanceOf[InReplyTo.Self] )
+      reverseChronologicalPublicPosts.filterNot( _.inReplyTo.isInstanceOf[InReplyTo.Self] )
 
     val actor = ujson.read(os.read.stream(actorJsonPath) )
 
