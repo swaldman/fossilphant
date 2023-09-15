@@ -1,4 +1,0 @@
-import unstatic.UrlPath.Rooted
-
-(location : Rooted)[]~()>
-    <( tab("Main", FirstMainLoc, location, OnMain ) )> <span class="disc">&#x2022;</span> <( tab( "Posts and replies", FirstWithrepliesLoc, location, OnWithreplies ) )>

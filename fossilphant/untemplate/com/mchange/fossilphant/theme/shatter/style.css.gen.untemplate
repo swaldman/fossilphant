@@ -23,7 +23,6 @@ import com.mchange.fossilphant.theme.tower
   align-self: end;
   justify-self: center;
 }
-
 .shatter-topnav .shatter-topnav-right {
   grid-column: 3;
   grid-row: 1;
@@ -31,10 +30,15 @@ import com.mchange.fossilphant.theme.tower
   justify-self: end;
   margin-right: var( --outer-text-right-margin );
 }
-
 .shatter-topnav .status-title {
   /* font-size: 90%; */
   font-variation-settings: "wght" 600;
+}
+.shatter-topnav .tabs-wide {
+  display: block;
+}
+.shatter-topnav .tabs-narrow {
+  display: none;
 }
 .shatter-bottomnav {
   text-align: center;
@@ -95,11 +99,11 @@ import com.mchange.fossilphant.theme.tower
       justify-self: center;
       margin-right: 0;
     }
-    .shatter-topnav .shatter-topnav-right .disc, .shatter-topnav .shatter-topnav-right .current {
+    .shatter-topnav .tabs-wide {
       display: none;
     }
-    .shatter-topnav .shatter-topnav-right .tab::before {
-      content: "Switch to: "
+    .shatter-topnav .tabs-narrow {
+      display: block;
     }
 }
 

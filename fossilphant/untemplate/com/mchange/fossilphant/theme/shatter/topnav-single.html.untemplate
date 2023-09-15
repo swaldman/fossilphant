@@ -18,6 +18,6 @@ end localIdHtml
     &nbsp
   </div>
   <div class="shatter-topnav-right">
-    <( topnav_only_tabs_html( location ) )>
+    <( tabsForLocation( location ) )>
   </div>
 </div>

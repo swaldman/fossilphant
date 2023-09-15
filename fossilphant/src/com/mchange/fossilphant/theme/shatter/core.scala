@@ -59,15 +59,34 @@ def lastLink( contents : String, lpwc : LocatedPageWithContext ) =
     val prevRelPath = loc.relativizeSibling( Rooted(prevSiteRootedPath) )
     s"""<a href="${prevRelPath}">${contents}</a>"""
 
-def tab( contents : String, destLocation : Rooted, currentLocation : Rooted, onLocation : (Rooted,Rooted) => Boolean) : String =
-  if ( onLocation( destLocation, currentLocation ) ) then
-    s"""<span class="tab current">${contents}</span>"""
+// this is inelegant, but simple, easy to follow
+// i'm tired of whiffing more elegant logic split between here and the stylesheets
+
+val TabsMainWide =
+  s"""<span class="tab current">Main</span> <span class="disc">•</span> <span class="tab"><a href="withreplies_1.html">Posts and replies</a></span>"""
+val TabsMainNarrow =
+  s"""Switch to: <span class="tab"><a href="withreplies_1.html">Posts and replies</a></span>"""
+val TabsRepliesWide =
+  s"""<span class="tab"><a href="main_1.html">Main</a></span> <span class="disc">•</span> <span class="tab current">Posts and replies</span>"""
+val TabsRepliesNarrow =
+  s"""Switch to: <span class="tab"><a href="main_1.html">Main</a></span>"""
+val TabsSingleWide =
+  s"""<span class="tab"><a href="main_1.html">Main</a></span> <span class="disc">•</span> <span class="tab"><a href="withreplies_1.html">Posts and replies</a></span>"""
+val TabsSingleNarrow = TabsSingleWide
+
+def wideNarrow( tabsWide : String, tabsNarrow : String ) =
+  s"""<div class="tabs-wide">${tabsWide}</div><div class="tabs-narrow">${tabsNarrow}</div>"""
+
+val TabsMain = wideNarrow( TabsMainWide, TabsMainNarrow )
+val TabsReplies = wideNarrow( TabsRepliesWide, TabsRepliesNarrow )
+val TabsSingle = wideNarrow( TabsSingleWide, TabsSingleNarrow )
+
+def tabsForLocation( location : Rooted ) : String =
+  if location.elements.last.startsWith("main") then
+    TabsMain
+  else if location.elements.last.startsWith("withreplies") then
+    TabsReplies
   else
-    val href=currentLocation.relativizeSibling(destLocation)
-    s"""<span class="tab"><a href="${href}">${contents}</a></span>"""
+    TabsSingle
+end tabsForLocation
 
-val FirstMainLoc = Rooted("/main_1.html")
-val FirstWithrepliesLoc = Rooted("/withreplies_1.html")
-
-val OnMain : (Rooted, Rooted) => Boolean = (_,current) => current.elements.last.startsWith("main_")
-val OnWithreplies : (Rooted, Rooted) => Boolean = (_,current) => current.elements.last.startsWith("withreplies_")

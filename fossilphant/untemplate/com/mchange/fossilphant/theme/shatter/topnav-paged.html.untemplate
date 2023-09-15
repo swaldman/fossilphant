@@ -11,6 +11,6 @@ val location = lpwc.siteRootedLocation
     <( pager_html(lpwc) )>
   </div>
   <div class="shatter-topnav-right">
-    <( topnav_only_tabs_html( location ) )>
+    <( tabsForLocation( location ) )>
   </div>
 </div>
