@@ -90,6 +90,26 @@ You can mess around with colors, direct self links to your new identity,
 redirect tag links to a new host so they don't break against a defunct instance,
 change the title, the tagline, or the whole theme.
 
+## Known shortcomings
+
+Poll results are not yet rendered.
+
+## Theme notes
+
+### shatter
+
+Although `shatter` is based around paged feeds linking to single-post pages,
+it also includes an unlinked-from-index endpoint `/withrepliesSinglePage.html` which
+(`tower`-like) shows all posts and replies in one very tall page.
+
+The motivation for this that while `shatter`'s paging may be good for normal
+browsing, it's nice to be able to search your posts just by `<ctrl>` or `<command> F`.
+`/withrepliesSinglePage.html` is emitted for that!
+
+### tower
+
+_No notes yet!_
+
 ## Development
 
 `fossilphant` is built in Scala, on top of my own template (well,
