@@ -2,6 +2,7 @@ import $meta._
 
 import mill._
 import mill.scalalib._
+import mill.scalalib.publish._
 
 import $ivy.`com.mchange::untemplate-mill:0.1.1`
 import untemplate.mill._
@@ -16,7 +17,10 @@ object Dependency {
   val Upickle          = ivy"com.lihaoyi::upickle:3.1.0" // last scala 3.2.x release
 }
 
-object fossilphant extends UntemplateModule {
+object fossilphant extends UntemplateModule with PublishModule {
+  val projectName    = "fossilphant"
+  val projectVersion = "0.0.1-SNAPSHOT"
+
   override def scalaVersion = "3.2.2"
 
   // we'll build an index!
@@ -48,6 +52,20 @@ object fossilphant extends UntemplateModule {
 //  def scalacOptions = T {
 //    super.scalacOptions() ++ Seq("-explain")
 //  }
+
+  override def publishVersion = T{projectVersion}
+  override def pomSettings    = T{
+    PomSettings(
+        description = "A static site generator generator for Mastodon archives",
+        organization = "com.mchange",
+        url = s"https://github.com/swaldman/${projectName}",
+        licenses = Seq(License.`AGPL-3.0`),
+        versionControl = VersionControl.github("swaldman", projectName),
+        developers = Seq(
+          Developer("swaldman", "Steve Waldman", "https://github.com/swaldman")
+      )
+    )
+  }
 }
 
 
