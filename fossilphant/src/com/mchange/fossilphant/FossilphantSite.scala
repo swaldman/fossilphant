@@ -25,7 +25,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
   // make this a command line arg soon!
   val archiveLoc : String =
     config.archivePath.getOrElse(
-      throw new BadArchivePath("Location of Mastodon archive is defined neither in MASTODON_ARCHIVE environment variable nor in config.")
+      throw new BadArchivePath(s"Location of Mastodon archive is defined neither in ${Env.Archive} environment variable nor in config.")
     )
 
   lazy val archiveDir : os.Path =
