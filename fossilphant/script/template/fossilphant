@@ -1,0 +1,38 @@
+#!/usr/bin/env -S scala-cli shebang
+
+//> using scala "%SCALA_VERSION%"
+//> using dep "com.monovore::decline:%DECLINE_VERSION%"
+//> using dep "com.mchange::fossilphant:%FOSSILPHANT_VERSION%"
+//> using jvm %JVM%
+
+// println( os.pwd )
+
+import com.monovore.decline.*
+import com.mchange.fossilphant.*
+import unstatic.ztapir.ZTStaticGen
+import cats.implicits.* // for mapN
+
+val includeFollowersOnly = Opts.flag("include-followers-only", help="Include posts sent to all followers but not the full public").map(_ => true).withDefault(false)
+val includeSensitive     = Opts.flag("include-sensitive", help="Include posts marked sensitive").map( _ => true ).withDefault(false)
+val outDir = Opts.option[String]("output", short="o", metavar="outdir", help="Directory into which to generate site").withDefault("public")
+val archive = Opts.argument[String](metavar = "archive-tar-gz-or-dir") //, help = "a tar.gz file exported by Mastodon or its extracted directory")
+
+val allOpts : Opts[Tuple2[FossilphantConfig,os.Path]] = (includeFollowersOnly, includeSensitive, outDir, archive).mapN { (ifo, is, od, a) =>
+  val config = FossilphantConfig( toFollowersAsPublic=ifo, sensitiveAsPublic=is, archivePath = Some( a ) )
+  val outPath = os.Path( od, os.pwd )
+  (config, outPath)
+}
+
+val command = Command(name="fossilphant", header="Generates a static site from a Mastodon archive")( allOpts )
+
+command.parse(args.toIndexedSeq, sys.env) match
+  case Left(help) =>
+    println(help)
+    System.exit(1)
+  case Right( (config, outPath) ) =>
+    import zio.*
+    val site = FossilphantSite( config )
+    val task = ZTStaticGen.generateZTSite( site, outPath.toNIO )
+    Unsafe.unsafely:
+      Runtime.default.unsafe.run(task.debug).getOrThrow()
+
