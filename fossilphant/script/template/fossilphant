@@ -7,18 +7,23 @@
 
 // println( os.pwd )
 
+import scala.collection.*
 import com.monovore.decline.*
 import com.mchange.fossilphant.*
 import unstatic.ztapir.ZTStaticGen
 import cats.implicits.* // for mapN
 
-val includeFollowersOnly = Opts.flag("include-followers-only", help="Include posts sent to all followers but not the full public").map(_ => true).withDefault(false)
-val includeSensitive     = Opts.flag("include-sensitive", help="Include posts marked sensitive").map( _ => true ).withDefault(false)
+val validThemes = immutable.SortedSet("shatter","tower")
+val themeMetaVar = validThemes.mkString("|")
+
+val includeFollowersOnly = Opts.flag("include-followers-only", help="Include posts sent to all followers but not the full public").orFalse
+val includeSensitive     = Opts.flag("include-sensitive", help="Include posts marked sensitive").orFalse
 val outDir = Opts.option[String]("output", short="o", metavar="outdir", help="Directory into which to generate site").withDefault("public")
+val theme = Opts.option[String]("theme", short="t", metavar=themeMetaVar, help="Name of theme for generated site").withDefault("shatter").validate(s"""Theme must be one of ${validThemes.mkString(", ")}""")( t => validThemes(t) )
 val archive = Opts.argument[String](metavar = "archive-tar-gz-or-dir") //, help = "a tar.gz file exported by Mastodon or its extracted directory")
 
-val allOpts : Opts[Tuple2[FossilphantConfig,os.Path]] = (includeFollowersOnly, includeSensitive, outDir, archive).mapN { (ifo, is, od, a) =>
-  val config = FossilphantConfig( toFollowersAsPublic=ifo, sensitiveAsPublic=is, archivePath = Some( a ) )
+val allOpts : Opts[Tuple2[FossilphantConfig,os.Path]] = (includeFollowersOnly, includeSensitive, outDir, theme, archive).mapN { (ifo, is, od, t, a) =>
+  val config = FossilphantConfig( toFollowersAsPublic=ifo, sensitiveAsPublic=is, themeName = t, archivePath = Some( a ) )
   val outPath = os.Path( od, os.pwd )
   (config, outPath)
 }
