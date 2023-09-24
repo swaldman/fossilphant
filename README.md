@@ -39,8 +39,8 @@ includes those.
 
 ### scala-cli script (mac, linux)
 
-You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
-On a mac with homebrew that's just
+You will need [scala-cli](https://scala-cli.virtuslab.org/) [installed](https://scala-cli.virtuslab.org/install)
+on your machine. On a mac with homebrew that's just
 ```plaintext
 $ brew install Virtuslab/scala-cli/scala-cli
 ```
