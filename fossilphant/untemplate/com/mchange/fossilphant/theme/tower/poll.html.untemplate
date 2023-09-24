@@ -1,0 +1,37 @@
+// lazy to avoid taking max on an empty seq...
+lazy val winners = // could be a tie!
+  val max = pollItems.map( _.count ).max
+  pollItems.filter( _.count == max ).toSet
+end winners
+
+lazy val sum = pollItems.map( _.count ).sum
+
+def mbWinnerClass( pi : Post.PollItem ) : String =
+  if winners(pi) then " winner" else ""
+end mbWinnerClass
+
+def formattedPercentage( pi : Post.PollItem ) : String =
+  val toFormat = (pi.count.toDouble / sum) * 100
+  val count = pi.count
+  f"""$toFormat%4.1f%%"""
+end formattedPercentage
+
+(pollItems : immutable.Seq[Post.PollItem])[]~()>
+<()
+  if pollItems.nonEmpty then {
+()>
+    <div class="poll">
+<()
+    pollItems.foreach { pollItem =>
+()>
+      <div class="poll-item<( mbWinnerClass(pollItem) )>">
+         <div class="poll-item-percentage"><( formattedPercentage( pollItem ) )></div>
+         <div class="poll-item-text"><( pollItem.text )></div>
+         <div class="poll-item-count">(<( pollItem.count )> votes)</div>
+      </div>
+<()
+    }
+()>
+    </div>
+<()
+  }

@@ -69,3 +69,4 @@ object Env:
   val Archive = "FOSSILPHANT_ARCHIVE"
   val Theme   = "FOSSILPHANT_THEME"
 end Env
+

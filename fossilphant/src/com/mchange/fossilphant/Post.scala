@@ -1,5 +1,7 @@
 package com.mchange.fossilphant
 
+import com.mchange.fossilphant.Post.PollItem
+
 import java.time.Instant
 import scala.collection.*
 import scala.util.{Failure, Success, Try}
@@ -9,6 +11,7 @@ object Post:
   object Image:
     val SupportedTypes = immutable.Set("image/jpeg","image/gif","image/png")
   case class Image(siteRootedPath : Rooted, alt : Option[String] )
+  case class PollItem( text : String, count : Int )
   given ReverseChronologicalPublished : Ordering[Post] = Ordering.by[Post,Instant]( _.published ).reverse
 class Post( createActivity : UjsonObjValue, contentTransformer : String => String ):
   val id = createActivity("id").str
@@ -52,6 +55,17 @@ class Post( createActivity : UjsonObjValue, contentTransformer : String => Strin
         if raw.isNull then None else Some(raw.str)
       Post.Image(path,alt)
     }
+  def pollItems : immutable.Seq[Post.PollItem] =
+    val isPoll = createActivity("object").obj("type").str == "Question"
+    if isPoll then
+      createActivity("object").obj("oneOf").arr.map { jso =>
+        val dict = jso.obj
+        val text = dict("name").str
+        val count = dict("replies").obj("totalItems").num.toInt
+        PollItem( text, count )
+      }.toList
+    else
+      Nil
 
   lazy val inReplyTo =
     val irt = createActivity("object").obj("inReplyTo")

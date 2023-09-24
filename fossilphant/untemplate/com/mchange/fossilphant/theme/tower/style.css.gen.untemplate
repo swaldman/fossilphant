@@ -248,6 +248,50 @@ a.new-self-url:hover {
   border-bottom: var( --thread-border );
 }
 
+.poll {
+  margin-left: 1rem;
+}
+.poll-item:not(:first-child) {
+  margin-top: 0.25rem;
+}
+.poll-item {
+  display: grid;
+  grid-template-columns: 4rem auto 4rem;
+  grid-template-rows: auto;
+  grid-column-gap: 0.5rem;
+  /* border: 1px solid green; */
+}
+.poll-item-percentage {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  /* border: 1px solid red; */
+}
+.poll-item-text {
+  grid-column: 2;
+  grid-row: 1;
+  /* border: 1px solid blue; */
+}
+.poll-item-count {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 80%;
+}
+.poll-item.winner {
+  font-variation-settings: "wght" 600;
+  align-self: center;
+}
+.poll-item.winner .poll-item-text::after {
+  padding-left: 0.25rem;
+  color: green;
+  content: "\2714";
+}
+.poll-item.winner .poll-item-count {
+  font-variation-settings: "wght" 400;
+}
+
+
 .tabs {
   display:               grid;
   grid-template-columns: 1fr 1fr;

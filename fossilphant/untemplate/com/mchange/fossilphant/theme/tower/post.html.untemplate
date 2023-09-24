@@ -34,6 +34,7 @@ end mbSelfUrled
       <div class="post-user"><( mbSelfUrled( "@" + post.user ) )></div>
   </div>
   <div class="post-content"><( post.content )></div>
+  <( poll_html( post.pollItems ) )>
 <()
   val mbReplyLink = post.inReplyTo match
     case InReplyTo.NoOne           => None
