@@ -44,7 +44,7 @@ On a mac with homebrew that's just
 ```plaintext
 $ brew install Virtuslab/scala-cli/scala-cli
 ```
-
+Then...
 1. Download your archive file from your Mastodon instance
 2. Download the script [`fossilphant`](https://github.com/swaldman/fossilphant/releases/download/v0.0.1/fossilphant)
 3. Make it executable
