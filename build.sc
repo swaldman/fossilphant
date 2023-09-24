@@ -67,6 +67,11 @@ object fossilphant extends UntemplateModule with PublishModule {
     )
   }
 
+  def releasable : T[Unit] = T{
+    val ensurePublishable = publishArtifacts()
+    val ensureScripts = script.gen()
+  }
+
   object script extends Module {
     val shebangLine = "#!/usr/bin/env -S scala-cli shebang"
     val declineVersion = "2.4.1"
