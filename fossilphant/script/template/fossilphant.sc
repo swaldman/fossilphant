@@ -1,4 +1,3 @@
-#!/usr/bin/env -S scala-cli shebang
 
 //> using scala "%SCALA_VERSION%"
 //> using dep "com.monovore::decline:%DECLINE_VERSION%"
@@ -67,7 +66,7 @@ val allOpts : Opts[Tuple2[FossilphantConfig,os.Path]] =
     (config, outPath)
   }
 
-val command = Command(name="fossilphant", header="Generates a static site from a Mastodon archive")( allOpts )
+val command = Command(name=s"${scriptPath}", header="Generates a static site from a Mastodon archive")( allOpts )
 
 command.parse(args.toIndexedSeq, sys.env) match
   case Left(help) =>

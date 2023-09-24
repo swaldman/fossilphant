@@ -68,10 +68,12 @@ object fossilphant extends UntemplateModule with PublishModule {
   }
 
   object script extends Module {
+    val shebangLine = "#!/usr/bin/env -S scala-cli shebang"
     val declineVersion = "2.4.1"
     val scriptScalaVersion = "3.3.1" // can be more recent than the main project scala version!
     val scriptJvm = "17"
-    val scriptName = "fossilphant"
+    val scriptName = "fossilphant.sc"
+    val shebangScriptName = "fossilphant"
     def sources = T.source(millSourcePath / "template")
     def gen = T {
       val scriptsrcFile = sources().path / scriptName
@@ -82,10 +84,12 @@ object fossilphant extends UntemplateModule with PublishModule {
           .replace("%DECLINE_VERSION%", declineVersion)
           .replace("%FOSSILPHANT_VERSION%", projectVersion)
           .replace("%JVM%", scriptJvm)
-      val outPath = T.dest / scriptName
-      os.write(outPath , script )
-      os.perms.set(outPath,"rwxr-xr-x")
-      PathRef(outPath)
+      val scriptOutPath = T.dest / scriptName
+      os.write(scriptOutPath, script )
+      val shebangOutPath = T.dest / shebangScriptName
+      os.write(shebangOutPath, shebangLine + '\n' + script)
+      os.perms.set(shebangOutPath,"rwxr-xr-x")
+      Agg(scriptOutPath,shebangOutPath).map( PathRef(_) )
     }
   }
 }
