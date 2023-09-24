@@ -35,18 +35,74 @@ includes those.
 
 "Boosts" are not republished.
 
-## Prerequisites
+## Quick Start
+
+### scala-cli script (mac, linux)
+
+You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
+
+1. Download the script `fossilphant`
+2. Make it executable
+   ```plaintext
+   $ chmod ugo+x fossilphant
+   ```
+3. Run the script
+   ```plaintext
+   $ ./fossilphant /path/to/my-mastodon-archive
+   ```
+   If you want posts that you marked sensitive
+   and/or followers-only posts included, then
+   ```plaintext
+   $ ./fossilphant --include-followers-only --include-sensitive /path/to/my-mastodon-archive
+   ```
+   The archive can be an already extracted directory, or the original
+    `.tar.gz` file. (The application will extract the compressed archive into a
+   temporary directory if necessary.)
+
+You should see a directory called `public` that contains your new website.
+
+To customize, run
+   ```plaintext
+   $ ./fossilphant --help
+   ```
+and check out the many options!
+
+### scala-cli script (windows, any scala-cli supported platform)
+
+You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
+
+1. Download the script `fossilphant.sc`
+2. Run the script
+   ```plaintext
+   C:\Users\steve>scala-cli fossilphant.sc /path/to/my-mastodon-archive
+   ```
+   If you want posts that you marked sensitive
+   and/or followers-only posts included, then
+   ```plaintext
+   C:\Users\steve>scala-cli --include-followers-only --include-sensitive /path/to/my-mastodon-archive
+   ```
+   The archive can be an already extracted directory, or the original
+    `.tar.gz` file. (The application will extract the compressed archive into a
+   temporary directory if necessary.)
+
+You should see a directory called `public` that contains your new website.
+
+To customize, run
+   ```plaintext
+   $ ./fossilphant --help
+   ```
+and check out the many options!
+
+### Old school
 
 You will need a [Java virtual machine](https://www.oracle.com/java/technologies/java-se-glance.html),
 version 17 or higher, installed on your machine, and a UNIXy command line.
-
-## Quick Start
 
 1. Download your archive file from your Mastodon instance
 2. Clone or download this distribution
 3. From the root directory of this distribution, run
    ```plaintext
-   $ ./fossilphant-site-gen /path/to/my-maston-archive
+   $ ./fossilphant-site-gen /path/to/my-mastodon-archive
    ```
    The archive can be an already extracted directory, or the original
     `.tar.gz` file. (The application will extract the compressed archive into a
@@ -89,10 +145,6 @@ Configuration is documented in the comments of that file. Just edit it in place.
 You can mess around with colors, direct self links to your new identity,
 redirect tag links to a new host so they don't break against a defunct instance,
 change the title, the tagline, or the whole theme.
-
-## Known shortcomings
-
-Poll results are not yet rendered.
 
 ## Theme notes
 
