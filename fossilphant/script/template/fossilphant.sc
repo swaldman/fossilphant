@@ -14,6 +14,8 @@ import unstatic.ztapir.ZTStaticGen
 import cats.implicits.* // for mapN
 import cats.data.{NonEmptyList,Validated,ValidatedNel}
 
+import java.io.File.separatorChar
+
 val validThemes = immutable.SortedSet("shatter","tower")
 val themeMetaVar = validThemes.mkString("|")
 
@@ -66,7 +68,14 @@ val allOpts : Opts[Tuple2[FossilphantConfig,os.Path]] =
     (config, outPath)
   }
 
-val command = Command(name=s"${scriptPath}", header="Generates a static site from a Mastodon archive")( allOpts )
+val scriptName =
+  if scriptPath.indexOf(separatorChar) >= 0 then
+    val last = scriptPath.lastIndexOf(separatorChar)
+    scriptPath.substring(last+1)
+  else
+    scriptPath
+
+val command = Command(name=s"${scriptName}", header="Generates a static site from a Mastodon archive")( allOpts )
 
 command.parse(args.toIndexedSeq, sys.env) match
   case Left(help) =>
