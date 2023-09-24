@@ -55,8 +55,7 @@ Then...
    ```plaintext
    $ ./fossilphant /path/to/my-mastodon-archive
    ```
-   If you want posts that you marked sensitive
-   and/or followers-only posts included, then
+   _Note: If you want posts that you marked sensitive and/or followers-only posts included, then..._
    ```plaintext
    $ ./fossilphant --include-followers-only --include-sensitive /path/to/my-mastodon-archive
    ```
@@ -82,8 +81,7 @@ You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your ma
    ```plaintext
    C:\Users\steve>scala-cli fossilphant.sc /path/to/my-mastodon-archive
    ```
-   If you want posts that you marked sensitive
-   and/or followers-only posts included, then
+   _Note: If you want posts that you marked sensitive and/or followers-only posts included, then..._
    ```plaintext
    C:\Users\steve>scala-cli fossilphant.sc --include-followers-only --include-sensitive /path/to/my-mastodon-archive
    ```
