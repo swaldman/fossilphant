@@ -15,7 +15,7 @@ import untemplate.Untemplate.AnyUntemplate
 
 import zio.*
 
-class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRootComposite( JPath.of("fossilphant.sc/static") ):
+class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRootComposite( JPath.of("fossilphant/static") ):
 
   // these are... not so good. But this site should produce only
   // relative paths, so it should not matter
@@ -54,7 +54,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
     val themeIndex = IndexedUntemplates
 
     def typedThemeUntemplatesForSuffix[INPUT]( suffix : String ) : Map[String,untemplate.Untemplate[INPUT,Nothing]] =
-      val suffixUntemplates = themeIndex.filter( (k,_) => k.startsWith("com.mchange.fossilphant.sc.theme." + config.themeName) && k.endsWith(suffix) )
+      val suffixUntemplates = themeIndex.filter( (k,_) => k.startsWith("com.mchange.fossilphant.theme." + config.themeName) && k.endsWith(suffix) )
 
       // the compiler isn't reall able to check these properly because of type erasure, alas
       val typedSuffixUntemplates = suffixUntemplates.collect { case tup : (String, untemplate.Untemplate[INPUT,Nothing]) => tup  }
