@@ -49,7 +49,7 @@ Then...
 2. Download the script [`fossilphant`](https://github.com/swaldman/fossilphant/releases/download/v0.0.1/fossilphant)
 3. Make it executable
    ```plaintext
-   $ chmod ugo+x fossilphant
+   $ chmod +x fossilphant
    ```
 4. Run the script
    ```plaintext
