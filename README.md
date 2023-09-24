@@ -40,9 +40,13 @@ includes those.
 ### scala-cli script (mac, linux)
 
 You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
+On a mac with homebrew that's just
+```plaintext
+$ brew install Virtuslab/scala-cli/scala-cli
+```
 
 1. Download your archive file from your Mastodon instance
-2. Download the script `fossilphant`
+2. Download the script [`fossilphant`](https://github.com/swaldman/fossilphant/releases/download/v0.0.1/fossilphant)
 3. Make it executable
    ```plaintext
    $ chmod ugo+x fossilphant
@@ -73,7 +77,7 @@ and check out the many options!
 You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
 
 1. Download your archive file from your Mastodon instance
-2. Download the script `fossilphant.sc`
+2. Download the script [`fossilphant.sc`](https://github.com/swaldman/fossilphant/releases/download/v0.0.1/fossilphant.sc)
 3. Run the script
    ```plaintext
    C:\Users\steve>scala-cli fossilphant.sc /path/to/my-mastodon-archive
@@ -81,7 +85,7 @@ You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your ma
    If you want posts that you marked sensitive
    and/or followers-only posts included, then
    ```plaintext
-   C:\Users\steve>scala-cli --include-followers-only --include-sensitive /path/to/my-mastodon-archive
+   C:\Users\steve>scala-cli fossilphant.sc --include-followers-only --include-sensitive /path/to/my-mastodon-archive
    ```
    The archive can be an already extracted directory, or the original
     `.tar.gz` file. (The application will extract the compressed archive into a
@@ -91,7 +95,7 @@ You should see a directory called `public` that contains your new website.
 
 To customize, run
    ```plaintext
-   $ ./fossilphant --help
+   C:\Users\steve>scala-cli fossilphant.sc --help
    ```
 and check out the many options!
 
