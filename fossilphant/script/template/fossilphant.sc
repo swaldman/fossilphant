@@ -23,7 +23,7 @@ val includeFollowersOnly = Opts.flag("include-followers-only", help="Include pos
 val includeSensitive     = Opts.flag("include-sensitive", help="Include posts marked sensitive").orFalse
 val outDir = Opts.option[String]("output", short="o", metavar="outdir", help="Directory into which to generate site").withDefault("public")
 val pageLength = Opts.option[Int]("page-length", help="Number of posts per page (for themes that support paging)").withDefault(20)
-val selfUrl = Opts.option[String]("self-url", metavar="url", help="URL to which you'd like your display name and handle to link (if not to your profile on the archived server)ß").withDefault("null").map( Option.apply ) // the null is very transient, becomes None
+val selfUrl = Opts.option[String]("self-url", metavar="url", help="URL to which you'd like your display name and handle to link").withDefault("null").map( Option.apply ) // the null is very transient, becomes None
 val tagHost = Opts.option[String]("tag-host", metavar="hostname", help="Mastodon instance to which hashtag links should be directed (if not to the archived instance)").withDefault(null).map( Option.apply ) // the null is very transient, becomes None
 val tagline = Opts.option[String]("tagline", help="Main tagline for the generated site").withDefault(null).map( Option.apply ) // the null is very transient, becomes None
 val theme = Opts.option[String]("theme", short="t", metavar=themeMetaVar, help="Name of theme for generated site").withDefault("shatter").validate(s"""Theme must be one of ${validThemes.mkString(", ")}""")( t => validThemes(t) )
