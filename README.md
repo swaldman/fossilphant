@@ -41,12 +41,13 @@ includes those.
 
 You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
 
-1. Download the script `fossilphant`
-2. Make it executable
+1. Download your archive file from your Mastodon instance
+2. Download the script `fossilphant`
+3. Make it executable
    ```plaintext
    $ chmod ugo+x fossilphant
    ```
-3. Run the script
+4. Run the script
    ```plaintext
    $ ./fossilphant /path/to/my-mastodon-archive
    ```
@@ -71,8 +72,9 @@ and check out the many options!
 
 You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your machine.
 
-1. Download the script `fossilphant.sc`
-2. Run the script
+1. Download your archive file from your Mastodon instance
+2. Download the script `fossilphant.sc`
+3. Run the script
    ```plaintext
    C:\Users\steve>scala-cli fossilphant.sc /path/to/my-mastodon-archive
    ```
