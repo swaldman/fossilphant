@@ -95,7 +95,7 @@ To customize, run
    ```
 and check out the many options!
 
-### Old school
+### old school
 
 You will need a [Java virtual machine](https://www.oracle.com/java/technologies/java-se-glance.html),
 version 17 or higher, installed on your machine, and a UNIXy command line.
