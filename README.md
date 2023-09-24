@@ -213,11 +213,6 @@ You'll find those under the [parallel Scala source packages](fossilphant/src/com
 
 If you are interested in learning more about these libraries and tools, hit me up.
 
-## Contributing
-
-Since users clone or download the main branch directly, please develop and make pull
-requests against the branch `development`.
-
 ## Credits
 
 Site generation is built atop the very excellent [mill](https://github.com/com-lihaoyi/mill).
