@@ -7,7 +7,7 @@ import mill.scalalib.publish._
 import $ivy.`com.mchange::untemplate-mill:0.1.1`
 import untemplate.mill._
 
-val UnstaticVersion = "0.2.0-SNAPSHOT"
+val UnstaticVersion = "0.2.0"
 
 object Dependency {
   val Unstatic       = ivy"com.mchange::unstatic:${UnstaticVersion}"
@@ -19,7 +19,7 @@ object Dependency {
 
 object fossilphant extends UntemplateModule with PublishModule {
   val projectName    = "fossilphant"
-  val projectVersion = "0.0.2-SNAPSHOT"
+  val projectVersion = "0.0.2"
 
   override def scalaVersion = T{"3.2.2"}
 
