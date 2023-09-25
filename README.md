@@ -130,7 +130,8 @@ or its equivalent to `off` so that snoopers can't just browse your media library
 
 > [!NOTE]  
 > _Posts that were sent followers-only or that are marked sensitive
-> will not be published by default. Edit `config.scala` if you want
+> will not be published by default. Supply command-line `--include-followers-only` and/or `--include-sensitive arguments` (if you are using the `scala-cli` script),
+> or edit `config.scala` (if you are building from this distribution) if you want
 > those posts published._
 > 
 > _(Posts directed neither to the general public
@@ -140,10 +141,43 @@ or its equivalent to `off` so that snoopers can't just browse your media library
 
 ## Customization
 
-`fossilphant` is configurable, and for the truly ambitious,
-themable.
+`fossilphant` is configurable, and for the truly ambitious, themable.
 
-Check out the file [`fossilphant/src/config.scala`](fossilphant/src/config.scala) to customize.
+If you are running `fossilphant` via the `scala-cli` script, then just set command line arguments:
+
+```plaintext
+Usage: fossilphant [--include-followers-only] [--include-sensitive] [--output <outdir>] [--page-length <integer>] [--self-url <url>] [--tag-host <hostname>] [--tagline <string>] [--theme <shatter|tower>] [--theme-config <key:value>]... [--timezone <zone-id>] [--title <string>] <archive-tar-gz-or-dir>
+
+Generates a static site from a Mastodon archive
+
+Options and flags:
+    --help
+        Display this help text.
+    --include-followers-only
+        Include posts sent to all followers but not the full public
+    --include-sensitive
+        Include posts marked sensitive
+    --output <outdir>, -o <outdir>
+        Directory into which to generate site
+    --page-length <integer>
+        Number of posts per page (for themes that support paging)
+    --self-url <url>
+        URL to which you'd like your display name and handle to link
+    --tag-host <hostname>
+        Mastodon instance to which hashtag links should be directed (if not to the archived instance)
+    --tagline <string>
+        Main tagline for the generated site
+    --theme <shatter|tower>, -t <shatter|tower>
+        Name of theme for generated site
+    --theme-config <key:value>
+        Specify a configuration parameter for your theme.
+    --timezone <zone-id>
+        Timezone to use when generating post timestamps
+    --title <string>
+        Main title for the generated site
+```
+
+If you are building from this distribution, rather than a `scala-clie` script, check out the file [`fossilphant/src/config.scala`](fossilphant/src/config.scala) to customize basically the same variables.
 Configuration is documented in the comments of that file. Just edit it in place.
 
 You can mess around with colors, direct self links to your new identity,
@@ -151,6 +185,41 @@ redirect tag links to a new host so they don't break against a defunct instance,
 change the title, the tagline, or the whole theme.
 
 ## Theme notes
+
+### theme configuration
+
+Both current themes supprt the following configuration variable:
+
+* `page.background.color`
+* `post.background.color`
+* `post.text.color`
+* `outer.text.color`
+* `outer.link.color`
+* `outer.link.color.visited`
+* `post.link.color`
+* `post.link.color.visited`
+* `post.border.color`
+* `thread.border.color`
+
+When you change these you are really just altering the CSS that will be generated, so the values should be
+CSS colors, in any format.
+
+Here are the default values, presented in the form of command line arguments to the `scala-cli` scripts:
+
+```plaintext
+$ fossilphant \
+    --theme-config="page.background.color:rgb(225,225,225)" \
+    --theme-config="post.background.color:#FFFFFF"          \
+    --theme-config="post.text.color:black"                  \
+    --theme-config="outer.text.color:black"                 \
+    --theme-config="outer.link.color:#0000EE"               \
+    --theme-config="outer.link.color.visited:#551A8B"       \
+    --theme-config="post.link.color:#0000EE"                \
+    --theme-config="post.link.color.visited:#551A8B"        \
+    --theme-config="post.border.color:gray"                 \
+    --theme-config="thread.border.color:black"              \
+   [--any-other-options] <archive-tar-gz-or-dir>
+```
 
 ### shatter
 
