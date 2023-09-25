@@ -9,10 +9,15 @@ import scala.collection.*
 import com.monovore.decline.*
 import com.monovore.decline.time.*
 import com.mchange.fossilphant.*
+
+import unstatic.UrlPath.Rooted
 import unstatic.ztapir.ZTStaticGen
 
 import cats.implicits.* // for mapN
 import cats.data.{NonEmptyList,Validated,ValidatedNel}
+
+import zio.*
+import java.lang.System // so it's not shadowed by zio.System
 
 import java.io.File.separatorChar
 
@@ -77,14 +82,26 @@ val scriptName =
 
 val command = Command(name=s"${scriptName}", header="Generates a static site from a Mastodon archive")( allOpts )
 
+def printEndpointsWithHeader(header : String, endpoints : immutable.Seq[Rooted]) : Task[Unit] =
+  if endpoints.isEmpty then
+    ZIO.unit
+  else
+    for
+      _ <- Console.printLine(header)
+      _ <- ZIO.foreach(endpoints.map(_.toString).to(immutable.SortedSet))( endpoint => Console.printLine(s" \u27A3 ${endpoint}"))
+    yield ()
+
 command.parse(args.toIndexedSeq, sys.env) match
   case Left(help) =>
     println(help)
     System.exit(1)
   case Right( (config, outPath) ) =>
-    import zio.*
     val site = FossilphantSite( config )
-    val task = ZTStaticGen.generateZTSite( site, outPath.toNIO )
+    val task =
+      for
+        result <- ZTStaticGen.generateZTSite( site, outPath.toNIO )
+        _      <- printEndpointsWithHeader("Endpoints generated:", result.generated)
+      yield ()	
     Unsafe.unsafely:
-      Runtime.default.unsafe.run(task.debug).getOrThrow()
+      Runtime.default.unsafe.run(task).getOrThrow()
 

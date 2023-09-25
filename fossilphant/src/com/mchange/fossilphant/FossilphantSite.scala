@@ -15,7 +15,15 @@ import untemplate.Untemplate.AnyUntemplate
 
 import zio.*
 
-class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRootComposite( JPath.of("fossilphant/static") ):
+class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite:
+
+  // directory beneath which hash-special media-dir content can be
+  // checked to make sure media-dir links have referents
+  //
+  // we have no need for this... theme templates may use hash special anchor links
+  // or links to site-rooted paths, but not media-dir links
+  // our endpoints do not define media-dirs, so attempts to reference them will throw anyway.
+  override val enforceUserContentFrom : Option[immutable.Seq[JPath]] = None
 
   // these are... not so good. But this site should produce only
   // relative paths, so it should not matter
@@ -148,5 +156,17 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.SingleRoo
     lazy val endpointBindings = mediaAttachmentsEndpointBinding :: avatarStaticBinding :: Nil
   end StaticArchiveResources
 
+  object ClassLoaderResources extends ZTEndpointBinding.Source:
+    val genResourcePaths = List(
+      "font/Montserrat/Montserrat-VariableFont_wght.ttf",
+      "font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf"
+    )
+    def ttfBindingFromPath( path : String ) : ZTEndpointBinding =
+      val siteRootedPath = Rooted.parseAndRoot( path )
+      ZTEndpointBinding.fromClassLoaderResource( siteRootedPath, FossilphantSite.this, this.getClass.getClassLoader, path, "font/ttf", immutable.Set.empty )
+
+    lazy val endpointBindings = genResourcePaths.map( ttfBindingFromPath )
+  end ClassLoaderResources  
+
   // avoid conflicts, but early items in the lists take precedence over later items
-  override lazy val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates )
+  override lazy val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates, ClassLoaderResources )
