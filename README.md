@@ -278,6 +278,11 @@ The template-generated functions live in Scala packages, beneath `com.mchange.fo
 Each theme also includes helper functions, as well as constructs written in normal Scala.
 You'll find those under the [parallel Scala source packages](fossilphant/src/com/mchange/fossilphant/theme).
 
+## Related projects
+
+* [`unstatic`](https://github.com/swaldman/unstatic) — a static-site-generator generator
+* [`untemplate`](https://github.com/swaldman/untemplate-doc) — templates (html/css/any-kind-of-text) as thinly wrapped specifications of Scala functions
+
 If you are interested in learning more about these libraries and tools, hit me up.
 
 ## Credits
