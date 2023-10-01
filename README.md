@@ -287,6 +287,8 @@ If you are interested in learning more about these libraries and tools, hit me u
 
 ## Credits
 
+Themes `shatter` and `tower` both use the excellent font [Montserrat](https://en.wikipedia.org/wiki/Montserrat_(typeface)).
+
 Site generation is built atop the very excellent [mill](https://github.com/com-lihaoyi/mill).
 
 Libraries of note beneath this include [zio](https://zio.dev/), [tapir](https://tapir.softwaremill.com/en/latest/),
