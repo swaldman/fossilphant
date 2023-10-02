@@ -19,7 +19,7 @@ object Dependency {
 
 object fossilphant extends UntemplateModule with PublishModule {
   val projectName    = "fossilphant"
-  val projectVersion = "0.0.2"
+  val projectVersion = "0.0.3-SNAPSHOT"
 
   override def scalaVersion = T{"3.2.2"}
 
