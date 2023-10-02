@@ -37,7 +37,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
     )
 
   lazy val archiveDir : os.Path =
-    import org.rauschig.jarchivelib.ArchiverFactory
+    import org.rauschig.jarchivelib.{ArchiveFormat,ArchiverFactory}
     val rawPath = os.Path(archiveLoc, os.pwd)
     if !os.exists(rawPath) then
       throw new BadArchivePath( s"No file or directory exists at specified path '${rawPath}'." )
@@ -46,7 +46,13 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
     else if archiveLoc.endsWith(".tgz") || archiveLoc.endsWith(".tar.gz") then
       val tmpDir = os.temp.dir()
       val archiver = ArchiverFactory.createArchiver("tar", "gz")
-      System.err.println(s"Extracting archive '${rawPath}' into '${tmpDir}'.")
+      System.err.println(s"Extracting tgz archive '${rawPath}' into '${tmpDir}'.")
+      archiver.extract(rawPath.toIO, tmpDir.toIO)
+      tmpDir
+    else if archiveLoc.endsWith(".zip") then
+      val tmpDir = os.temp.dir()
+      val archiver = ArchiverFactory.createArchiver(ArchiveFormat.ZIP)
+      System.err.println(s"Extracting zip archive '${rawPath}' into '${tmpDir}'.")
       archiver.extract(rawPath.toIO, tmpDir.toIO)
       tmpDir
     else
