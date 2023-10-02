@@ -60,7 +60,7 @@ Then...
    $ ./fossilphant --include-followers-only --include-sensitive /path/to/my-mastodon-archive
    ```
    The archive can be an already extracted directory, or the original
-    `.tar.gz` file. (The application will extract the compressed archive into a
+    `.tar.gz` or `.zip` file. (The application will extract the compressed archive into a
    temporary directory if necessary.)
 
 You should see a directory called `public` that contains your new website.
@@ -86,9 +86,8 @@ You will need [scala-cli](https://scala-cli.virtuslab.org/) installed on your ma
    C:\Users\steve>scala-cli fossilphant.sc --include-followers-only --include-sensitive /path/to/my-mastodon-archive
    ```
    The archive can be an already extracted directory, or the original
-    `.tar.gz` file. (The application will extract the compressed archive into a
+    `.tar.gz` or `.zip` file. (The application will extract the compressed archive into a
    temporary directory if necessary.)
-
 You should see a directory called `public` that contains your new website.
 
 To customize, run
@@ -109,7 +108,7 @@ version 17 or higher, installed on your machine, and a UNIXy command line.
    $ ./fossilphant-site-gen /path/to/my-mastodon-archive
    ```
    The archive can be an already extracted directory, or the original
-    `.tar.gz` file. (The application will extract the compressed archive into a
+    `.tar.gz` or `.zip` file. (The application will extract the compressed archive into a
    temporary directory if necessary.)
 
 That's it!
