@@ -278,6 +278,33 @@ The template-generated functions live in Scala packages, beneath `com.mchange.fo
 Each theme also includes helper functions, as well as constructs written in normal Scala.
 You'll find those under the [parallel Scala source packages](fossilphant/src/com/mchange/fossilphant/theme).
 
+### How to build and "test"
+
+```plaintext
+$ ./mill fossilphant.releasable
+```
+
+compiles the code and generates a `fossilphant` script consistent with the current `projectVersion` in `build.sc`.
+
+While you are developing, the version should be something `-SNAPSHOT` or some other clearly-not-final-and-public
+form of version.
+
+If `fossiphant.releasable` succeeds, publish your tentative version locally:
+
+```plaintext
+$ ./mill fossilphant.publishLocal
+```
+
+You can now just run the generated `fossilphant` script, which lives in `./out/fossilphant/script/gen.dest/`:
+
+```plaintext
+$ ./out/fossilphant/script/gen.dest/fossilphant /path/to/my/archive
+```
+
+The generated site will appear in `public/` (which is in `.gitignore`, so your test site won't get caught in version control).
+
+For now, this is the only "testing" I'm doing: build a site, how'd it look?
+
 ## Related projects
 
 * [`unstatic`](https://github.com/swaldman/unstatic) — a static-site-generator generator
