@@ -278,7 +278,7 @@ The template-generated functions live in Scala packages, beneath `com.mchange.fo
 Each theme also includes helper functions, as well as constructs written in normal Scala.
 You'll find those under the [parallel Scala source packages](fossilphant/src/com/mchange/fossilphant/theme).
 
-### How to build and "test"
+#### How to build and "test"
 
 ```plaintext
 $ ./mill fossilphant.releasable
