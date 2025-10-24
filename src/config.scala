@@ -74,11 +74,11 @@ val MainFossilphantConfig = FossilphantConfig(
   //      how many posts should appear on each page?
   pageLength = 20,
 
-  // e.g. ContentTransformer.rehostTags( "mastodon.social" )
+  // e.g. ContentTransformer.mastodonRehostTags( "mastodon.social" )
   //      transforms post content while generating.
   //      for example, if your instance is disappearing,
   //      tags would normally become dead links.
-  //      if you set this to ContentTransformer.rehostTags( "mastodon.social" ),
+  //      if you set this to ContentTransformer.mastodonRehostTags( "mastodon.social" ),
   //      then tag links will go to the tag's index on https://mastodon.social/
   contentTransformer = identity,
 

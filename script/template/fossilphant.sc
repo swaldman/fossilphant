@@ -61,7 +61,7 @@ val allOpts : Opts[Tuple2[FossilphantConfig,os.Path]] =
       sensitiveAsPublic=is,
       pageLength = pl,
       newSelfUrl = su,
-      contentTransformer = th.fold(identity : String => String )( ContentTransformer.rehostTags(_) ),
+      contentTransformer = th.fold(identity : String => String )( ContentTransformer.mastodonRehostTags(_) ),
       mainTagline = ta,
       themeName = tn,
       themeConfig = tc,

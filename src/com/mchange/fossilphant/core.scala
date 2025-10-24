@@ -56,7 +56,7 @@ case class LocatedPageWithContext( siteRootedLocation : Rooted, index : Int, pag
   def numPages = pages.length
 
 object ContentTransformer:
-  def rehostTags( newHost : String ) : ContentTransformer = { content =>
+  def mastodonRehostTags( newHost : String ) : ContentTransformer = { content =>
     UnanchoredTagUrlRegex.replaceAllIn(content, m => s"""https://${newHost}/tags/${m.group(2)}""")
   }
 type ContentTransformer = String => String

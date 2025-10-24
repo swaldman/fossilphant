@@ -3,7 +3,7 @@ package com.mchange.fossilphant
 import unstatic.ztapir.ZTMain
 
 object FossilphantSiteGenerator:
-  class Runner( cfg : FossilphantConfig ) extends ZTMain(new FossilphantSite(cfg), "fossilphant-site")
+  class Runner( cfg : FossilphantConfig ) extends ZTMain(new MastodonFossilphantSite(cfg), "fossilphant-site")
 
   def main(args : Array[String]) : Unit =
     val config =

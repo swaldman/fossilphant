@@ -3,7 +3,7 @@ package com.mchange.fossilphant
 import scala.collection.*
 
 object FossilphantContext:
-  def apply( archiveDir : os.Path, config : FossilphantConfig) : FossilphantContext =
+  def forMastodon( archiveDir : os.Path, config : FossilphantConfig) : FossilphantContext =
     val outboxJsonPath = archiveDir / "outbox.json"
     val actorJsonPath  = archiveDir / "actor.json"
 
@@ -59,7 +59,7 @@ object FossilphantContext:
       publicPostsByLocalId,
       threadNexts,
       outbox.obj )
-  end apply
+  end forMastodon
 
 case class FossilphantContext(
   config : FossilphantConfig,

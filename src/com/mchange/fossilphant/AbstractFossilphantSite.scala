@@ -15,7 +15,7 @@ import untemplate.Untemplate.AnyUntemplate
 
 import zio.*
 
-class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite:
+abstract class AbstractFossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite:
 
   // directory beneath which hash-special media-dir content can be
   // checked to make sure media-dir links have referents
@@ -36,29 +36,9 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
       throw new BadArchivePath(s"Location of Mastodon archive is defined neither in ${Env.Archive} environment variable nor in config.")
     )
 
-  lazy val archiveDir : os.Path =
-    import org.rauschig.jarchivelib.{ArchiveFormat,ArchiverFactory}
-    val rawPath = os.Path(archiveLoc, os.pwd)
-    if !os.exists(rawPath) then
-      throw new BadArchivePath( s"No file or directory exists at specified path '${rawPath}'." )
-    else if os.isDir(rawPath) then
-      rawPath
-    else if archiveLoc.endsWith(".tgz") || archiveLoc.endsWith(".tar.gz") then
-      val tmpDir = os.temp.dir()
-      val archiver = ArchiverFactory.createArchiver("tar", "gz")
-      System.err.println(s"Extracting tgz archive '${rawPath}' into '${tmpDir}'.")
-      archiver.extract(rawPath.toIO, tmpDir.toIO)
-      tmpDir
-    else if archiveLoc.endsWith(".zip") then
-      val tmpDir = os.temp.dir()
-      val archiver = ArchiverFactory.createArchiver(ArchiveFormat.ZIP)
-      System.err.println(s"Extracting zip archive '${rawPath}' into '${tmpDir}'.")
-      archiver.extract(rawPath.toIO, tmpDir.toIO)
-      tmpDir
-    else
-      throw new BadArchivePath( s"Archive location '${archiveLoc}' is neither a directory nor a file ending in '.tgz' or '.tar.gz' as expected." )
-
-  lazy val context = FossilphantContext( archiveDir, config )
+  def context : FossilphantContext
+  
+  def staticArchiveResources : ZTEndpointBinding.Source
 
   // no subdirectories! we generate theme resources into a single directory
   object GenUntemplates extends ZTEndpointBinding.Source:
@@ -89,13 +69,13 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
           val task = ZIO.attempt {
             untemplateFcn(LocatedContext(location,context)).text
           }
-          FossilphantSite.this.publicReadOnlyHtml( location, task, None, immutable.Set(baseName,s"${baseName}.html"), true )
+          AbstractFossilphantSite.this.publicReadOnlyHtml( location, task, None, immutable.Set(baseName,s"${baseName}.html"), true )
         case BaseNameForCssRegex(baseName) =>
           val location = Rooted(s"/${baseName}.css")
           val task = ZIO.attempt {
             untemplateFcn(LocatedContext(location,context)).text
           }
-          ZTEndpointBinding.publicReadOnlyCss( location, FossilphantSite.this, task, None, immutable.Set(baseName,s"${baseName}.css") )
+          ZTEndpointBinding.publicReadOnlyCss( location, AbstractFossilphantSite.this, task, None, immutable.Set(baseName,s"${baseName}.css") )
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
 
@@ -110,7 +90,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
             val task = ZIO.attempt {
               untemplateFcn(LocatedPostWithContext(location, post, context)).text
             }
-            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true )
+            AbstractFossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true )
           }
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
@@ -132,7 +112,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
             val task = ZIO.attempt {
               untemplateFcn(LocatedPageWithContext(location, index, pages, context)).text
             }
-            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true)
+            AbstractFossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true)
           }
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
@@ -148,19 +128,6 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
 
   end GenUntemplates
 
-  object StaticArchiveResources extends ZTEndpointBinding.Source:
-    val mediaAttachmentsDirName = "media_attachments"
-    val mediaAttachmentsPath = archiveDir / mediaAttachmentsDirName
-
-    val avatarFileName = "avatar.jpg"
-    val avatarPath = archiveDir / avatarFileName
-
-    val mediaAttachmentsEndpointBinding =
-      ZTEndpointBinding.staticDirectoryServing( FossilphantSite.this.location(mediaAttachmentsDirName), mediaAttachmentsPath.toNIO, immutable.Set(mediaAttachmentsDirName) )
-    val avatarStaticBinding =
-      ZTEndpointBinding.staticFileServing( FossilphantSite.this.location(avatarFileName), avatarPath.toNIO, immutable.Set("avatar", avatarFileName) )
-    lazy val endpointBindings = mediaAttachmentsEndpointBinding :: avatarStaticBinding :: Nil
-  end StaticArchiveResources
 
   object ClassLoaderResources extends ZTEndpointBinding.Source:
     val genResourcePaths = List(
@@ -169,10 +136,10 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
     )
     def ttfBindingFromPath( path : String ) : ZTEndpointBinding =
       val siteRootedPath = Rooted.parseAndRoot( path )
-      ZTEndpointBinding.fromClassLoaderResource( siteRootedPath, FossilphantSite.this, this.getClass.getClassLoader, path, "font/ttf", immutable.Set.empty )
+      ZTEndpointBinding.fromClassLoaderResource( siteRootedPath, AbstractFossilphantSite.this, this.getClass.getClassLoader, path, "font/ttf", immutable.Set.empty )
 
     lazy val endpointBindings = genResourcePaths.map( ttfBindingFromPath )
-  end ClassLoaderResources  
+  end ClassLoaderResources
 
   // avoid conflicts, but early items in the lists take precedence over later items
-  override lazy val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( StaticArchiveResources, GenUntemplates, ClassLoaderResources )
+  override lazy val endpointBindingSources : immutable.Seq[ZTEndpointBinding.Source] = immutable.Seq( staticArchiveResources, GenUntemplates, ClassLoaderResources )
