@@ -15,7 +15,7 @@ object FossilphantContext:
 
     val publicPosts =
       unsortedPostJsons
-        .map( postJson => new Post(postJson, config.contentTransformer) )
+        .map( postJson => new MastodonPost(postJson, config.contentTransformer) )
         .filter( effectivelyPublic(config) )
 
     val publicPostsByLocalId = publicPosts.map( post => (post.localId, post)).toMap
