@@ -70,7 +70,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
     def typedThemeUntemplatesForSuffix[INPUT]( suffix : String ) : Map[String,untemplate.Untemplate[INPUT,Nothing]] =
       val suffixUntemplates = themeIndex.filter( (k,_) => k.startsWith("com.mchange.fossilphant.theme." + config.themeName) && k.endsWith(suffix) )
 
-      // the compiler isn't reall able to check these properly because of type erasure, alas
+      // the compiler isn't really able to check these properly because of type erasure, alas
       val typedSuffixUntemplates = suffixUntemplates.collect { case tup : (String, untemplate.Untemplate[INPUT,Nothing]) => tup  }
 
       if suffixUntemplates.size != typedSuffixUntemplates.size then
@@ -89,7 +89,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
           val task = ZIO.attempt {
             untemplateFcn(LocatedContext(location,context)).text
           }
-          FossilphantSite.this.publicReadOnlyHtml( location, task, None, immutable.Set(baseName,s"${baseName}.html"), true, false )
+          FossilphantSite.this.publicReadOnlyHtml( location, task, None, immutable.Set(baseName,s"${baseName}.html"), true )
         case BaseNameForCssRegex(baseName) =>
           val location = Rooted(s"/${baseName}.css")
           val task = ZIO.attempt {
@@ -110,7 +110,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
             val task = ZIO.attempt {
               untemplateFcn(LocatedPostWithContext(location, post, context)).text
             }
-            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true, false)
+            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true )
           }
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
@@ -132,7 +132,7 @@ class FossilphantSite( val config : FossilphantConfig ) extends ZTSite.Composite
             val task = ZIO.attempt {
               untemplateFcn(LocatedPageWithContext(location, index, pages, context)).text
             }
-            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true, false)
+            FossilphantSite.this.publicReadOnlyHtml(location, task, None, immutable.Set(locationBase, s"${locationBase}.html"), true)
           }
         case other =>
           throw new BadThemeUntemplate(s"'${other}' appears to be a theme untemplate that would generate an unknown or unexpected file type.")
