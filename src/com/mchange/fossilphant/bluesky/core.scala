@@ -46,7 +46,7 @@ def downloadBskyArchiveImages( bskyRepoCar : os.Path, destinationDir : os.Path, 
         if bskyArchive.profile.blobRefs.size == 1 then
           val blobRef = bskyArchive.profile.blobRefs.head
           val href = blobRef.toBskyUrl( bskyArchive.did )
-          val path = bskyImageUrlToDestPath( href )
+          val path = os.Path( "avatar." + href.dropWhile( _ != '@' ).substring(1), destinationDir )
           ( href, path )
         else
           throw new MissingAvatar(s"We expect one blob, the avatar image, in the profile record. Found ${bskyArchive.profile.blobRefs.size}: ${bskyArchive.profile}")
