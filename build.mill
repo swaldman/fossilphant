@@ -17,9 +17,11 @@ object Dependency:
   val JArchiveLib    = mvn"org.rauschig:jarchivelib:1.2.0"
   val OsLib          = mvn"com.lihaoyi::os-lib:0.11.5"
   val Upickle        = mvn"com.lihaoyi::upickle:4.4.0"
+  val Bskyarchive    = mvn"com.mchange::bskyarchive:0.0.1-SNAPSHOT"
+  val Requests       = mvn"com.lihaoyi::requests:0.9.0"
 
 
-object `package` extends UntemplateModule with PublishModule:
+object `package` extends UntemplateModule with SonatypeCentralPublishModule:
   val projectName    = "fossilphant"
   val projectVersion = "0.1.0-SNAPSHOT"
 
@@ -39,12 +41,15 @@ object `package` extends UntemplateModule with PublishModule:
         Dependency.JArchiveLib,
         Dependency.OsLib,
         Dependency.Upickle,
+        Dependency.Bskyarchive,
+        Dependency.Requests,
       ) // Seq
   }
 
 //  def scalacOptions = Task:
 //    super.scalacOptions() ++ Seq("-explain")
 
+  override def artifactName = Task { projectName }
   override def publishVersion = Task( projectVersion )
   override def pomSettings    = Task:
     PomSettings(
@@ -68,22 +73,23 @@ object `package` extends UntemplateModule with PublishModule:
     val declineVersion = "2.5.0"
     val scriptScalaVersion = "3.3.6" // can be more recent than the main project scala version!
     val scriptJvm = "21"
-    val scriptName = "fossilphant.sc"
-    val shebangScriptName = "fossilphant"
+    // val scriptName = "fossilphant.sc"
+    // val shebangScriptName = "fossilphant"
     def sources = Task.Source("template")
     def gen = Task:
-      val scriptsrcFile = sources().path / scriptName
-      val scriptsrc = os.read(scriptsrcFile)
-      val script =
-        scriptsrc
-          .replace("%SCALA_VERSION%", scriptScalaVersion)
-          .replace("%DECLINE_VERSION%", declineVersion)
-          .replace("%FOSSILPHANT_VERSION%", projectVersion)
-          .replace("%JVM%", scriptJvm)
-      val scriptOutPath = Task.dest / scriptName
-      os.write(scriptOutPath, script )
-      val shebangOutPath = Task.dest / shebangScriptName
-      os.write(shebangOutPath, shebangLine + '\n' + script)
-      os.perms.set(shebangOutPath,"rwxr-xr-x")
-      Seq(scriptOutPath,shebangOutPath).map( PathRef(_) )
-
+      os.list( sources().path ).filter( _.toString.endsWith(".sc") ).flatMap: (scriptSrcFile : os.Path) =>
+        val scriptName = scriptSrcFile.segments.toVector.last
+        val shebangScriptName = scriptName.stripSuffix(".sc")
+        val scriptsrc = os.read(scriptSrcFile)
+        val script =
+          scriptsrc
+            .replace("%SCALA_VERSION%", scriptScalaVersion)
+            .replace("%DECLINE_VERSION%", declineVersion)
+            .replace("%FOSSILPHANT_VERSION%", projectVersion)
+            .replace("%JVM%", scriptJvm)
+        val scriptOutPath = Task.dest / scriptName
+        os.write(scriptOutPath, script )
+        val shebangOutPath = Task.dest / shebangScriptName
+        os.write(shebangOutPath, shebangLine + '\n' + script)
+        os.perms.set(shebangOutPath,"rwxr-xr-x")
+        Seq(scriptOutPath,shebangOutPath).map( PathRef(_) )

@@ -46,7 +46,7 @@ $ brew install Virtuslab/scala-cli/scala-cli
 ```
 Then...
 1. Download your archive file from your Mastodon instance
-2. Download the script [`fossilphant`](https://github.com/swaldman/fossilphant/releases/download/v0.0.2/fossilphant)
+2. Download the script [`fossilphant`](https://github.com/swaldman/fossilphant/releases/download/v0.0.3/fossilphant)
 3. Make it executable
    ```plaintext
    $ chmod +x fossilphant
