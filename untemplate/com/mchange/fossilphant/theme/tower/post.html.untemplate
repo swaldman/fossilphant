@@ -30,8 +30,8 @@ end mbSelfUrled
   </div>
   <div class="avatar-names">
       <div class="avatar"><a name="<( postId )>"><img src="##avatar" /></a></div>
-      <div class="post-display-name"><( mbSelfUrled( context.userDisplayName ) )></div>
-      <div class="post-user"><( mbSelfUrled( "@" + post.user ) )></div>
+      <div class="post-display-name"><( mbSelfUrled( post.displayNameOverride.getOrElse(context.userDisplayName) ) )></div>
+      <div class="post-user"><( mbSelfUrled( post.userInMentionFormat ) )></div>
   </div>
   <div class="post-content"><( post.content )></div>
   <( poll_html( post.pollItems ) )>

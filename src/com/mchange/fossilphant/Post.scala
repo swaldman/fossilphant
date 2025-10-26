@@ -17,6 +17,8 @@ trait Post:
   def id : String
   def originalHost : String
   def user : String
+  def userInMentionFormat : String
+  def displayNameOverride : Option[String]
   def localId : String
   def url : String
   def rawContent : String

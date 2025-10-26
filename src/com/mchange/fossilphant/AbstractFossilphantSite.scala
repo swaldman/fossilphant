@@ -37,7 +37,7 @@ abstract class AbstractFossilphantSite( val config : FossilphantConfig ) extends
     )
 
   def context : FossilphantContext
-  
+
   def staticArchiveResources : ZTEndpointBinding.Source
 
   // no subdirectories! we generate theme resources into a single directory

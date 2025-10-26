@@ -17,6 +17,7 @@ import zio.*
 
 class MastodonFossilphantSite( config : FossilphantConfig ) extends AbstractFossilphantSite(config):
 
+  // archiveLoc is from superclass
   lazy val archiveDir : os.Path =
     import org.rauschig.jarchivelib.{ArchiveFormat,ArchiverFactory}
     val rawPath = os.Path(archiveLoc, os.pwd)

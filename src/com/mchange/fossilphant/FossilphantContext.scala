@@ -1,6 +1,7 @@
 package com.mchange.fossilphant
 
 import scala.collection.*
+import com.mchange.bskyarchive.*
 
 object FossilphantContext:
   def forMastodon( archiveDir : os.Path, config : FossilphantConfig) : FossilphantContext =
@@ -57,9 +58,43 @@ object FossilphantContext:
       reverseChronologicalPublicPostsNoReplies,
       reverseChronologicalPublicPostsWithRepliesToOthersOnly,
       publicPostsByLocalId,
-      threadNexts,
-      outbox.obj )
+      threadNexts
+    )
   end forMastodon
+
+  def forBluesky( bskyArchive : BskyArchive, config : FossilphantConfig, userHandleNoAt : Option[String], imageDir : os.Path ) : FossilphantContext =
+    val did = bskyArchive.did
+    val publicPosts =
+      bskyArchive.posts().map: carBlockPost =>
+        val tid = bskyArchive.getTid( carBlockPost ).getOrElse( throw new MissingTid( s"Could not find tid for record: $carBlockPost" ) )
+        BlueskyPost( carBlockPost, tid, did, userHandleNoAt, config.contentTransformer )
+    val publicPostsByLocalId =
+      publicPosts.map( post => (post.localId, post)).toMap
+    val threadNexts : Map[String,String] = Map.empty // FIXME
+    val userDisplayName = config.overrideDisplayName.getOrElse( bskyArchive.profile.cbor.get("displayName").AsString )
+    val mbUserHost = Some(UserHost(userHandleNoAt.fold(did)("@"+_),"bsky.app"))
+    val mainTitle = config.mainTitle.getOrElse:
+      mbUserHost.fold("Bluesky archive")(uh => s"Bluesky archive: ${uh.user}")
+    val reverseChronologicalPublicPosts =
+      immutable.SortedSet.from( publicPosts ).toSeq
+    val reverseChronologicalPublicPostsNoReplies =
+      reverseChronologicalPublicPosts.filter( _.inReplyTo == InReplyTo.NoOne )
+    val reverseChronologicalPublicPostsWithRepliesToOthersOnly =
+      reverseChronologicalPublicPosts.filterNot( _.inReplyTo.isInstanceOf[InReplyTo.Self] )
+
+    FossilphantContext(
+      config,
+      mbUserHost,
+      mainTitle,
+      userDisplayName,
+      reverseChronologicalPublicPosts,
+      reverseChronologicalPublicPostsNoReplies,
+      reverseChronologicalPublicPostsWithRepliesToOthersOnly,
+      publicPostsByLocalId,
+      threadNexts
+    )
+
+  end forBluesky
 
 case class FossilphantContext(
   config : FossilphantConfig,
@@ -70,8 +105,7 @@ case class FossilphantContext(
   reverseChronologicalPublicPostsNoReplies : Seq[Post],
   reverseChronologicalPublicPostsWithRepliesToOthersOnly : Seq[Post], // when threads will be followed and catch self-replies
   publicPostsByLocalId : Map[String,Post],
-  threadNexts : Map[String,String],
-  rawOutbox : UjsonObjValue
+  threadNexts : Map[String,String]
 ):
   lazy val pagesIncludingReplies = reverseChronologicalPublicPosts.grouped( config.pageLength ).toSeq
   lazy val pagesIncludingRepliesToOthersOnly = reverseChronologicalPublicPostsWithRepliesToOthersOnly.grouped( config.pageLength ).toSeq

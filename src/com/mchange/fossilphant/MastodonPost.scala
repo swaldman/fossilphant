@@ -16,6 +16,8 @@ class MastodonPost( createActivity : UjsonObjValue, contentTransformer : String 
     id match
       case ActivityUrlRegex(oh, u, lid) => (oh, u, lid)
       case other => throw new UnexpectedValueFormat(s"Activity id '${other}' not in expected format.")
+  val userInMentionFormat = "@" + user
+  val displayNameOverride = None
   def url = createActivity("object").obj("url").str
   def rawContent : String = createActivity("object").obj("content").str
   def content : String = contentTransformer(rawContent)
