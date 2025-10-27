@@ -2,7 +2,7 @@ val context = lpwc.context
 
 val location = lpwc.siteRootedLocation
 
-val content = threadOrPost( lpwc, false )
+val content = threadOrPost( lpwc, Some(linkOut) )
 
 val tagline = context.tagline
 

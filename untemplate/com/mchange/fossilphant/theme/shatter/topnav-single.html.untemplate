@@ -12,7 +12,7 @@ end localIdHtml
 
 <div class="shatter-topnav">
   <div class="shatter-topnav-left">
-    <span class="status-title">Status #<( localIdHtml )></span>
+    <span class="status-title">Status&nbsp;#<( localIdHtml )></span>
   </div>
   <div class="shatter-topnav-center">
     &nbsp

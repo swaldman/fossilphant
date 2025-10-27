@@ -7,7 +7,7 @@ val Tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/pos
 
 case class MainLayoutInput( siteRootedLocation : Rooted, title : String, tagline : String, topnav : String, content : String, bottomnav : String, endOfHeadExtraHtml : String, endOfBodyExtraHtml : String )
 
-def threadOrPost(lpwc : LocatedPostWithContext, genOutLink : Boolean = false ) : String =
+def threadOrPost(lpwc : LocatedPostWithContext, mbGenOutLink : Option[Function1[Post,String]] ) : String =
   val post = lpwc.post
   val context = lpwc.context
 
@@ -29,12 +29,12 @@ def threadOrPost(lpwc : LocatedPostWithContext, genOutLink : Boolean = false ) :
     //println( s"thread: $thread" )
     if (thread.length > 1) then
       val posts = thread.map( context.publicPostsByLocalId )
-      val raw = """<div class="thread">""" :: posts.map( p => post_html(lpwc.copy( post = p ), genOutLink).text ) ::: "</div>" :: Nil
+      val raw = """<div class="thread">""" :: posts.map( p => post_html(lpwc.copy( post = p ), mbGenOutLink).text ) ::: "</div>" :: Nil
       raw.mkString("\n")
     else
-      post_html(lpwc, genOutLink).text
+      post_html(lpwc, mbGenOutLink).text
   else
-    post_html(lpwc, genOutLink).text
+    post_html(lpwc, mbGenOutLink).text
 
 
 

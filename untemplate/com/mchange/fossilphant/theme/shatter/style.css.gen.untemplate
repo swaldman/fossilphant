@@ -16,6 +16,10 @@ import com.mchange.fossilphant.theme.tower
   align-self: end;
   justify-self: start;
   margin-left: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 400px;
 }
 .shatter-topnav .shatter-topnav-center {
   grid-column: 2;
@@ -29,6 +33,7 @@ import com.mchange.fossilphant.theme.tower
   align-self: end;
   justify-self: end;
   margin-right: var( --outer-text-right-margin );
+  white-space: nowrap;
 }
 .shatter-topnav .status-title {
   /* font-size: 90%; */

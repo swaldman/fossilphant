@@ -13,6 +13,8 @@ val MastodonDateTimeFormatter = DateTimeFormatter.ISO_INSTANT
 val TimestampDateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
 val TimestampTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
 
+def linkOut( post : Post ) : String = post.url
+
 def formatShortDate( zdt : ZonedDateTime ) : String =
   //DateTimeFormatter.ISO_LOCAL_DATE.format(zdt)
   TimestampDateFormatter.format(zdt)

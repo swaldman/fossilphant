@@ -1,5 +1,5 @@
 val lpwc = tup(0)
-val genOutLink = tup(1)
+val mbGenOutLink = tup(1)
 
 val post = lpwc.post
 val context = lpwc.context
@@ -10,7 +10,7 @@ def makePostId(localId : String) = s"post-${localId}"
 
 val postId = makePostId(post.localId)
 
-val selfLink = if genOutLink then post.url else "#" + postId
+val selfLink = mbGenOutLink.map( f => f(post) ).getOrElse( "#" + postId ) 
 
 val newSelfUrl = context.config.newSelfUrl
 
@@ -20,7 +20,7 @@ def mbSelfUrled( contents : String ) : String =
   }
 end mbSelfUrled
 
-(tup : Tuple2[LocatedPostWithContext,Boolean])[]~()>
+(tup : Tuple2[LocatedPostWithContext,Option[Function1[Post,String]]])[]~()>
 
 <div class="post" id="<( postId )>">
   <div class="post-timestamp">

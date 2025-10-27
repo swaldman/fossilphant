@@ -1,6 +1,6 @@
 package com.mchange.fossilphant.theme.shatter
 
-import com.mchange.fossilphant.{LocatedPageWithContext, theme}
+import com.mchange.fossilphant.{LocatedPageWithContext, Post, theme}
 import unstatic.PageBase
 import unstatic.UrlPath.*
 
@@ -13,7 +13,7 @@ val threadOrPost = theme.tower.threadOrPost
 val MainLayoutInput  = theme.tower.MainLayoutInput
 type MainLayoutInput = theme.tower.MainLayoutInput
 
-def postOutLinkGen( localId : String ) : String = s"single_${localId}.html"
+def linkToSingle( post : Post ) : String = s"single_${post.localId}.html"
 
 def repage( pathStr : String, newPageNum : Int ) : String =
   pathStr.substring(0,pathStr.lastIndexOf('_')+1) + newPageNum + ".html"
