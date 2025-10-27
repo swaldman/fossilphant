@@ -35,6 +35,7 @@ end mbSelfUrled
   </div>
   <div class="post-content"><( post.content )></div>
   <( poll_html( post.pollItems ) )>
+  <( post.previewedLink.fold("")(pl=>previewed_link_html(lpwc.siteRootedLocation,pl)) )>
 <()
   val mbReplyLink = post.inReplyTo match
     case InReplyTo.NoOne           => None

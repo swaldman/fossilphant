@@ -31,6 +31,7 @@ class MastodonPost( createActivity : UjsonObjValue, contentTransformer : String 
   def followersUrl = s"https://${originalHost}/users/${user}/followers"
   def public : Boolean = allRecipients.contains(PublicId)
   def followersVisible : Boolean = allRecipients.contains(followersUrl)
+  def previewedLink : Option[Post.PreviewedLink] = None
   def images =
     val attachments = createActivity("object").obj("attachment").arr.map( _.obj )
     def isImage( jso : UjsonObjValue) =

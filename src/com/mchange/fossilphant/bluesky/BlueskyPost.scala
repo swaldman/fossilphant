@@ -9,8 +9,10 @@ import scala.collection.*
 import scala.util.{Failure, Success, Try}
 import unstatic.UrlPath.*
 
+import com.mchange.bskyarchive.BlobRef
 import com.mchange.bskyarchive.CarBlock
 import com.mchange.bskyarchive.Cid
+import com.mchange.bskyarchive.Embed
 import com.mchange.bskyarchive.Facet
 import java.nio.charset.StandardCharsets
 
@@ -54,6 +56,19 @@ class BlueskyPost(
   userHandleNoAt : Option[String],
   contentTransformer : String => String
 ) extends Post:
+  def blobRefToSiteRooted( bref : BlobRef ) : Rooted =
+    val suffix =
+      bref.mimeType match
+        case m if m.contains("jpeg") || m.contains("jpg") =>
+          "jpeg"
+        case m if m.contains("png") =>
+          "png"
+        case m if m.contains("webp") =>
+          "webp"
+        case _ =>
+          "jpeg"
+    BlueskyFossilphantSite.ImageDirSiteRooted.resolve( bref.cid.toMultibaseCidBase32 + "." + suffix )
+
   val id = record.cid.toMultibaseCidBase32
   val originalHost = "bsky.app"
   val user = userHandleNoAt.getOrElse(did)
@@ -70,30 +85,30 @@ class BlueskyPost(
   val followersUrl = s"https://bsky.app/profile/${did}/followers"
   val public : Boolean = true
   val followersVisible : Boolean = true
-  def images = Seq.empty // FIXME
-  /*
-    val attachments = createActivity("object").obj("attachment").arr.map( _.obj )
-    def isImage( jso : UjsonObjValue) =
-      jso("type").str == "Document" && Post.Image.SupportedTypes(jso("mediaType").str)
-    attachments.filter(isImage).map { jso =>
-      // grrr... some instances prepend an instancename before /media_attachments,
-      // but in the archive, the media is in a root-level /media_attachments
-      // this feels very hackish -- wrong even! what if an archive legit chose a path
-      // that contains /media_attachments in the actual archive?
-      //
-      // for now it seems to work. but i may have to get in the business of checking the
-      // archive and then configuring the parse
-      val path =
-        val raw = jso("url").str
-        val realStart = raw.indexOf("/media_attachments")
-        val fixed = if realStart > 0 then raw.substring( realStart ) else raw
-        Rooted( fixed )
-      val alt =
-        val raw = jso("name")
-        if raw.isNull then None else Some(raw.str)
-      Post.Image(path,alt)
-    }
-  */
+
+  def previewedLink : Option[Post.PreviewedLink] =
+    def extractExternal( embed : Embed ) : Option[Embed.External] =
+      embed match
+        case external : Embed.External => Some(external)
+        case Embed.RecordWithMedia( _, media ) => extractExternal( media )
+        case _ => /* Not images! */
+          None
+    record.embed.flatMap( extractExternal ).flatMap: external =>
+      Some( Post.PreviewedLink( external.uri, external.title, external.thumb.map(blobRefToSiteRooted), external.description ) )
+
+  def images =
+    def extractImages( embed : Embed ) : Seq[Post.Image] =
+      embed match
+        case images : Embed.Images =>
+          images.images.map: imageRef =>
+            val blobRef = imageRef.image
+            Post.Image(blobRefToSiteRooted(blobRef),imageRef.alt)
+        case Embed.RecordWithMedia( _, media ) =>
+          extractImages( media )
+        case _ => /* Not images! */
+          Seq.empty
+    record.embed.fold(Seq.empty)(e => extractImages(e) )
+
   val pollItems : immutable.Seq[Post.PollItem] = immutable.Seq.empty
 
   lazy val inReplyTo =
@@ -112,4 +127,4 @@ class BlueskyPost(
       case None =>
         InReplyTo.NoOne
 
-  def tags : Seq[String] = Seq.empty // FIXME
+  def tags : Seq[String] = Seq.empty // tags are handled as facets in bsky

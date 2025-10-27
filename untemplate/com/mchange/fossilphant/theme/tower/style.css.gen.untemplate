@@ -291,6 +291,42 @@ a.new-self-url:hover {
   font-variation-settings: "wght" 400;
 }
 
+.post-previewed {
+   margin-left: 2em;
+   margin-right: 2em;
+   width: calc(100% - 4em);
+   border-color: black;
+   border-width: 1px;
+   border-style: solid;
+   border-radius: 5px;
+}
+
+.post-previewed p {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.post-previewed p {
+    width: 100%;
+    text-align: center;
+}
+
+.post-previewed a:link, .post-previewed a:visited {
+    font-variation-settings: "wght" 500;
+    color: var( --post-text-color );
+    text-decoration: none;
+}
+.post-previewed a:link:hover {
+    color: var( --post-text-color );
+    text-decoration: underline;
+}
+
+.post-previewed-image-link {
+}
+
+.post-previewed-image-link img {
+    width: 100%;
+}
 
 .tabs {
   display:               grid;

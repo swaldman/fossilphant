@@ -19,6 +19,8 @@ import com.mchange.bskyarchive.BskyArchive
 
 import zio.*
 
+object BlueskyFossilphantSite:
+  val ImageDirSiteRooted = UrlPath.Rooted("/image")
 class BlueskyFossilphantSite( config : FossilphantConfig, userHandleNoAt : Option[String], imageDir : os.Path ) extends AbstractFossilphantSite(config):
 
   // archiveLoc is from superclass
@@ -30,7 +32,7 @@ class BlueskyFossilphantSite( config : FossilphantConfig, userHandleNoAt : Optio
 
   lazy val staticArchiveResources : ZTEndpointBinding.Source = new ZTEndpointBinding.Source:
     val imageDirEndpointBinding =
-      ZTEndpointBinding.staticDirectoryServing( BlueskyFossilphantSite.this.location("image"), imageDir.toNIO, immutable.Set("imageDir") )
+      ZTEndpointBinding.staticDirectoryServing( BlueskyFossilphantSite.this.location(BlueskyFossilphantSite.ImageDirSiteRooted), imageDir.toNIO, immutable.Set("imageDir") )
 
     val avatarBinding = 
       val path =

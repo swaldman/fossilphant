@@ -1,0 +1,43 @@
+import unstatic.PageBase
+import unstatic.UrlPath.*
+
+val loc = tup(0)
+val previewedLink = tup(1)
+val pageBase = PageBase.fromPage(loc)
+val mbRelThumbnailPath = previewedLink.thumbnailSiteRootedPath.map( pageBase.relativize )
+val linkTitle =
+  if previewedLink.title.nonEmpty then previewedLink.title else "untitled link"
+
+val alt =
+  "Link Preview: \r\n" +
+  linkTitle +
+  previewedLink.description.fold("")( desc => ": " + desc )
+
+def tooltipTextSpan =  s"""<span class="tooltip-text">${alt}</span>"""
+
+def descPart = previewedLink.description.fold("")(desc => s""" data-description="$desc"""")
+
+( tup : (Rooted, Post.PreviewedLink) )[]~()>
+  <div class="post-previewed">
+<()
+  mbRelThumbnailPath match {
+    case Some( relThumbnailPath ) => {
+()>  
+    <div class="post-previewed-image-link">
+      <div><a href="<( previewedLink.href )>"><img src="<( relThumbnailPath )>" alt ="<( alt )>"></a></div>
+      <p class="post-previewed-image-link-title"><a href="<( previewedLink.href )>"<( descPart )>><( linkTitle )></a></p>
+      <( tooltipTextSpan )>
+    </div>
+<()
+  }
+  case None => {
+()>
+    <div class="post-previewed-text-link">
+      <p class="post-previewed-text-link-title"><a href="<( previewedLink.href )>"<( descPart )>><( linkTitle )></a></p>
+    </div>
+<()
+  }
+}
+()>  
+  </div>
+
