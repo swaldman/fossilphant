@@ -11,10 +11,41 @@ import unstatic.UrlPath.*
 
 import com.mchange.bskyarchive.CarBlock
 import com.mchange.bskyarchive.Cid
+import com.mchange.bskyarchive.Facet
+import java.nio.charset.StandardCharsets
 
 object BlueskyPost:
   given ReverseChronologicalPublished : Ordering[BlueskyPost] with
     def compare( x : BlueskyPost, y : BlueskyPost ) : Int = Post.ReverseChronologicalPublished.compare( x, y )
+  private val UTF8 = StandardCharsets.UTF_8
+  private val EndAnchor = "</a>".getBytes(UTF8)
+  def applyLink(link : Facet.Link, facetTarget : Array[Array[Byte]]) : Array[Array[Byte]] =
+    val (start, end) = (link.byteStart, link.byteEnd)
+    facetTarget(start) = s"""<a target="_blank" href="${link.uri}">""".getBytes(UTF8) ++ facetTarget(start)
+    facetTarget(end-1) = facetTarget(end-1) ++ EndAnchor
+    facetTarget
+  def applyMention(mention : Facet.Mention, facetTarget : Array[Array[Byte]]) : Array[Array[Byte]] =
+    val (start, end) = (mention.byteStart, mention.byteEnd)
+    facetTarget(start) = s"""<a target="_blank" href="https://bsky.app/profile/${mention.did}">""".getBytes(UTF8) ++ facetTarget(start)
+    facetTarget(end-1) = facetTarget(end-1) ++ EndAnchor
+    facetTarget
+  def applyTag(tag : Facet.Tag, facetTarget : Array[Array[Byte]]) : Array[Array[Byte]] =
+    val (start, end) = (tag.byteStart, tag.byteEnd)
+    facetTarget(start) = s"""<a target="_blank" href="https://bsky.app/hashtag/${tag.tag}">""".getBytes(UTF8) ++ facetTarget(start)
+    facetTarget(end-1) = facetTarget(end-1) ++ EndAnchor
+    facetTarget
+  def applyFacets( rawContent : String, facets : Set[Facet] ) : String =
+    if facets.isEmpty then
+      rawContent
+    else
+      val target = rawContent.getBytes(UTF8).map( b => Array(b) ).toArray
+      facets.foreach: facet =>
+        facet match
+          case link    : Facet.Link    => applyLink( link, target )
+          case mention : Facet.Mention => applyMention( mention, target )
+          case tag     : Facet.Tag     => applyTag( tag, target )
+      new String(target.flatten, UTF8)
+   
 class BlueskyPost(
   record : CarBlock.Record,
   tid : String,
@@ -31,7 +62,7 @@ class BlueskyPost(
   val displayNameOverride = None
   val url = s"https://bsky.app/profile/${did}/post/${tid}"
   val rawContent : String = record.text.getOrElse("(No content?!?)")
-  val content : String = "<p>" + contentTransformer(rawContent) + "</p>"
+  val content : String = "<p>" + contentTransformer(BlueskyPost.applyFacets(rawContent,record.facets)) + "</p>"
   val published : Instant = record.createdAt
   val to : Seq[String] = Seq.empty // these are activitypub fields, it's unclear they have a bluesky analog
   val cc : Seq[String] = Seq.empty // these are activitypub fields, it's unclear they have a bluesky analog
