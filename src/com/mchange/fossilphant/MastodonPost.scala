@@ -78,3 +78,5 @@ class MastodonPost( createActivity : UjsonObjValue, contentTransformer : String 
         case whatev => throw new UnexpectedValueFormat(s"Status id '${whatev}' not in expected format.")
 
   def tags : Seq[String] = createActivity("object").obj("tag").arr.map( _.str ).toSeq
+
+  def quotedPostHtml : Option[String] = None // XXX: Not yet supported

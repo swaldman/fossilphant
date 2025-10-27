@@ -52,5 +52,8 @@ end mbSelfUrled
   post.images.foreach { image =>
     writer.write( image_html( lpwc.siteRootedLocation, image ).text )
   }
+  quotedPostHtml.foreach { html =>
+    writer.write( quoted_post_html( lpwc.siteRootedLocation, html ).text )
+  }
 ()>
 </div>

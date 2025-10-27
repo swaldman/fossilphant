@@ -1,0 +1,15 @@
+import unstatic.PageBase
+import unstatic.UrlPath.*
+
+val loc = tup(0)
+val quotedPostHtml = tup(1)
+
+
+
+
+(tup : ( Rooted, String ) )[]~()>
+
+<div class="quoted-post">
+  <( quotedPostHtml )>
+</div>
+

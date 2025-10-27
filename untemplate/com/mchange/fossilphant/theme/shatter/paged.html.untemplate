@@ -12,7 +12,7 @@ val tagline = context.tagline
 val topnav = topnav_paged_html( lpwc ).text
 val bottomnav = bottomnav_paged_html( lpwc ).text
 
-val input = MainLayoutInput( location, context.mainTitle, tagline, topnav, content, bottomnav )
+val input = MainLayoutInput( location, context.mainTitle, tagline, topnav, content, bottomnav, context.endOfHeadExtraHtml, context.endOfBodyExtraHtml )
 
 (lpwc : LocatedPageWithContext)[]~()>
 

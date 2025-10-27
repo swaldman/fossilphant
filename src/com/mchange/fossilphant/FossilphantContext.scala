@@ -58,7 +58,9 @@ object FossilphantContext:
       reverseChronologicalPublicPostsNoReplies,
       reverseChronologicalPublicPostsWithRepliesToOthersOnly,
       publicPostsByLocalId,
-      threadNexts
+      threadNexts,
+      "",
+      "",
     )
   end forMastodon
 
@@ -105,7 +107,9 @@ object FossilphantContext:
       reverseChronologicalPublicPostsNoReplies,
       reverseChronologicalPublicPostsWithRepliesToOthersOnly,
       publicPostsByLocalId,
-      threadNexts
+      threadNexts,
+      "",
+      """<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>"""
     )
 
   end forBluesky
@@ -119,7 +123,9 @@ case class FossilphantContext(
   reverseChronologicalPublicPostsNoReplies : Seq[Post],
   reverseChronologicalPublicPostsWithRepliesToOthersOnly : Seq[Post], // when threads will be followed and catch self-replies
   publicPostsByLocalId : Map[String,Post],
-  threadNexts : Map[String,String]
+  threadNexts : Map[String,String],
+  endOfHeadExtraHtml : String,
+  endOfBodyExtraHtml : String
 ):
   lazy val pagesIncludingReplies = reverseChronologicalPublicPosts.grouped( config.pageLength ).toSeq
   lazy val pagesIncludingRepliesToOthersOnly = reverseChronologicalPublicPostsWithRepliesToOthersOnly.grouped( config.pageLength ).toSeq

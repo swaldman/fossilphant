@@ -8,6 +8,7 @@ import unstatic.UrlPath.Rooted
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="style.css" />
     <title><( input.title )></title>
+    <( input.endOfHeadExtraHtml )>
   </head>
   <body>
     <div id="header">
@@ -25,5 +26,6 @@ import unstatic.UrlPath.Rooted
         Produced with <a href="https://github.com/swaldman/fossilphant">fossilphant</a>.
       </div>
     </div>
+    <( input.endOfBodyExtraHtml )>
   </body>
 </html>

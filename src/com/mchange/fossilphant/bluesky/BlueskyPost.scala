@@ -128,3 +128,17 @@ class BlueskyPost(
         InReplyTo.NoOne
 
   def tags : Seq[String] = Seq.empty // tags are handled as facets in bsky
+
+  def quotedPostHtml : Option[String] = 
+    def extractRecord( embed : Embed ) : Option[Embed.Record] =
+      embed match
+        case embeddedRecord : Embed.Record => Some(embeddedRecord)
+        case Embed.RecordWithMedia( postReference, media ) => Some( Embed.Record( postReference ) )
+        case _ => /* Not images! */
+          None
+    record.embed.flatMap( extractRecord ).map( embedHtmlFor )
+
+  def embedHtmlFor( embedRecord : Embed.Record ) =
+    val atUri = embedRecord.record.atUri
+    val cidBase64 = embedRecord.record.cid.toMultibaseCidBase32
+    s"""<blockquote class="bluesky-embed" data-bluesky-uri="${atUri}" data-bluesky-cid="${cidBase64}" data-bluesky-embed-color-mode="system">Loading quoted Bluesky post...</blockquote>"""

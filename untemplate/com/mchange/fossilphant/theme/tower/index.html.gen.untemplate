@@ -9,7 +9,7 @@ val content =
 
 val tagline = context.tagline
 
-val input = MainLayoutInput( location, context.mainTitle, tagline, tabs_html( location, Tabs ).text, content, "" )
+val input = MainLayoutInput( location, context.mainTitle, tagline, tabs_html( location, Tabs ).text, content, "", context.endOfHeadExtraHtml, context.endOfBodyExtraHtml )
 
 (locatedContext : LocatedContext)[]~()>
 

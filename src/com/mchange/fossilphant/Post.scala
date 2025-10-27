@@ -36,6 +36,7 @@ trait Post:
   def pollItems : immutable.Seq[Post.PollItem]
   def inReplyTo : InReplyTo
   def tags : Seq[String]
+  def quotedPostHtml : Option[String]
 
   def allRecipients : Seq[String] = to ++ cc
 end Post

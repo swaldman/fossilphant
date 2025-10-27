@@ -5,7 +5,7 @@ import com.mchange.fossilphant.*
 
 val Tabs = ("Main", Rooted("/index.html")) :: ("Posts and Replies", Rooted("/postsWithReplies.html")) :: Nil
 
-case class MainLayoutInput( siteRootedLocation : Rooted, title : String, tagline : String, topnav : String, content : String, bottomnav : String )
+case class MainLayoutInput( siteRootedLocation : Rooted, title : String, tagline : String, topnav : String, content : String, bottomnav : String, endOfHeadExtraHtml : String, endOfBodyExtraHtml : String )
 
 def threadOrPost(lpwc : LocatedPostWithContext, outLinkGen : Option[String => String] = None) : String =
   val post = lpwc.post

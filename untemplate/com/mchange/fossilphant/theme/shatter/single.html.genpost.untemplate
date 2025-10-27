@@ -6,7 +6,7 @@ val content = threadOrPost( lpwc, None )
 
 val tagline = context.tagline
 
-val input = MainLayoutInput( location, context.mainTitle, tagline, topnav_single_html(lpwc).text, content, "" )
+val input = MainLayoutInput( location, context.mainTitle, tagline, topnav_single_html(lpwc).text, content, "", context.endOfHeadExtraHtml, context.endOfBodyExtraHtml  )
 
 (lpwc : LocatedPostWithContext)[]~()>
 
