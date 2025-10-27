@@ -89,7 +89,7 @@ def printEndpointsWithHeader(header : String, endpoints : immutable.Seq[Rooted])
   else
     for
       _ <- Console.printLine(header)
-      _ <- ZIO.foreach(endpoints.map(_.toString).to(immutable.SortedSet))( endpoint => Console.printLine(s" \u27A3 ${endpoint}"))
+      _ <- ZIO.foreach(endpoints.map(_.toString).to(immutable.SortedSet))( endpoint => Console.printLine(s" \u27A3 ${endpoint}") )
     yield ()
 
 command.parse(args.toIndexedSeq, sys.env) match
@@ -97,10 +97,17 @@ command.parse(args.toIndexedSeq, sys.env) match
     println(help)
     System.exit(1)
   case Right( config : Config ) =>
-    val site = BlueskyFossilphantSite( config.fc, Some(config.userHandle), config.imageDir )
+    // Bluesky cheat!
+    val hackedConfig =
+      if config.fc.themeConfig.get("page.background.color").isEmpty then
+        val themeConfigBsky = config.fc.themeConfig + Tuple2("page.background.color","#bdecf0")
+        config.copy( fc = config.fc.copy( themeConfig = themeConfigBsky ) )
+      else
+        config
+    val site = BlueskyFossilphantSite( hackedConfig.fc, Some(hackedConfig.userHandle), hackedConfig.imageDir )
     val task =
       for
-        result <- ZTStaticGen.generateZTSite( site, config.outDir.toNIO )
+        result <- ZTStaticGen.generateZTSite( site, hackedConfig.outDir.toNIO )
         _      <- printEndpointsWithHeader("Endpoints generated:", result.generated)
       yield ()
     Unsafe.unsafely:
