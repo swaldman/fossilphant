@@ -1,4 +1,6 @@
-package com.mchange.fossilphant
+package com.mchange.fossilphant.bluesky
+
+import com.mchange.fossilphant.*
 
 import scala.collection.*
 
@@ -30,5 +32,18 @@ class BlueskyFossilphantSite( config : FossilphantConfig, userHandleNoAt : Optio
     val imageDirEndpointBinding =
       ZTEndpointBinding.staticDirectoryServing( BlueskyFossilphantSite.this.location("image"), imageDir.toNIO, immutable.Set("imageDir") )
 
-    val endpointBindings = imageDirEndpointBinding :: Nil
+    val avatarBinding = 
+      val path =
+        val avatarFiles = os.list( imageDir ).filter( _.lastOpt.get.startsWith( "avatar" ) ) // ugly .get, but we should find root
+        avatarFiles.length match
+          case 0 => throw new MissingAvatar("No file like 'avatar.<suffix>' found among downloaded images!")
+          case 1 => avatarFiles.head
+          case n => 
+            val matches = avatarFiles.map( _.lastOpt.get ).mkString(", ")
+            throw new MissingAvatar(s"MULTIPLE ($n) files among downloaded images are like 'avatar.<suffix>'! Can't discern which of ${matches} to use.")
+      val avatarFileName = path.lastOpt.get
+      ZTEndpointBinding.staticFileServing( BlueskyFossilphantSite.this.location(avatarFileName), path.toNIO, immutable.Set("avatar", avatarFileName) )
+
+
+    val endpointBindings = imageDirEndpointBinding :: avatarBinding :: Nil
 

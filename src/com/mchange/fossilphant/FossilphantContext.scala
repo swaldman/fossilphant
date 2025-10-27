@@ -63,14 +63,28 @@ object FossilphantContext:
   end forMastodon
 
   def forBluesky( bskyArchive : BskyArchive, config : FossilphantConfig, userHandleNoAt : Option[String], imageDir : os.Path ) : FossilphantContext =
+    import com.mchange.fossilphant.bluesky.*
     val did = bskyArchive.did
     val publicPosts =
       bskyArchive.posts().map: carBlockPost =>
         val tid = bskyArchive.getTid( carBlockPost ).getOrElse( throw new MissingTid( s"Could not find tid for record: $carBlockPost" ) )
-        BlueskyPost( carBlockPost, tid, did, userHandleNoAt, config.contentTransformer )
+        // println( s"tid: $tid" )
+        BlueskyPost( carBlockPost, tid, did, bskyArchive.tidToCid, userHandleNoAt, config.contentTransformer )
     val publicPostsByLocalId =
       publicPosts.map( post => (post.localId, post)).toMap
-    val threadNexts : Map[String,String] = Map.empty // FIXME
+    val threadNexts =
+      publicPosts.view
+        .map( post => (post.localId, post.inReplyTo)  )
+        .collect { case (lid, InReplyTo.Self(prev)) => (prev,lid)}
+        .toMap
+
+    /* debug only */
+    //println( "threadNexts:" )
+    //threadNexts.foreach( println )
+    //val prevs = publicPosts.map( _.inReplyTo ).collect { case InReplyTo.Self(prev) => prev }
+    //prevs.foreach( println )
+    /* end debug only */
+
     val userDisplayName = config.overrideDisplayName.getOrElse( bskyArchive.profile.cbor.get("displayName").AsString )
     val mbUserHost = Some(UserHost(userHandleNoAt.fold(did)("@"+_),"bsky.app"))
     val mainTitle = config.mainTitle.getOrElse:

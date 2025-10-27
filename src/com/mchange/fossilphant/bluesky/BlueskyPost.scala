@@ -1,4 +1,6 @@
-package com.mchange.fossilphant
+package com.mchange.fossilphant.bluesky
+
+import com.mchange.fossilphant.*
 
 import com.mchange.fossilphant.Post.PollItem
 
@@ -8,11 +10,19 @@ import scala.util.{Failure, Success, Try}
 import unstatic.UrlPath.*
 
 import com.mchange.bskyarchive.CarBlock
+import com.mchange.bskyarchive.Cid
 
 object BlueskyPost:
   given ReverseChronologicalPublished : Ordering[BlueskyPost] with
     def compare( x : BlueskyPost, y : BlueskyPost ) : Int = Post.ReverseChronologicalPublished.compare( x, y )
-class BlueskyPost( record : CarBlock.Record, tid : String, did : String, userHandleNoAt : Option[String], contentTransformer : String => String ) extends Post:
+class BlueskyPost(
+  record : CarBlock.Record,
+  tid : String,
+  did : String,
+  tidToCid : Map[String,Cid],
+  userHandleNoAt : Option[String],
+  contentTransformer : String => String
+) extends Post:
   val id = record.cid.toMultibaseCidBase32
   val originalHost = "bsky.app"
   val user = userHandleNoAt.getOrElse(did)
@@ -21,10 +31,10 @@ class BlueskyPost( record : CarBlock.Record, tid : String, did : String, userHan
   val displayNameOverride = None
   val url = s"https://bsky.app/profile/${did}/post/${tid}"
   val rawContent : String = record.text.getOrElse("(No content?!?)")
-  val content : String = contentTransformer(rawContent)
+  val content : String = "<p>" + contentTransformer(rawContent) + "</p>"
   val published : Instant = record.createdAt
-  val to : Seq[String] = Seq.empty // FIXME
-  val cc : Seq[String] = Seq.empty // FIXME
+  val to : Seq[String] = Seq.empty // these are activitypub fields, it's unclear they have a bluesky analog
+  val cc : Seq[String] = Seq.empty // these are activitypub fields, it's unclear they have a bluesky analog
   val sensitive : Boolean = false
   val followersUrl = s"https://bsky.app/profile/${did}/followers"
   val public : Boolean = true
@@ -52,22 +62,23 @@ class BlueskyPost( record : CarBlock.Record, tid : String, did : String, userHan
         if raw.isNull then None else Some(raw.str)
       Post.Image(path,alt)
     }
-  */  
+  */
   val pollItems : immutable.Seq[Post.PollItem] = immutable.Seq.empty
 
-  lazy val inReplyTo = InReplyTo.NoOne // FIXME
-/*  
-    val irt = createActivity("object").obj("inReplyTo")
-    if irt.isNull then
-      InReplyTo.NoOne
-    else
-      irt.str match
-        case null => InReplyTo.NoOne
-        case StatusUrlRegex(h, u, lid) if h == originalHost && u == user => InReplyTo.Self(lid)
-        case mbu if mbu.startsWith("http") => InReplyTo.Other(mbu) //XXX: Not the greatest URL validation
-        case whatev => throw new UnexpectedValueFormat(s"Status id '${whatev}' not in expected format.")
- */
+  lazy val inReplyTo =
+    record.reply match
+      case Some( reply ) =>
+        reply.parent.atUri match
+          case AtUrlRegex( urlId, tpe, tid ) =>
+            //println( s"urlId: $urlId   poster did: ${did}" )
+            if urlId == did || Some(urlId) == userHandleNoAt then
+              //println( "reply to self found." )
+              InReplyTo.Self( tidToCid(tid).toMultibaseCidBase32 )
+            else
+              InReplyTo.Other( s"https://bsky.app/profile/${urlId}/post/${tid}" )
+          case ick =>
+            throw new InternalError(s"atUri '${ick}' failed to match its parsing regex ('${AtUrlRegex}')?!?")
+      case None =>
+        InReplyTo.NoOne
 
   def tags : Seq[String] = Seq.empty // FIXME
-
-

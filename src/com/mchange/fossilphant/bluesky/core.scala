@@ -42,7 +42,7 @@ def downloadBskyArchiveImages( bskyRepoCar : os.Path, destinationDir : os.Path, 
       os.Path( fname, destinationDir )
     ZIO.attemptBlocking:
       // special case avatar
-      val avatar = 
+      val avatar =
         if bskyArchive.profile.blobRefs.size == 1 then
           val blobRef = bskyArchive.profile.blobRefs.head
           val href = blobRef.toBskyUrl( bskyArchive.did )
@@ -61,3 +61,6 @@ def downloadBskyArchiveImages( bskyRepoCar : os.Path, destinationDir : os.Path, 
     stats        <- ref.get
     _            <- ZIO.succeed( java.lang.System.err.println() ) // get past all the dots we've been printing
   yield stats
+
+val AtUrlRegex = """^at\:\/\/([^\/]+)\/([^\/]+)\/([^\/\?\#]+)""".r
+
