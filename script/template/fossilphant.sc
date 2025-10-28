@@ -96,7 +96,7 @@ command.parse(args.toIndexedSeq, sys.env) match
     println(help)
     System.exit(1)
   case Right( (config, outPath) ) =>
-    val site = FossilphantSite( config )
+    val site = MastodonFossilphantSite( config )
     val task =
       for
         result <- ZTStaticGen.generateZTSite( site, outPath.toNIO )
