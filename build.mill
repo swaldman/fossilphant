@@ -1,6 +1,6 @@
 //| mill-version: 1.0.6
 //| mill-jvm-version: 21
-//| mvnDeps: ["com.mchange::untemplate-mill:0.3.0-SNAPSHOT"]
+//| mvnDeps: ["com.mchange::untemplate-mill:0.3.0"]
 //+-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 package build
@@ -9,7 +9,7 @@ import mill.*, scalalib.*, publish.*
 
 import untemplate.mill.*
 
-val UnstaticVersion = "0.4.0-SNAPSHOT"
+val UnstaticVersion = "0.4.0"
 
 object Dependency:
   val Unstatic       = mvn"com.mchange::unstatic:${UnstaticVersion}"
@@ -17,13 +17,13 @@ object Dependency:
   val JArchiveLib    = mvn"org.rauschig:jarchivelib:1.2.0"
   val OsLib          = mvn"com.lihaoyi::os-lib:0.11.5"
   val Upickle        = mvn"com.lihaoyi::upickle:4.4.0"
-  val Bskyarchive    = mvn"com.mchange::bskyarchive:0.0.1-SNAPSHOT"
+  val Bskyarchive    = mvn"com.mchange::bskyarchive:0.0.1"
   val Requests       = mvn"com.lihaoyi::requests:0.9.0"
 
 
 object `package` extends UntemplateModule with SonatypeCentralPublishModule:
   val projectName    = "fossilphant"
-  val projectVersion = "0.1.0-SNAPSHOT"
+  val projectVersion = "0.1.0"
 
   override def scalaVersion = Task("3.3.6")
 
