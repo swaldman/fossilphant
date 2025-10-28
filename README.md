@@ -1,10 +1,10 @@
 # fossilphant
 
-### a static-site generator for mastodon archives
+### a static-site generator for mastodon and bluesky archives
 
 fossilphant generates static websites from
 archives of your posts [you can export](https://allthings.how/how-to-export-and-import-your-data-on-mastodon/)
-from a Mastodon instance.
+from a Mastodon instance or from a [Bluesky account archive](https://docs.bsky.app/blog/repo-export) ("repo.car").
 
 If your instance is shutting down, you can move to a new server,
 but your posts as a member of the departing instance will be effectively
@@ -35,7 +35,11 @@ includes those.
 
 "Boosts" are not republished.
 
-## Quick Start
+## Quick Start (Bluesky)
+
+Please see the tutorial [here](https://tech.interfluidity.com/2025/10/28/turn-your-bluesky-archive-into-a-readable-hostable-static-site-with-fossilphant/index.html)!
+
+## Quick Start (Mastodon)
 
 ### scala-cli script (mac, linux)
 
@@ -96,7 +100,7 @@ To customize, run
    ```
 and check out the many options!
 
-### old school
+### old school (Mastodon only)
 
 You will need a [Java virtual machine](https://www.oracle.com/java/technologies/java-se-glance.html),
 version 17 or higher, installed on your machine, and a UNIXy command line.
