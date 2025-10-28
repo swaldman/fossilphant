@@ -6,7 +6,7 @@ fossilphant generates static websites from
 archives of your posts [you can export](https://allthings.how/how-to-export-and-import-your-data-on-mastodon/)
 from a Mastodon instance or from a [Bluesky account archive](https://docs.bsky.app/blog/repo-export) ("repo.car").
 
-If your instance is shutting down, you can move to a new server,
+If your Mastodon instance is shutting down, you can move to a new server,
 but your posts as a member of the departing instance will be effectively
 deleted from the internet.
 
