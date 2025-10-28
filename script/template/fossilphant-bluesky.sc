@@ -100,7 +100,7 @@ command.parse(args.toIndexedSeq, sys.env) match
     // Bluesky cheat!
     val hackedConfig =
       if config.fc.themeConfig.get("page.background.color").isEmpty then
-        val themeConfigBsky = config.fc.themeConfig + Tuple2("page.background.color","#bdecf0")
+        val themeConfigBsky = config.fc.themeConfig + Tuple2("page.background.color","#d0e0ff")
         config.copy( fc = config.fc.copy( themeConfig = themeConfigBsky ) )
       else
         config
